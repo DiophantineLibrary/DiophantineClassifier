@@ -79,3 +79,60 @@ def test_pdf_mismatch_detection(tmp_path, monkeypatch):
     status, note = mod.pdf_status("Wiles1995", bibliography()["Wiles1995"])
     assert status in ("mismatch", "suspect", "present")
     assert status != "verified"
+
+
+def test_ledger_never_downgrades(tmp_path, monkeypatch):
+    """A verification recorded in the ledger survives a run on a machine
+    without the file (status is monotone)."""
+    mod = _load_tool()
+    monkeypatch.setattr(mod, "PDF_DIR", str(tmp_path / "pdf"))  # empty
+    monkeypatch.setattr(mod, "REPORT", str(tmp_path / "REPORT.md"))
+    monkeypatch.setattr(mod, "LEDGER", str(tmp_path / "status.yaml"))
+    (tmp_path / "status.yaml").write_text(
+        "Wiles1995:\n  pdf_verified: '2026-01-01'\n")
+    rc = mod.main(["--quiet"])
+    assert rc == 0
+    # ledger untouched (no changes -> not rewritten, content preserved)
+    assert "2026-01-01" in (tmp_path / "status.yaml").read_text()
+    report = (tmp_path / "REPORT.md").read_text()
+    assert "ledger: verified 2026-01-01" in report
+    # the ledger entry keeps Wiles1995 off the download TODO list
+    todo = [l for l in report.splitlines() if "download and verify" in l]
+    assert todo
+    names = todo[0].split(": ", 1)[1].split(", ")
+    assert "Wiles1995" not in names and "TaylorWiles1995" in names
+
+
+def test_ledger_records_upgrade(tmp_path, monkeypatch):
+    """A local verification is written to the ledger, write-once."""
+    mod = _load_tool()
+    monkeypatch.setattr(mod, "PDF_DIR", str(tmp_path / "pdf"))
+    monkeypatch.setattr(mod, "REPORT", str(tmp_path / "REPORT.md"))
+    monkeypatch.setattr(mod, "LEDGER", str(tmp_path / "status.yaml"))
+    real_pdf_status = mod.pdf_status
+
+    def fake_status(key, entry):
+        if key == "Lenstra2002":
+            return "verified", "simulated"
+        return real_pdf_status(key, entry)
+
+    monkeypatch.setattr(mod, "pdf_status", fake_status)
+    rc = mod.main(["--quiet"])
+    assert rc == 0
+    ledger = (tmp_path / "status.yaml").read_text()
+    assert "Lenstra2002" in ledger and "pdf_verified" in ledger
+
+
+def test_ledger_mismatch_keeps_verification(tmp_path, monkeypatch):
+    """A local mismatch warns but never erases a recorded verification."""
+    mod = _load_tool()
+    monkeypatch.setattr(mod, "PDF_DIR", str(tmp_path))
+    monkeypatch.setattr(mod, "REPORT", str(tmp_path / "REPORT.md"))
+    monkeypatch.setattr(mod, "LEDGER", str(tmp_path / "status.yaml"))
+    (tmp_path / "status.yaml").write_text(
+        "Wiles1995:\n  pdf_verified: '2026-01-01'\n")
+    (tmp_path / "Wiles1995.pdf").write_bytes(
+        b"%PDF-1.4\n" + b"unrelated content " * 1000)
+    rc = mod.main(["--quiet"])
+    assert rc == 0                      # a mismatch is a warning, not an error
+    assert "2026-01-01" in (tmp_path / "status.yaml").read_text()

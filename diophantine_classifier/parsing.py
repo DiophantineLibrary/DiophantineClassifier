@@ -1,4 +1,5 @@
-r"""Parse a Diophantine equation string into a structured term model.
+r"""
+Parse a Diophantine equation string into a structured term model.
 
 The model supports polynomial terms and three kinds of exponential content:
 
@@ -47,7 +48,8 @@ from sage.symbolic.operators import add_vararg, mul_vararg
 
 
 class ParseError(ValueError):
-    r"""The input string could not be interpreted as an equation.
+    r"""
+    The input string could not be interpreted as an equation.
 
     EXAMPLES::
 
@@ -60,7 +62,8 @@ class ParseError(ValueError):
 
 
 class UnsupportedEquationError(ParseError):
-    r"""Parsed fine, but uses features outside the supported equation model.
+    r"""
+    Parsed fine, but uses features outside the supported equation model.
 
     EXAMPLES::
 
@@ -76,7 +79,8 @@ _IDENT = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 
 
 def _preprocess(s):
-    r"""Normalize an input string before symbolic parsing.
+    r"""
+    Normalize an input string before symbolic parsing.
 
     Handles unicode operators, ``**`` vs ``^``, ``==`` vs ``=``, and the
     unambiguous cases of implicit multiplication (digit-letter,
@@ -108,7 +112,8 @@ def _preprocess(s):
 
 
 def _check_identifiers(s):
-    r"""Reject function-call syntax and return the set of identifiers.
+    r"""
+    Reject function-call syntax and return the set of identifiers.
 
     Every identifier is treated as a variable — see the module docstring.
 
@@ -142,7 +147,8 @@ def _check_identifiers(s):
 
 @dataclass(frozen=True)
 class Term:
-    r"""One additive term of a normalized equation.
+    r"""
+    One additive term of a normalized equation.
 
     Represents ``coeff · Π params^e · Π unknowns^e · Π base^expvar ·
     Π var^expvar``.
@@ -179,7 +185,8 @@ class Term:
 
     @property
     def signature(self):
-        r"""The term's structure with the coefficient stripped (merge key).
+        r"""
+        The term's structure with the coefficient stripped (merge key).
 
         EXAMPLES::
 
@@ -193,7 +200,8 @@ class Term:
 
     @property
     def is_polynomial(self):
-        r"""Whether the term is free of exponential content.
+        r"""
+        Whether the term is free of exponential content.
 
         EXAMPLES::
 
@@ -205,7 +213,8 @@ class Term:
 
     @property
     def is_constant(self):
-        r"""Whether the term involves no unknowns at all (parameters allowed).
+        r"""
+        Whether the term involves no unknowns at all (parameters allowed).
 
         EXAMPLES::
 
@@ -217,7 +226,8 @@ class Term:
 
     @property
     def is_pure_power(self):
-        r"""Whether the term is ``c * v^e`` for a single unknown and ``e ≥ 2``.
+        r"""
+        Whether the term is ``c * v^e`` for a single unknown and ``e ≥ 2``.
 
         EXAMPLES::
 
@@ -231,7 +241,8 @@ class Term:
 
 @dataclass
 class ParsedEquation:
-    r"""A fully parsed and normalized Diophantine equation.
+    r"""
+    A fully parsed and normalized Diophantine equation.
 
     Produced by :func:`parse`; consumed by the matchers and solvers.
 
@@ -289,7 +300,8 @@ class ParsedEquation:
 
     @property
     def is_polynomial(self):
-        r"""Whether every term is polynomial (no variable exponents).
+        r"""
+        Whether every term is polynomial (no variable exponents).
 
         EXAMPLES::
 
@@ -303,7 +315,8 @@ class ParsedEquation:
 
     @property
     def is_concrete(self):
-        r"""Whether there are no parameters (coefficients are rationals).
+        r"""
+        Whether there are no parameters (coefficients are rationals).
 
         EXAMPLES::
 
@@ -317,7 +330,8 @@ class ParsedEquation:
 
     @property
     def nunknowns(self):
-        r"""The number of unknowns.
+        r"""
+        The number of unknowns.
 
         EXAMPLES::
 
@@ -328,7 +342,8 @@ class ParsedEquation:
         return len(self.unknowns)
 
     def poly_part_terms(self):
-        r"""The polynomial terms (including constants).
+        r"""
+        The polynomial terms (including constants).
 
         EXAMPLES::
 
@@ -339,7 +354,8 @@ class ParsedEquation:
         return [t for t in self.terms if t.is_polynomial]
 
     def exponential_terms(self):
-        r"""The terms with exponential content.
+        r"""
+        The terms with exponential content.
 
         EXAMPLES::
 
@@ -350,7 +366,8 @@ class ParsedEquation:
         return [t for t in self.terms if not t.is_polynomial]
 
     def __repr__(self):
-        r"""Terse representation.
+        r"""
+        Terse representation.
 
         EXAMPLES::
 
@@ -362,7 +379,8 @@ class ParsedEquation:
 
 
 def _split_equation(s):
-    r"""Split a preprocessed string at its (single) equality sign.
+    r"""
+    Split a preprocessed string at its (single) equality sign.
 
     A string without ``=`` is interpreted as ``s = 0``.
 
@@ -394,7 +412,8 @@ def _split_equation(s):
 
 
 def _term_list(f):
-    r"""The additive terms of a symbolic expression.
+    r"""
+    The additive terms of a symbolic expression.
 
     EXAMPLES::
 
@@ -413,7 +432,8 @@ def _term_list(f):
 
 
 def _factor_list(t):
-    r"""The multiplicative factors of a symbolic term.
+    r"""
+    The multiplicative factors of a symbolic term.
 
     EXAMPLES::
 
@@ -430,7 +450,8 @@ def _factor_list(t):
 
 
 def _as_QQ(ex):
-    r"""Coerce a symbolic expression to ``QQ``, or return ``None``.
+    r"""
+    Coerce a symbolic expression to ``QQ``, or return ``None``.
 
     EXAMPLES::
 
@@ -447,7 +468,8 @@ def _as_QQ(ex):
 
 
 def _as_ZZ(ex):
-    r"""Coerce a symbolic expression to ``ZZ``, or return ``None``.
+    r"""
+    Coerce a symbolic expression to ``ZZ``, or return ``None``.
 
     EXAMPLES::
 
@@ -464,7 +486,8 @@ def _as_ZZ(ex):
 
 
 def _fractional_structure(f0, params):
-    r"""Detect a 'sum of unit fractions = a/n' structure in the uncleared
+    r"""
+    Detect a 'sum of unit fractions = a/n' structure in the uncleared
     input.
 
     INPUT:
@@ -551,7 +574,8 @@ def _fractional_structure(f0, params):
 
 
 def _canonicalize_exp(base, expo):
-    r"""Handle exponents like ``3*n`` by absorbing constants into the base.
+    r"""
+    Handle exponents like ``3*n`` by absorbing constants into the base.
 
     INPUT:
 
@@ -588,7 +612,8 @@ def _canonicalize_exp(base, expo):
 
 
 def _walk_terms(f, params):
-    r"""Decompose a cleared symbolic expression into :class:`Term` objects.
+    r"""
+    Decompose a cleared symbolic expression into :class:`Term` objects.
 
     Terms with identical structure are merged; terms with zero coefficient
     are dropped.
@@ -698,7 +723,8 @@ def _walk_terms(f, params):
 
 
 def _appearance_order(s, names):
-    r"""Sort ``names`` by first appearance in the string ``s``.
+    r"""
+    Sort ``names`` by first appearance in the string ``s``.
 
     Determines the ordering of the unknowns, hence of solution tuples.
 
@@ -717,7 +743,8 @@ def _appearance_order(s, names):
 
 
 def parse(equation, params=(), domain="ZZ"):
-    r"""Parse an equation string into a :class:`ParsedEquation`.
+    r"""
+    Parse an equation string into a :class:`ParsedEquation`.
 
     INPUT:
 

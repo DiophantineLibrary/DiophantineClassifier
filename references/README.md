@@ -17,6 +17,13 @@ Companion to `diophantine_classifier/data/references.bib`.
 
 - The result is written to [REPORT.md](REPORT.md), including TODO lists of
   entries missing DOIs, missing legally-free URLs, and missing local PDFs.
+- Verification status is **monotone** across machines: successes (PDF
+  verified, DOI/URL resolved) are recorded write-once in
+  [status.yaml](status.yaml), which is committed. A run on a machine
+  without a given PDF reports it as "missing locally" but never erases the
+  recorded verification; a *local* mismatch warns (your copy may be the
+  wrong file) without downgrading the ledger. Entries with a ledger
+  verification stay off the download TODO list.
 
 Policy: the `url` field in the bibliography must point to a *legally free*
 copy only — arXiv, an open journal archive (AMS Notices, Math. Comp. open

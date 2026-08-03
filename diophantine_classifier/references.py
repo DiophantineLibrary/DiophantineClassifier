@@ -1,4 +1,5 @@
-r"""Bibliography support: parse ``data/references.bib`` and format entries.
+r"""
+Bibliography support: parse ``data/references.bib`` and format entries.
 
 Families refer to references by BibTeX key (see ``data/families/<slug>.yaml``),
 each use carrying a ``why`` annotation.  This module provides the parser (a
@@ -33,11 +34,14 @@ _ACCENTS = {
 
 
 class BibError(ValueError):
-    """Raised when ``references.bib`` cannot be parsed."""
+    """
+    Raised when ``references.bib`` cannot be parsed.
+    """
 
 
 def _skip_whitespace(text, i):
-    r"""Return the first index ``>= i`` of a non-whitespace character.
+    r"""
+    Return the first index ``>= i`` of a non-whitespace character.
 
     INPUT:
 
@@ -60,7 +64,8 @@ def _skip_whitespace(text, i):
 
 
 def _read_braced(text, i):
-    r"""Read a ``{...}``-balanced group starting at index ``i``.
+    r"""
+    Read a ``{...}``-balanced group starting at index ``i``.
 
     INPUT:
 
@@ -90,7 +95,8 @@ def _read_braced(text, i):
 
 
 def _parse_fields(body):
-    r"""Parse the ``name = value`` fields of one BibTeX entry body.
+    r"""
+    Parse the ``name = value`` fields of one BibTeX entry body.
 
     INPUT:
 
@@ -136,7 +142,8 @@ def _parse_fields(body):
 
 @lru_cache(maxsize=None)
 def bibliography(path=None):
-    r"""Parse the bibliography file into a dict keyed by BibTeX key.
+    r"""
+    Parse the bibliography file into a dict keyed by BibTeX key.
 
     INPUT:
 
@@ -183,7 +190,8 @@ def bibliography(path=None):
 
 
 def _delatex(s):
-    r"""Convert the LaTeX markup used in ``references.bib`` to plain text.
+    r"""
+    Convert the LaTeX markup used in ``references.bib`` to plain text.
 
     Handles the accent commands appearing in the file (``{\"u}``, ``{\'e}``,
     ``{\H o}``, ...), strips braces, dollar signs and remaining backslashes,
@@ -211,7 +219,8 @@ def _delatex(s):
 
 
 def format_reference(key, bib=None):
-    r"""Format one bibliography entry as a single plain-text line.
+    r"""
+    Format one bibliography entry as a single plain-text line.
 
     INPUT:
 
@@ -270,7 +279,8 @@ def format_reference(key, bib=None):
 
 
 def check_key(key):
-    r"""Return ``True`` if ``key`` exists in the package bibliography.
+    r"""
+    Return ``True`` if ``key`` exists in the package bibliography.
 
     EXAMPLES::
 

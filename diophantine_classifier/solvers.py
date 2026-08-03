@@ -1,4 +1,5 @@
-r"""Solvers: dispatch a classified equation to Sage/PARI machinery.
+r"""
+Solvers: dispatch a classified equation to Sage/PARI machinery.
 
 ``solve`` handles the families where standard software gives a complete or
 canonical answer.  The result is a :class:`SolutionSet`:
@@ -48,7 +49,8 @@ MAX_EGYPTIAN_N = 10**4
 
 
 class SolverUnavailable(NotImplementedError):
-    r"""No automatic solver for this family (yet).
+    r"""
+    No automatic solver for this family (yet).
 
     The message carries the registry's software pointers and code templates.
 
@@ -65,7 +67,8 @@ class SolverUnavailable(NotImplementedError):
 
 @dataclass
 class SolutionSet:
-    r"""The result of :func:`solve`.
+    r"""
+    The result of :func:`solve`.
 
     ATTRIBUTES:
 
@@ -110,7 +113,8 @@ class SolutionSet:
     stream: object = field(default=None, repr=False, compare=False)
 
     def __iter__(self):
-        r"""Iterate over solutions (indefinitely, for infinite families).
+        r"""
+        Iterate over solutions (indefinitely, for infinite families).
 
         EXAMPLES::
 
@@ -124,7 +128,8 @@ class SolutionSet:
         return iter(self.solutions)
 
     def first(self, count):
-        r"""Return the first ``count`` solutions of the enumeration.
+        r"""
+        Return the first ``count`` solutions of the enumeration.
 
         INPUT:
 
@@ -141,7 +146,8 @@ class SolutionSet:
         return list(itertools.islice(iter(self), count))
 
     def __repr__(self):
-        r"""Multi-line summary showing the first few solutions.
+        r"""
+        Multi-line summary showing the first few solutions.
 
         EXAMPLES::
 
@@ -168,7 +174,8 @@ class SolutionSet:
 
 
 def _zz(data, key):
-    r"""Read an integer entry from a match's (stringified) data.
+    r"""
+    Read an integer entry from a match's (stringified) data.
 
     OUTPUT: a Sage integer, or ``None`` when absent or not concrete
 
@@ -187,7 +194,8 @@ def _zz(data, key):
 
 
 def _ordered(cls, assignment):
-    r"""Order an assignment dict into a tuple matching the equation's unknowns.
+    r"""
+    Order an assignment dict into a tuple matching the equation's unknowns.
 
     EXAMPLES::
 
@@ -201,7 +209,8 @@ def _ordered(cls, assignment):
 
 
 def _roles(cls):
-    r"""The role mapping recorded by the matcher, if any.
+    r"""
+    The role mapping recorded by the matcher, if any.
 
     EXAMPLES::
 
@@ -214,7 +223,8 @@ def _roles(cls):
 
 
 def _shells(dim):
-    r"""Enumerate ``ZZ^dim`` by increasing sup-norm, lexicographically within
+    r"""
+    Enumerate ``ZZ^dim`` by increasing sup-norm, lexicographically within
     each shell.
 
     INPUT:
@@ -251,7 +261,8 @@ def _shells(dim):
 # --------------------------------------------------------------------------
 
 def _solve_univariate(cls):
-    r"""Roots of a one-variable polynomial equation in the given domain.
+    r"""
+    Roots of a one-variable polynomial equation in the given domain.
 
     EXAMPLES::
 
@@ -272,7 +283,8 @@ def _solve_univariate(cls):
 
 
 def _solve_linear(cls):
-    r"""Solve a linear equation: particular solution plus solution lattice.
+    r"""
+    Solve a linear equation: particular solution plus solution lattice.
 
     Iteration enumerates the coset ``particular + lattice`` by increasing
     coefficient shells.
@@ -318,7 +330,8 @@ def _solve_linear(cls):
 
 
 def _pell_unit(D):
-    r"""Fundamental solution of ``x^2 - D*y^2 = ±1`` by continued fractions.
+    r"""
+    Fundamental solution of ``x^2 - D*y^2 = ±1`` by continued fractions.
 
     OUTPUT: triple ``(x1, y1, norm)`` with ``x1^2 - D*y1^2 = norm ∈ {1, -1}``
 
@@ -338,7 +351,8 @@ def _pell_unit(D):
 
 
 def _signed_orbit_stream(D, fund, unit, include_trivial):
-    r"""Stream all solutions of ``x^2 - D*y^2 = ±1`` from the fundamental one.
+    r"""
+    Stream all solutions of ``x^2 - D*y^2 = ±1`` from the fundamental one.
 
     INPUT:
 
@@ -372,7 +386,8 @@ def _signed_orbit_stream(D, fund, unit, include_trivial):
 
 
 def _solve_pell(cls):
-    r"""Solve ``x^2 - D*y^2 = ±1``: fundamental solution + full enumeration.
+    r"""
+    Solve ``x^2 - D*y^2 = ±1``: fundamental solution + full enumeration.
 
     ``solutions[0]`` is the fundamental solution; iteration enumerates all
     integer solutions ordered by the power of the fundamental unit, with sign
@@ -419,7 +434,8 @@ def _solve_pell(cls):
 
 
 def _solve_pell_like(cls):
-    r"""Solve ``x^2 - D*y^2 = N``: orbit representatives + full enumeration.
+    r"""
+    Solve ``x^2 - D*y^2 = N``: orbit representatives + full enumeration.
 
     PARI's ``qfbsolve`` provides representatives of the finitely many orbits
     under the automorph group; iteration walks the orbits outward by
@@ -485,7 +501,8 @@ def _solve_pell_like(cls):
 
 
 def _solve_two_squares(cls):
-    r"""All representations ``n = x^2 + y^2`` with ``0 <= x <= y``.
+    r"""
+    All representations ``n = x^2 + y^2`` with ``0 <= x <= y``.
 
     For very large ``n`` (beyond ``MAX_TWO_SQUARES``), falls back to a single
     witness from Sage's ``two_squares``.
@@ -531,7 +548,8 @@ def _solve_two_squares(cls):
 
 
 def _solve_three_squares(cls):
-    r"""All representations ``n = x^2 + y^2 + z^2`` with ``x <= y <= z``.
+    r"""
+    All representations ``n = x^2 + y^2 + z^2`` with ``x <= y <= z``.
 
     EXAMPLES::
 
@@ -577,7 +595,8 @@ def _solve_three_squares(cls):
 
 
 def _solve_four_squares(cls):
-    r"""All representations ``n = x^2 + y^2 + z^2 + w^2``, ``x <= y <= z <= w``.
+    r"""
+    All representations ``n = x^2 + y^2 + z^2 + w^2``, ``x <= y <= z <= w``.
 
     EXAMPLES::
 
@@ -618,7 +637,8 @@ def _solve_four_squares(cls):
 
 
 def _solve_bqf(cls):
-    r"""Representations by a binary quadratic form.
+    r"""
+    Representations by a binary quadratic form.
 
     Definite forms: the complete (finite) list of representations.
     Indefinite forms: a witness via ``BinaryQF.solve_integer``.
@@ -670,7 +690,8 @@ def _solve_bqf(cls):
 
 
 def _solve_qf_zero(cls, gram=None):
-    r"""Nontrivial zero of a quadratic form, or the local obstruction.
+    r"""
+    Nontrivial zero of a quadratic form, or the local obstruction.
 
     EXAMPLES::
 
@@ -707,7 +728,8 @@ def _solve_qf_zero(cls, gram=None):
 
 
 def _solve_legendre(cls):
-    r"""Legendre equation ``a x^2 + b y^2 + c z^2 = 0`` via ``qfsolve``.
+    r"""
+    Legendre equation ``a x^2 + b y^2 + c z^2 = 0`` via ``qfsolve``.
 
     EXAMPLES::
 
@@ -723,7 +745,8 @@ def _solve_legendre(cls):
 
 
 def _solve_pythagorean(cls):
-    r"""Pythagorean triples: Euclid's parametrization as a stream.
+    r"""
+    Pythagorean triples: Euclid's parametrization as a stream.
 
     Iteration yields the primitive triples ``(m^2 - n^2, 2mn, m^2 + n^2)``
     for ``m > n >= 1`` coprime of opposite parity, ordered by ``m``; the full
@@ -762,7 +785,8 @@ def _solve_pythagorean(cls):
 
 
 def _solve_weierstrass(cls):
-    r"""Integral points on a Weierstrass model via ``E.integral_points``.
+    r"""
+    Integral points on a Weierstrass model via ``E.integral_points``.
 
     EXAMPLES::
 
@@ -786,7 +810,8 @@ def _solve_weierstrass(cls):
 
 
 def _solve_thue(cls):
-    r"""Thue equation via PARI's certified ``thue`` solver.
+    r"""
+    Thue equation via PARI's certified ``thue`` solver.
 
     EXAMPLES::
 
@@ -813,7 +838,8 @@ def _solve_thue(cls):
 
 
 def _solve_markov(cls):
-    r"""Markov/Hurwitz equations: enumerate the Vieta tree.
+    r"""
+    Markov/Hurwitz equations: enumerate the Vieta tree.
 
     Iteration yields ascending-ordered positive tuples, ordered by largest
     entry; every solution is a permutation (with sign changes when the number
@@ -871,7 +897,8 @@ def _solve_markov(cls):
 
 
 def _solve_egyptian(cls):
-    r"""Unit fraction equations ``1/x_1 + ... + 1/x_k = a/n``, concrete case.
+    r"""
+    Unit fraction equations ``1/x_1 + ... + 1/x_k = a/n``, concrete case.
 
     Enumerates all solutions in positive integers with
     ``x_1 <= x_2 <= ... <= x_k`` by branch-and-bound.
@@ -921,7 +948,8 @@ def _solve_egyptian(cls):
 
 
 def _solve_catalan(cls):
-    r"""Catalan's equation: Mihailescu's theorem.
+    r"""
+    Catalan's equation: Mihailescu's theorem.
 
     EXAMPLES::
 
@@ -938,7 +966,8 @@ def _solve_catalan(cls):
 
 
 def _solve_fermat(cls):
-    r"""Fermat's equation: no nontrivial solutions (Wiles).
+    r"""
+    Fermat's equation: no nontrivial solutions (Wiles).
 
     EXAMPLES::
 
@@ -954,7 +983,8 @@ def _solve_fermat(cls):
 
 
 def _solve_ramanujan_nagell(cls):
-    r"""The classical Ramanujan-Nagell equation ``x^2 + 7 = 2^n``.
+    r"""
+    The classical Ramanujan-Nagell equation ``x^2 + 7 = 2^n``.
 
     EXAMPLES::
 
@@ -1002,7 +1032,8 @@ SOLVERS = {
 
 
 def solve(equation, params=(), domain="ZZ"):
-    r"""Solve (or partially solve) an equation via its classification.
+    r"""
+    Solve (or partially solve) an equation via its classification.
 
     INPUT:
 

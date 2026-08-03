@@ -1,4 +1,5 @@
-r"""Classification pipeline: parse, split reducible equations, run matchers,
+r"""
+Classification pipeline: parse, split reducible equations, run matchers,
 rank by specificity in the family DAG, and package the result.
 
 EXAMPLES::
@@ -23,7 +24,8 @@ from .registry import ancestors, depth, families
 
 
 def _jsonify(x):
-    r"""Recursively convert match data to plain JSON-serializable types.
+    r"""
+    Recursively convert match data to plain JSON-serializable types.
 
     Sage integers become Python ints; anything else non-primitive becomes a
     string.  Keeps :meth:`Classification.as_dict` honest as the website
@@ -51,7 +53,8 @@ def _jsonify(x):
 
 @dataclass
 class Classification:
-    r"""The result of :func:`classify`.
+    r"""
+    The result of :func:`classify`.
 
     ATTRIBUTES:
 
@@ -89,7 +92,8 @@ class Classification:
 
     @property
     def is_composite(self):
-        r"""Whether the equation split into factor components.
+        r"""
+        Whether the equation split into factor components.
 
         EXAMPLES::
 
@@ -103,7 +107,8 @@ class Classification:
 
     @property
     def primary(self):
-        r"""The most specific match, or ``None`` for composite equations.
+        r"""
+        The most specific match, or ``None`` for composite equations.
 
         EXAMPLES::
 
@@ -115,7 +120,8 @@ class Classification:
 
     @property
     def slug(self):
-        r"""The primary family's slug (``"reducible"`` for composites).
+        r"""
+        The primary family's slug (``"reducible"`` for composites).
 
         EXAMPLES::
 
@@ -129,7 +135,8 @@ class Classification:
 
     @property
     def family(self):
-        r"""The primary :class:`~diophantine_classifier.registry.Family`.
+        r"""
+        The primary :class:`~diophantine_classifier.registry.Family`.
 
         ``None`` for composite equations.
 
@@ -143,7 +150,8 @@ class Classification:
 
     @property
     def lineage(self):
-        r"""Ancestors of the primary family, most specific first.
+        r"""
+        Ancestors of the primary family, most specific first.
 
         EXAMPLES::
 
@@ -157,7 +165,8 @@ class Classification:
 
     @property
     def data(self):
-        r"""The primary match's extracted data.
+        r"""
+        The primary match's extracted data.
 
         EXAMPLES::
 
@@ -168,7 +177,8 @@ class Classification:
         return self.primary.data if self.primary else {}
 
     def code(self):
-        r"""Filled code templates for the primary family and its ancestors.
+        r"""
+        Filled code templates for the primary family and its ancestors.
 
         OUTPUT: dict mapping ``"<system> (<slug>)"`` to a code string
 
@@ -188,7 +198,8 @@ class Classification:
         return out
 
     def as_dict(self):
-        r"""JSON-serializable summary — the website-backend contract.
+        r"""
+        JSON-serializable summary — the website-backend contract.
 
         OUTPUT: dict with plain types only (tested); keys include
         ``equation``, ``family``, ``status``, ``data``, ``lineage``,
@@ -245,7 +256,8 @@ class Classification:
     # ------------------------------------------------------------- display
 
     def explain(self):
-        r"""Multi-line human-readable report (equation-homepage prototype).
+        r"""
+        Multi-line human-readable report (equation-homepage prototype).
 
         OUTPUT: string
 
@@ -315,7 +327,8 @@ class Classification:
         return "\n".join(lines)
 
     def __repr__(self):
-        r"""Terse representation.
+        r"""
+        Terse representation.
 
         EXAMPLES::
 
@@ -331,7 +344,8 @@ class Classification:
 
 
 def _rank(match_list):
-    r"""Sort matches by decreasing DAG depth, ties by emission order.
+    r"""
+    Sort matches by decreasing DAG depth, ties by emission order.
 
     EXAMPLES::
 
@@ -347,7 +361,8 @@ def _rank(match_list):
 
 
 def classify(equation, params=(), domain="ZZ"):
-    r"""Classify a Diophantine equation into the most specific known family.
+    r"""
+    Classify a Diophantine equation into the most specific known family.
 
     INPUT:
 

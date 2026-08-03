@@ -1,4 +1,5 @@
-r"""Command-line interface: ``dioclassify 'x^2 - 61*y^2 = 1' [--solve]``.
+r"""
+Command-line interface: ``dioclassify 'x^2 - 61*y^2 = 1' [--solve]``.
 
 Must run under Sage's Python (``sage -python -m diophantine_classifier.cli
 ...`` or the ``dioclassify`` entry point after ``sage -pip install -e .``).
@@ -19,7 +20,8 @@ import sys
 
 
 def build_parser():
-    r"""Build the argument parser (separated out for testing).
+    r"""
+    Build the argument parser (separated out for testing).
 
     OUTPUT: an :class:`argparse.ArgumentParser`
 
@@ -48,7 +50,8 @@ def build_parser():
 
 
 def main(argv=None):
-    r"""Entry point: classify (and optionally solve) one equation.
+    r"""
+    Entry point: classify (and optionally solve) one equation.
 
     INPUT:
 

@@ -1,4 +1,5 @@
-r"""Structural matchers: recognize which families a parsed equation belongs to.
+r"""
+Structural matchers: recognize which families a parsed equation belongs to.
 
 Each matcher inspects a :class:`~diophantine_classifier.parsing.ParsedEquation`
 and emits :class:`Match` objects (family slug + extracted data).  :func:`run`
@@ -28,7 +29,8 @@ MAX_GENUS_DEGREE = 20
 
 @dataclass
 class Match:
-    r"""One structural match: a family together with extracted data.
+    r"""
+    One structural match: a family together with extracted data.
 
     ATTRIBUTES:
 
@@ -57,7 +59,8 @@ class Match:
     transform: str = ""
 
     def __repr__(self):
-        r"""Terse representation.
+        r"""
+        Terse representation.
 
         EXAMPLES::
 
@@ -69,7 +72,8 @@ class Match:
 
 
 def _sign_of(c):
-    r"""Return -1/0/+1 for constant coefficients, ``None`` if parametric.
+    r"""
+    Return -1/0/+1 for constant coefficients, ``None`` if parametric.
 
     INPUT:
 
@@ -93,7 +97,8 @@ def _sign_of(c):
 
 
 def _as_int(c):
-    r"""Coerce a coefficient to a Sage integer, or return ``None``.
+    r"""
+    Coerce a coefficient to a Sage integer, or return ``None``.
 
     EXAMPLES::
 
@@ -111,7 +116,8 @@ def _as_int(c):
 
 
 def _homogeneous_parts(P):
-    r"""Decompose a polynomial into its homogeneous components.
+    r"""
+    Decompose a polynomial into its homogeneous components.
 
     INPUT:
 
@@ -137,7 +143,8 @@ def _homogeneous_parts(P):
 
 
 def _diagonal_scan(P, R):
-    r"""Detect a diagonal shape: every nonconstant monomial a pure power.
+    r"""
+    Detect a diagonal shape: every nonconstant monomial a pure power.
 
     INPUT:
 
@@ -182,7 +189,8 @@ def _diagonal_scan(P, R):
 
 
 def _gram(P, R):
-    r"""Gram matrix of a quadratic form, as a list of lists of rationals.
+    r"""
+    Gram matrix of a quadratic form, as a list of lists of rationals.
 
     EXAMPLES::
 
@@ -203,7 +211,8 @@ def _gram(P, R):
 
 
 def _plane_curve_genus(P):
-    r"""Geometric genus of the plane curve ``P = 0``, or ``None``.
+    r"""
+    Geometric genus of the plane curve ``P = 0``, or ``None``.
 
     Returns ``None`` for degrees above :data:`MAX_GENUS_DEGREE` or when the
     curve construction fails (reducible input, etc.).
@@ -226,7 +235,8 @@ def _plane_curve_genus(P):
 
 
 def _is_irreducible(P):
-    r"""Whether ``P`` is irreducible (up to constants), or ``None`` on failure.
+    r"""
+    Whether ``P`` is irreducible (up to constants), or ``None`` on failure.
 
     EXAMPLES::
 
@@ -250,7 +260,8 @@ def _is_irreducible(P):
 # --------------------------------------------------------------------------
 
 def _match_polynomial(pe):
-    r"""Matches for a purely polynomial equation.
+    r"""
+    Matches for a purely polynomial equation.
 
     Always emits ``general-polynomial`` with basic invariants, then
     dispatches on the number of unknowns.
@@ -301,7 +312,8 @@ def _match_polynomial(pe):
 
 
 def _match_binary(pe, P, R, d):
-    r"""Matches for polynomial equations in two unknowns.
+    r"""
+    Matches for polynomial equations in two unknowns.
 
     Degree 2 goes through the binary-quadratic battery (Pell, sums of two
     squares, representation by a form); degree ≥ 3 through binary forms
@@ -467,7 +479,8 @@ def _match_binary(pe, P, R, d):
 
 
 def _match_two_var_shapes(pe, P, R, d):
-    r"""Weierstrass / quartic / hyperelliptic / superelliptic shapes.
+    r"""
+    Weierstrass / quartic / hyperelliptic / superelliptic shapes.
 
     Two passes over both variable orderings: the quadratic-in-``v`` shapes
     (Weierstrass, quartic, hyperelliptic) are tried for *both* orientations
@@ -589,7 +602,8 @@ def _match_two_var_shapes(pe, P, R, d):
 
 
 def _genus_route(pe, P, affine=True):
-    r"""Route an irreducible plane curve by genus.
+    r"""
+    Route an irreducible plane curve by genus.
 
     Mirrors the Library's classification plan: genus 0 → parametrize,
     genus 1 → find a point then reduce to Weierstrass form, genus ≥ 2 →
@@ -630,7 +644,8 @@ def _genus_route(pe, P, affine=True):
 
 
 def _match_multivar(pe, P, R, k, d):
-    r"""Matches for polynomial equations in three or more unknowns.
+    r"""
+    Matches for polynomial equations in three or more unknowns.
 
     Handles quadratic forms (isotropy, representation, affine quadrics),
     Markov–Hurwitz shapes, diagonal equations (generalized Fermat, sums of
@@ -872,7 +887,8 @@ def _match_multivar(pe, P, R, k, d):
 # --------------------------------------------------------------------------
 
 def _match_exponential(pe):
-    r"""Matches for equations with exponential content.
+    r"""
+    Matches for equations with exponential content.
 
     Dispatches on the composition of the terms: purely exponential (Pillai,
     S-unit), variable powers (Catalan, symbolic Fermat, Lebesgue–Nagell,
@@ -1115,7 +1131,8 @@ def _match_exponential(pe):
 # --------------------------------------------------------------------------
 
 def _match_fractional(pe):
-    r"""Matches from the unit-fraction structure of the *uncleared* input.
+    r"""
+    Matches from the unit-fraction structure of the *uncleared* input.
 
     EXAMPLES::
 
@@ -1149,7 +1166,8 @@ def _match_fractional(pe):
 
 
 def run(pe):
-    r"""Collect matches from all applicable matchers, deduplicated by slug.
+    r"""
+    Collect matches from all applicable matchers, deduplicated by slug.
 
     INPUT:
 

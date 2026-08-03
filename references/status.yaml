@@ -1,0 +1,4 @@
+# Verification ledger: successes recorded by tools/check_references.py.
+# Monotone by design: entries are write-once and never downgraded by a run
+# on a machine without the file. Commit this file.
+{}

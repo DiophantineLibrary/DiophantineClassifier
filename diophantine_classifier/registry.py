@@ -1,4 +1,5 @@
-r"""Family registry: load ``data/families/*.yaml`` and expose the DAG.
+r"""
+Family registry: load ``data/families/*.yaml`` and expose the DAG.
 
 Each family lives in its own YAML file named ``<slug>.yaml`` (one file per
 family keeps merge conflicts local when contributors add families).  The
@@ -37,7 +38,8 @@ STATUSES = ("solved", "algorithmic", "effective", "ineffective", "partial",
 
 @dataclass(frozen=True)
 class Family:
-    r"""One family of Diophantine equations, as recorded in the registry.
+    r"""
+    One family of Diophantine equations, as recorded in the registry.
 
     Instances are loaded from ``data/families/<slug>.yaml`` and are immutable.
 
@@ -113,7 +115,8 @@ class Family:
     finiteness: str = ""
 
     def __repr__(self):
-        r"""Terse representation.
+        r"""
+        Terse representation.
 
         EXAMPLES::
 
@@ -124,7 +127,8 @@ class Family:
         return f"Family({self.slug!r})"
 
     def fill_code(self, data):
-        r"""Return code templates with ``{placeholders}`` filled from ``data``.
+        r"""
+        Return code templates with ``{placeholders}`` filled from ``data``.
 
         Templates whose placeholders are not all available are returned with
         the placeholders left intact (still useful as a recipe).
@@ -152,7 +156,8 @@ class Family:
         return out
 
     def formatted_references(self):
-        r"""Return references as triples ``(key, why, formatted)``.
+        r"""
+        Return references as triples ``(key, why, formatted)``.
 
         OUTPUT: list of 3-tuples of strings; ``formatted`` is the plain-text
         rendering of the BibTeX entry
@@ -177,7 +182,8 @@ class Family:
 
 
 def _tuple(x):
-    r"""Coerce a YAML scalar-or-list field to a tuple.
+    r"""
+    Coerce a YAML scalar-or-list field to a tuple.
 
     EXAMPLES::
 
@@ -194,7 +200,8 @@ def _tuple(x):
 
 @lru_cache(maxsize=None)
 def families():
-    r"""Return the registry as a dict slug -> :class:`Family`.
+    r"""
+    Return the registry as a dict slug -> :class:`Family`.
 
     Families are loaded from ``data/families/*.yaml`` in alphabetical order;
     a file whose ``slug`` field does not match its filename is an error.
@@ -248,7 +255,8 @@ def families():
 
 
 def family(slug):
-    r"""Return the :class:`Family` with the given slug.
+    r"""
+    Return the :class:`Family` with the given slug.
 
     INPUT:
 
@@ -269,7 +277,8 @@ def family(slug):
 
 @lru_cache(maxsize=None)
 def depth(slug):
-    r"""Length of the longest specialization chain from a root to ``slug``.
+    r"""
+    Length of the longest specialization chain from a root to ``slug``.
 
     Used as the specificity score when ranking matches: an equation matching
     several families is filed under the deepest one.
@@ -295,7 +304,8 @@ def depth(slug):
 
 
 def ancestors(slug):
-    r"""All strict ancestors of ``slug`` in the DAG, most specific first.
+    r"""
+    All strict ancestors of ``slug`` in the DAG, most specific first.
 
     INPUT:
 
@@ -322,7 +332,8 @@ def ancestors(slug):
 
 
 def validate():
-    r"""Sanity-check the registry; raises on inconsistency.
+    r"""
+    Sanity-check the registry; raises on inconsistency.
 
     Checks: parents exist, priorities and statuses come from the fixed
     vocabularies, the DAG is acyclic, and every reference key resolves in
