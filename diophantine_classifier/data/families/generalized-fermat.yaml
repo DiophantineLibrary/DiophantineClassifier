@@ -1,0 +1,30 @@
+# Family: Generalized Fermat equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: generalized-fermat
+name: Generalized Fermat equation
+priority: 1
+status: partial
+class: fermat
+form: a*x^p + b*y^q = c*z^r, gcd(x,y,z) = 1
+parents:
+- general-polynomial
+matcher: true
+methods:
+- spherical parametrizations (chi > 1)
+- elliptic curves (chi = 1)
+- modular method + Darmon-Granville (chi < 1)
+notes: |
+  chi = 1/p + 1/q + 1/r. Beal/Fermat-Catalan conjectures live here; ten known sporadic primitive solutions with all exponents >= 2.
+examples:
+- x^2 + y^4 = z^3
+- x^p + y^q = z^r
+references:
+- key: DarmonGranville1995
+  why: finiteness of primitive solutions for each hyperbolic signature
+- key: Beukers1998
+  why: complete parametrizations in the spherical case
+- key: BennettChenDahmenYazdani2015
+  why: survey of solved signatures and methods
+- key: PoonenSchaeferStoll2007
+  why: the resolution of the hardest small signature, (2, 3, 7)

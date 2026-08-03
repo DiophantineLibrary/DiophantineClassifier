@@ -1,0 +1,29 @@
+# Family: Genus-one quartic
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: elliptic-quartic
+name: Genus-one quartic
+priority: 1
+status: algorithmic
+class: genus1
+form: y^2 = q(x), deg q = 4
+parents:
+- genus-one-curve
+matcher: true
+methods:
+- 2-covering to Jacobian
+- invariant theory (I
+- J)
+- elliptic logs
+software:
+  magma: IntegralQuarticPoints([a4,...,a0])
+  sage: Jacobian of genus-one models
+code:
+  magma: IntegralQuarticPoints({qcoeffs});
+examples:
+- y^2 = x^4 + 3*x + 1
+references:
+- key: Tzanakis2013
+  why: solving quartic elliptic equations via elliptic logarithms
+- key: CremonaStoll2002
+  why: minimization and reduction of 2-covering quartic models

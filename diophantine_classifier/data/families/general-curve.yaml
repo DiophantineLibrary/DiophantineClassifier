@@ -1,0 +1,27 @@
+# Family: Points on a general curve
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: general-curve
+name: Points on a general curve
+priority: 1
+status: ineffective
+class: curve
+form: C(x, y) = 0 irreducible, genus g >= 2
+parents:
+- general-polynomial
+matcher: true
+methods:
+- Chabauty-Coleman
+- Mordell-Weil sieve
+- quadratic Chabauty; Faltings for finiteness
+software:
+  magma: Chabauty; MordellWeilSieve; PointSearch
+  sage: Curve(...).genus(); rational_points(bound)
+  pari: hyperellratpoints
+references:
+- key: BombieriGubler2006
+  why: background on heights, the central tool behind point-finding and finiteness on curves
+- key: Faltings1983
+  why: finiteness of rational points in genus >= 2
+- key: Stoll2011
+  why: 'survey of the practical toolkit: descent, Chabauty, Mordell-Weil sieve'

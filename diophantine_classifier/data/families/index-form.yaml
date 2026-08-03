@@ -1,0 +1,19 @@
+# Family: Index form equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: index-form
+name: Index form equation
+priority: 3
+status: partial
+class: normform
+form: I(x_2,...,x_k) = m
+parents:
+- decomposable-form
+matcher: false
+methods:
+- Gaal's algorithms (degrees 3-8)
+references:
+- key: Gyory1976
+  why: effective finiteness for index form equations
+- key: Gaal2019
+  why: algorithms by degree, with implementations

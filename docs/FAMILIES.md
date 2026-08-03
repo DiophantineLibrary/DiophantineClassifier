@@ -2,8 +2,12 @@
 
 A prioritized enumeration of families for the Diophantine Library, and the source of
 truth behind the machine-readable registry
-([`diophantine_classifier/data/families.yaml`](../diophantine_classifier/data/families.yaml))
-that drives the classifier.
+([`diophantine_classifier/data/families/`](../diophantine_classifier/data/families),
+one YAML file per family) that drives the classifier. References given as
+short strings here appear with full bibliographic data — and per-family
+annotations of *why* each reference matters — in
+[`references.bib`](../diophantine_classifier/data/references.bib) and the
+per-family files.
 
 **What counts as a family.** A parametrized collection of equations that is treated
 uniformly in the literature: it has a standard form, a body of theory describing its

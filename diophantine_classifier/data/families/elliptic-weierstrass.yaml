@@ -1,0 +1,36 @@
+# Family: Elliptic curve in Weierstrass form
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: elliptic-weierstrass
+name: Elliptic curve in Weierstrass form
+priority: 1
+status: algorithmic
+class: genus1
+form: y^2 + a1*x*y + a3*y = x^3 + a2*x^2 + a4*x + a6
+parents:
+- genus-one-curve
+matcher: true
+lmfdb: ec.q
+methods:
+- Mordell-Weil descent
+- elliptic logarithms for integral points
+software:
+  sage: EllipticCurve(...).gens(); .integral_points(); .S_integral_points()
+  pari: ellrank, ellratpoints
+  magma: MordellWeilShaInformation; IntegralPoints
+code:
+  sage: |
+    E = EllipticCurve({ainvs})
+    E.gens(); E.integral_points(both_signs=True)
+  magma: |
+    E := EllipticCurve({magma_ainvs});
+    IntegralPoints(E);
+examples:
+- y^2 + y = x^3 - x^2 - 10*x - 20
+references:
+- key: Cremona1997
+  why: descent algorithms (mwrank) for the Mordell-Weil group
+- key: StroekerTzanakis1994
+  why: the elliptic-logarithm method for integral points
+- key: GebelPethoZimmer1994
+  why: independent introduction of the elliptic-logarithm method

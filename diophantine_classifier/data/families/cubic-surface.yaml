@@ -1,0 +1,20 @@
+# Family: Cubic surfaces / del Pezzo
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: cubic-surface
+name: Cubic surfaces / del Pezzo
+priority: 3
+status: open
+class: surface
+form: F(x, y, z, w) = 0 cubic
+parents:
+- general-polynomial
+matcher: false
+methods:
+- Brauer-Manin obstructions
+- unirationality
+references:
+- key: ColliotTheleneKanevskySansuc1987
+  why: Brauer-Manin obstruction analysis for diagonal cubic surfaces
+- key: Poonen2017
+  why: background on rational points, obstructions, and conjectures

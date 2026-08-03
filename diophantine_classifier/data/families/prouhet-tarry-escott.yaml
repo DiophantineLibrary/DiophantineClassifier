@@ -1,0 +1,15 @@
+# Family: Prouhet-Tarry-Escott problem
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: prouhet-tarry-escott
+name: Prouhet-Tarry-Escott problem
+priority: 3
+status: open
+class: surface
+form: sum x_i^j = sum y_i^j for j = 1..k
+parents:
+- equal-sums-like-powers
+matcher: false
+references:
+- key: BorweinIngalls1994
+  why: survey of ideal solutions and open problems

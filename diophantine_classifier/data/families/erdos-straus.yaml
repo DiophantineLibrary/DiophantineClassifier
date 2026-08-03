@@ -1,0 +1,21 @@
+# Family: Erdos-Straus equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: erdos-straus
+name: Erdos-Straus equation
+priority: 1
+status: open
+class: special
+form: 4/n = 1/x + 1/y + 1/z
+parents:
+- egyptian-fractions
+matcher: true
+notes: Conjectured solvable for all n >= 2; verified to 10^17; Sierpinski's 5/n
+  analogue open.
+examples:
+- 4/n = 1/x + 1/y + 1/z
+references:
+- key: ElsholtzTao2013
+  why: counting and average results for 4/n = 1/x + 1/y + 1/z
+- key: Salez2014
+  why: verification up to 10^17

@@ -1,0 +1,25 @@
+# Family: Generalized Pell equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: pell-like
+name: Generalized Pell equation
+priority: 1
+status: algorithmic
+class: quadratic
+form: x^2 - D*y^2 = N
+parents:
+- binary-qf-representation
+matcher: true
+methods:
+- continued fractions
+- automorph orbits
+software:
+  pari: qfbsolve(Qfb(1,0,-D), N, 1)
+  sage: solve_diophantine
+code:
+  pari: qfbsolve(Qfb(1, 0, -{D}), {N}, 1)
+examples:
+- x^2 - 61*y^2 = 5
+references:
+- key: Matthews2000
+  why: exposition of the LMM continued-fraction algorithm for x^2 - Dy^2 = N

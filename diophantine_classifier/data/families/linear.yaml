@@ -1,0 +1,30 @@
+# Family: Linear Diophantine equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: linear
+name: Linear Diophantine equation
+priority: 1
+status: solved
+class: linear
+form: a_1*x_1 + ... + a_k*x_k = b
+parents:
+- general-polynomial
+matcher: true
+methods:
+- extended Euclid
+- Hermite normal form
+software:
+  sage: xgcd; matrix(ZZ, A).hermite_form(); solve_diophantine
+  pari: matsolvemod
+code:
+  sage: |
+    # particular solution + lattice of homogeneous solutions
+    A = matrix(ZZ, [{coeffs}])
+    H, U = A.transpose().hermite_form(transformation=True)
+    # solvable iff gcd divides {b}; see DiophantineClassifier solvers.linear
+examples:
+- 3*x + 5*y = 1
+references:
+- key: NivenZuckermanMontgomery1991
+  why: textbook treatment of the extended-Euclid solution of linear Diophantine
+    equations

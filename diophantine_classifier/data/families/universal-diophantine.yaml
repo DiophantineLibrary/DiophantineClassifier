@@ -1,0 +1,23 @@
+# Family: Hilbert's tenth problem exhibits
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: universal-diophantine
+name: Hilbert's tenth problem exhibits
+priority: 3
+status: undecidable
+class: boundary
+form: universal/undecidable polynomial families
+parents:
+- general-polynomial
+matcher: false
+notes: |
+  Undecidability calibration: 9 unknowns over N (Matiyasevich-Jones), 11 over Z (Sun 2021), degree 4 suffices; over Q open; over rings of integers resolved 2024-25 (Koymans-Pagano; Alpoge-Bhargava-Ho-Shnidman).
+references:
+- key: Jones1982
+  why: explicit universal equations; unknowns/degree tradeoffs for undecidability
+- key: Sun2021
+  why: 'current record: 11 unknowns over ZZ suffice for undecidability'
+- key: KoymansPagano2024
+  why: resolution of Hilbert's tenth problem over rings of integers of number fields
+- key: Poonen2008
+  why: survey of the decidability landscape, including the open case over QQ

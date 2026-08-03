@@ -1,0 +1,21 @@
+# Family: S-unit equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: s-unit
+name: S-unit equation
+priority: 2
+status: algorithmic
+class: expdioph
+form: a*u + b*v = c, u, v S-units
+parents:
+- exponential-diophantine
+matcher: true
+methods:
+- Baker + LLL (de Weger)
+software:
+  sage: K.solve_S_unit_equation(S) (number fields)
+references:
+- key: deWeger1987
+  why: the practical LLL-based algorithm
+- key: Alvarado2021
+  why: the Sage implementation for arbitrary number fields

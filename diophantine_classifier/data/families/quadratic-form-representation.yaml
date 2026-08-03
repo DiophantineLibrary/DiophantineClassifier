@@ -1,0 +1,25 @@
+# Family: Representation by a quadratic form (k >= 3)
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: quadratic-form-representation
+name: Representation by a quadratic form (k >= 3)
+priority: 1
+status: algorithmic
+class: quadratic
+form: Q(x_1,...,x_k) = n
+parents:
+- quadric
+matcher: true
+methods:
+- spinor genus
+- reduction to isotropy in k+1 variables
+software:
+  sage: QuadraticForm; qfsolve on Q + <-n>
+  pari: qfminim, qfsolve
+references:
+- key: Bhargava2000
+  why: the 15-theorem for universal positive forms
+- key: BhargavaHanke2005
+  why: 'the 290-theorem: representation of all positive integers'
+- key: Cassels1978
+  why: spinor genus theory governing representation in three variables

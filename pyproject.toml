@@ -24,7 +24,8 @@ dioclassify = "diophantine_classifier.cli:main"
 packages = ["diophantine_classifier"]
 
 [tool.setuptools.package-data]
-diophantine_classifier = ["data/*.yaml"]
+diophantine_classifier = ["data/references.bib", "data/families/*.yaml",
+                          "data/families/README.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

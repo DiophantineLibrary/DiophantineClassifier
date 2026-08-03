@@ -1,0 +1,18 @@
+# Family: Figurate = perfect power equations
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: cannonball
+name: Figurate = perfect power equations
+priority: 3
+status: solved
+class: special
+form: e.g. 1^2 + ... + x^2 = y^2
+parents:
+- elliptic-weierstrass
+matcher: false
+notes: 'Cannonball problem: x = 1, 24 only (Watson 1918).'
+references:
+- key: Watson1918
+  why: the complete solution of the square-pyramid problem
+- key: Anglin1990
+  why: a modern elementary proof

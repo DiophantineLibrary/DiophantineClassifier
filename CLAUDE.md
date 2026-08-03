@@ -5,7 +5,10 @@ Classification engine for the Diophantine Library
 
 ## Commands
 
-- Tests: `sage -python -m pytest tests -q` (or `make test`)
+- Unit tests: `sage -python -m pytest tests -q` (or `make test`)
+- Doctests: `make doctest` (= `PYTHONPATH=. sage -t diophantine_classifier/`)
+- Docstring coverage: `make coverage` (must stay 100%)
+- References pipeline: `make references` (regenerates references/REPORT.md)
 - Smoke: `make smoke`
 - CLI: `sage -python -m diophantine_classifier.cli "x^2 - 61*y^2 = 1" --solve`
 
@@ -14,31 +17,44 @@ Classification engine for the Diophantine Library
 - `parsing.py` — string → `ParsedEquation` (term model: polynomial + `2^n` +
   `y^q` terms; params live in the coefficient ring; denominator clearing is
   recorded in `conditions`).
-- `data/families.yaml` — the family registry (slugs, DAG `parents`, priority,
-  status, software, code templates). `registry.py` loads it.
+- `data/families/<slug>.yaml` — one registry file per family (slug ==
+  filename; DAG `parents`, priority, status, software, code templates,
+  annotated references). `registry.py` loads the directory.
+- `data/references.bib` — bibliography; `references.py` parses/formats it;
+  `tools/check_references.py` validates it (and local PDFs in
+  `references/pdf/<key>.pdf`).
 - `matchers.py` — shape recognizers emitting `Match(slug, data)`.
 - `classify.py` — factor-split, run matchers, rank by DAG depth (most
   specific family wins), `explain()` / `as_dict()`.
-- `solvers.py` — per-family solvers (Sage/PARI); `SolverUnavailable` carries
-  code templates for the rest.
+- `solvers.py` — per-family solvers (Sage/PARI); `SolutionSet` is iterable
+  (streams for infinite families); `SolverUnavailable` carries code
+  templates for the rest.
 - `docs/FAMILIES.md` — the human-readable, referenced enumeration.
 
 ## Invariants (tests enforce most of these)
 
-- Every slug emitted by `matchers.py` exists in the YAML with `matcher: true`.
-- YAML `parents` form a DAG; priorities in {1,2,3}; statuses from the fixed
-  vocabulary (`registry.STATUSES`).
-- `docs/FAMILIES.md` and `families.yaml` describe the same families — update
-  both when adding one.
+- Every function (private helpers included) has a Sage-convention docstring
+  with INPUT/OUTPUT (where nontrivial) and EXAMPLES that pass `sage -t`;
+  doctests import what they need explicitly.
+- Every slug emitted by `matchers.py` exists in the registry with
+  `matcher: true`.
+- Registry `parents` form a DAG; priorities in {1,2,3}; statuses from
+  `registry.STATUSES`; every reference key resolves in `references.bib` with
+  a nonempty `why`; every family cites at least one reference.
+- `docs/FAMILIES.md` and the per-family YAML describe the same families —
+  update both when adding one.
 - `as_dict()` must stay JSON-serializable (website backend contract).
-- Adding a family = YAML entry + FAMILIES.md entry + matcher (+ solver if
-  standard software is definitive) + corpus row in `tests/test_classify.py`.
+- Adding a family = `data/families/<slug>.yaml` + FAMILIES.md entry + bib
+  entries + matcher (+ solver if standard software is definitive) + corpus
+  row in `tests/test_classify.py`.
 
 ## Conventions
 
 - Solutions/tuples are ordered by the unknowns' order of appearance in the
-  input equation.
+  input equation; infinite families expose their enumeration via
+  `iter(solution_set)` / `.first(n)`.
 - Matchers never mutate the parsed equation; normalizations are described in
   `Match.transform`.
+- Bibliography `url` fields must point to legally free copies only.
 - No web dependencies; no Magma requirement (templates only).
 - Do not push or open PRs without being asked.

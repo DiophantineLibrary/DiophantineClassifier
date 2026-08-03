@@ -1,0 +1,18 @@
+# Family: Nagell-Ljunggren equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: nagell-ljunggren
+name: Nagell-Ljunggren equation
+priority: 2
+status: open
+class: expdioph
+form: (x^n - 1)/(x - 1) = y^q
+parents:
+- exponential-diophantine
+matcher: false
+notes: 'Known: (3,5,11,2), (7,4,20,2), (18,3,7,3); conjecturally all.'
+references:
+- key: Ljunggren1943
+  why: the classical partial results
+- key: BugeaudMignotte2002
+  why: survey of the state of the art

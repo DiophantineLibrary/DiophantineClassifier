@@ -1,0 +1,16 @@
+# Family: Goormaghtigh equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: goormaghtigh
+name: Goormaghtigh equation
+priority: 3
+status: open
+class: expdioph
+form: (x^m - 1)/(x - 1) = (y^n - 1)/(y - 1)
+parents:
+- exponential-diophantine
+matcher: false
+notes: 'Known: 31 and 8191; finite effective for fixed bases (Balasubramanian-Shorey).'
+references:
+- key: BalasubramanianShorey1980
+  why: effective finiteness for fixed bases

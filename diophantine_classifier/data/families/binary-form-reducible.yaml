@@ -1,0 +1,19 @@
+# Family: Reducible binary form equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: binary-form-reducible
+name: Reducible binary form equation
+priority: 1
+status: solved
+class: curve
+form: F(x, y) = m, F reducible over QQ
+parents:
+- binary-form
+matcher: true
+methods:
+- factor and enumerate divisors of m
+examples:
+- x^3 + y^3 = 1729
+references:
+- key: Cohen2007
+  why: elementary divisor-enumeration methods

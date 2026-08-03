@@ -1,0 +1,22 @@
+# Family: Sum of three squares
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: sum-of-three-squares
+name: Sum of three squares
+priority: 1
+status: solved
+class: quadratic
+form: x^2 + y^2 + z^2 = n
+parents:
+- quadratic-form-representation
+matcher: true
+methods:
+- Legendre-Gauss criterion (n != 4^a(8b+7))
+- Rabin-Shallit
+software:
+  sage: three_squares(n)
+code:
+  sage: three_squares({n})
+references:
+- key: RabinShallit1986
+  why: randomized polynomial-time three-squares algorithm

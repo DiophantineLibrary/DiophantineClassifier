@@ -1,0 +1,21 @@
+# Family: Congruent number problem
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: congruent-number
+name: Congruent number problem
+priority: 2
+status: partial
+class: quadratic
+form: x^2 + y^2 = z^2, x*y = 2*n
+parents: []
+matcher: false
+methods:
+- equivalence with rank of y^2 = x^3 - n^2 x
+- Tunnell criterion (BSD)
+software:
+  sage: EllipticCurve([0,0,0,-n^2,0]).rank()
+references:
+- key: Tunnell1983
+  why: the BSD-conditional criterion deciding congruent numbers
+- key: Koblitz1993
+  why: book-length exposition of the congruent-number/elliptic-curve link

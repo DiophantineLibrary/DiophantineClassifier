@@ -1,0 +1,18 @@
+# Family: Perfect powers in recurrence sequences
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: recurrence-powers
+name: Perfect powers in recurrence sequences
+priority: 2
+status: effective
+class: expdioph
+form: u_n = y^p (u fixed recurrence)
+parents:
+- polynomial-exponential
+matcher: false
+notes: 'Fibonacci powers: 0, 1, 8, 144 (Bugeaud-Mignotte-Siksek, Annals 2006).'
+references:
+- key: BugeaudMignotteSiksek2006
+  why: 'Fibonacci and Lucas perfect powers: 0, 1, 8, 144'
+- key: Petho1982
+  why: earlier finiteness for second-order recurrences

@@ -104,14 +104,39 @@ Magma is optional everywhere: templates are emitted, nothing shells out in
 wave 1. (Local Magma exists on this dev machine; a `magma` runner can be
 added behind a feature check without changing the API.)
 
+## Solution sets
+
+`solve` returns a `SolutionSet` whose semantics are explicit: `complete`
+says whether the listed solutions (with any symmetry stated in the
+description) are provably all of them, and **iteration** enumerates the full
+solution set even when it is infinite — Pell solutions by powers of the
+fundamental unit, generalized-Pell automorph orbits walked in both
+directions, lattice cosets by sup-norm shells, primitive Pythagorean triples
+by Euclid's parametrization, the Markov tree in order of largest entry.
+Finite representation problems (definite forms, unit fractions) are
+enumerated completely rather than witnessed.
+
+## References
+
+The registry cites `data/references.bib` by key; every use carries a `why`
+annotation (what the reference contributes to that family).  Bibliography
+policy: `doi` when known-correct, `url` only for legally free copies.
+`tools/check_references.py` is the checking/annotation pipeline: structural
+validation, DOI/URL resolution (`--online`), and verification of locally
+downloaded PDFs (`references/pdf/<key>.pdf`) against their entries via text
+extraction.  Output: `references/REPORT.md` with per-entry status and TODO
+lists.
+
 ## Website backend contract
 
 - `Classification.as_dict()` returns plain JSON types only (tested), so the
   future site (LMFDB-style, psycodict/Postgres) can store and render results
-  directly.
-- The registry YAML is the site's families table in embryo: slugs are stable
-  identifiers, `priority` is the rollout order, `lmfdb` fields link to
-  existing LMFDB collections (elliptic curves, genus 2 curves).
+  directly; references arrive formatted with their annotations.
+- The per-family registry files are the site's families table in embryo:
+  slugs are stable identifiers, `priority` is the rollout order, `lmfdb`
+  fields link to existing LMFDB collections (elliptic curves, genus 2
+  curves).  One file per family keeps community contributions
+  merge-conflict-free.
 - No web dependencies in this package, ever; the site imports us, not vice
   versa.
 

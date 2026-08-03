@@ -1,0 +1,33 @@
+# Family: Pell equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: pell
+name: Pell equation
+priority: 1
+status: solved
+class: quadratic
+form: x^2 - D*y^2 = 1
+aliases:
+- Pell-Fermat equation
+parents:
+- pell-like
+matcher: true
+methods:
+- continued fraction of sqrt(D)
+- fundamental unit
+software:
+  sage: continued_fraction(sqrt(D)); QuadraticField(D).unit_group()
+  pari: quadunit(4*D)
+  magma: FundamentalUnit(QuadraticField(D))
+code:
+  sage: |
+    cf = continued_fraction(QuadraticField({D}).gen())
+    conv = cf.convergent(len(cf.period()) - 1)
+    x1, y1 = conv.numerator(), conv.denominator()
+  pari: quadunit(4*{D})
+examples:
+- x^2 - 61*y^2 = 1
+- x^2 - 2*y^2 = -1
+references:
+- key: Lenstra2002
+  why: 'survey: continued fractions, regulator size, and compact representations'

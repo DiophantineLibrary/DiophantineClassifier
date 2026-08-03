@@ -1,0 +1,24 @@
+# Family: Catalan equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: catalan
+name: Catalan equation
+priority: 1
+status: solved
+class: expdioph
+form: x^p - y^q = 1, x, y, p, q >= 2
+parents:
+- exponential-diophantine
+matcher: true
+methods:
+- cyclotomic fields (Mihailescu)
+notes: Only solution 3^2 - 2^3 = 1.
+examples:
+- x^p - y^q = 1
+references:
+- key: Mihailescu2004
+  why: the complete solution of Catalan's conjecture
+- key: Tijdeman1976
+  why: the earlier effective finiteness via Baker's method
+- key: BiluBugeaudMignotte2014
+  why: book exposition of the proof

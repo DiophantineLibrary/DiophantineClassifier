@@ -1,0 +1,20 @@
+# Family: Apollonian circle packings
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: apollonian
+name: Apollonian circle packings
+priority: 3
+status: partial
+class: surface
+form: (a+b+c+d)^2 = 2*(a^2+b^2+c^2+d^2), thin-orbit structure
+parents:
+- quadratic-form-zero
+matcher: false
+notes: Local-global conjecture FALSE (Haag-Kertzer-Rickards-Stange, Annals 2024).
+references:
+- key: Graham2003
+  why: number-theoretic foundations of Apollonian curvature sets
+- key: BourgainKontorovich2014
+  why: positive density of admissible curvatures
+- key: Haag2024
+  why: disproof of the local-global conjecture

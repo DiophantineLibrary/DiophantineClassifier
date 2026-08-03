@@ -1,0 +1,22 @@
+# Family: Binary form equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: binary-form
+name: Binary form equation
+priority: 1
+status: algorithmic
+class: curve
+form: F(x, y) = m, F homogeneous of degree >= 3
+parents:
+- general-curve
+- decomposable-form
+matcher: true
+methods:
+- GL_2(ZZ) reduction (Julia
+- Cremona-Stoll)
+- then Thue/divisor methods
+references:
+- key: CremonaStoll2003
+  why: 'GL_2(ZZ)-reduction theory: the normal form the classifier targets'
+- key: EvertseGyory2015
+  why: finiteness theory for binary form equations via unit equations

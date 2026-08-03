@@ -1,0 +1,15 @@
+# Family: Equal sums of two cubes
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: taxicab
+name: Equal sums of two cubes
+priority: 3
+status: partial
+class: surface
+form: x^3 + y^3 = z^3 + w^3
+parents:
+- equal-sums-like-powers
+matcher: false
+references:
+- key: Silverman1993
+  why: the geometry of x^3 + y^3 = k and its rational points

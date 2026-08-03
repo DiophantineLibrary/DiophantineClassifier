@@ -1,0 +1,24 @@
+# Family: Norm form equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: norm-form
+name: Norm form equation
+priority: 2
+status: partial
+class: normform
+form: N_{K/QQ}(x_1*w_1 + ... + x_k*w_k) = m
+parents:
+- decomposable-form
+matcher: false
+methods:
+- Schmidt subspace theorem (finiteness)
+- unit-group orbits (full modules)
+software:
+  pari: bnfisintnorm
+  magma: NormEquation
+  sage: K.elements_of_norm(m)
+references:
+- key: Schmidt1972
+  why: finiteness for nondegenerate norm form equations via the subspace theorem
+- key: FinckePohst1985
+  why: the enumeration algorithm behind NormEquation and bnfisintnorm

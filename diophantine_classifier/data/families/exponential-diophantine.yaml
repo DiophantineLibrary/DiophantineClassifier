@@ -1,0 +1,23 @@
+# Family: Purely exponential equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: exponential-diophantine
+name: Purely exponential equation
+priority: 2
+status: partial
+class: expdioph
+form: c_1*b_1^n_1 + ... + c_k*b_k^n_k = c
+parents:
+- polynomial-exponential
+matcher: true
+methods:
+- S-unit equations (3 terms)
+- subspace theorem (more terms
+- ineffective)
+examples:
+- 2^a + 3^b = 5^c
+references:
+- key: EvertseSchlickeweiSchmidt2002
+  why: finiteness for unit equations in many variables via the subspace theorem
+- key: DavisPutnamRobinson1961
+  why: undecidability of general exponential Diophantine solvability

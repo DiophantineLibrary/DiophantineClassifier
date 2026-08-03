@@ -1,0 +1,22 @@
+# Family: Genus 0 curve
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: genus-zero-curve
+name: Genus 0 curve
+priority: 1
+status: algorithmic
+class: curve
+form: C(x, y) = 0 irreducible of genus 0
+parents:
+- general-curve
+matcher: true
+methods:
+- conic reduction
+- parametrization
+- Pell-type analysis of integral points
+software:
+  sage: Conic; Curve.parametrization
+  magma: Parametrization
+references:
+- key: PoulakisVoskos2000
+  why: practical algorithms for genus-zero equations

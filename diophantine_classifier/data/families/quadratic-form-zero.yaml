@@ -1,0 +1,30 @@
+# Family: Isotropy of a quadratic form
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: quadratic-form-zero
+name: Isotropy of a quadratic form
+priority: 1
+status: algorithmic
+class: quadratic
+form: Q(x_1,...,x_k) = 0, k >= 3
+parents:
+- quadric
+matcher: true
+methods:
+- Hasse-Minkowski
+- lattice reduction (Simon)
+software:
+  sage: qfsolve(G)
+  pari: qfsolve
+  magma: IsotropicSubspace
+code:
+  sage: |
+    from sage.quadratic_forms.qfsolve import qfsolve
+    qfsolve(matrix(QQ, {gram}))
+examples:
+- x^2 - 3*y^2 + 5*z^2 - 7*w^2 = 0
+references:
+- key: Simon2005
+  why: the minimization+reduction algorithm behind PARI's qfsolve
+- key: Cassels1978
+  why: Hasse-Minkowski theory underlying the local-global test

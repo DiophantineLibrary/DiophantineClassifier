@@ -1,0 +1,19 @@
+# Family: System of linear equations over ZZ
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: linear-system
+name: System of linear equations over ZZ
+priority: 1
+status: solved
+class: linear
+form: A*x = b
+parents:
+- general-polynomial
+matcher: false
+methods:
+- Smith normal form
+software:
+  sage: A.smith_form(); A.solve_right()
+references:
+- key: Cohen1993
+  why: Hermite and Smith normal form algorithms used to solve integer linear systems

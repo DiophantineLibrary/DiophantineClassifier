@@ -1,0 +1,23 @@
+# Family: General polynomial Diophantine equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: general-polynomial
+name: General polynomial Diophantine equation
+priority: 2
+status: undecidable
+class: boundary
+form: p(x_1, ..., x_k) = 0
+parents: []
+matcher: true
+methods:
+- none in general (MRDP); classification into families
+notes: |
+  Root of the polynomial side of the DAG and the classifier's last-resort answer, reported with basic invariants (variables, degree, homogeneity).
+references:
+- key: Smart1998
+  why: algorithmic monograph covering many of the methods in this registry
+- key: Mordell1969
+  why: the classical monograph organizing Diophantine equations family by family
+- key: Matiyasevich1970
+  why: 'MRDP theorem: no algorithm decides general polynomial solvability, which
+    is why classification into families matters'

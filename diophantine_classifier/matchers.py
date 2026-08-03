@@ -1,36 +1,90 @@
-"""Structural matchers: recognize which families a parsed equation belongs to.
+r"""Structural matchers: recognize which families a parsed equation belongs to.
 
 Each matcher inspects a :class:`~diophantine_classifier.parsing.ParsedEquation`
-and emits :class:`Match` objects (family slug + extracted data).  ``run``
+and emits :class:`Match` objects (family slug + extracted data).  :func:`run`
 collects matches from every applicable matcher; ranking by DAG specificity
 happens in :mod:`diophantine_classifier.classify`.
 
 Wave 1 recognizes equations presented in (or very near) a family's standard
 form, plus genus-based routing for plane curves.  Deeper normalization
-(unimodular reduction, completing the square, Nagell's algorithm) is the wave-2
-transformation layer; see docs/DESIGN.md.
+(unimodular reduction, completing the square, Nagell's algorithm) is the
+wave-2 transformation layer; see ``docs/DESIGN.md``.
+
+EXAMPLES::
+
+    sage: from diophantine_classifier.parsing import parse
+    sage: from diophantine_classifier.matchers import run
+    sage: [m.slug for m in run(parse("x^2 - 61*y^2 = 1"))][-2:]
+    ['pell-like', 'pell']
 """
 
 from dataclasses import dataclass, field
 
 from sage.all import QQ, ZZ, Curve, EllipticCurve, prod
 
-MAX_GENUS_DEGREE = 20  # skip genus computations for absurdly large inputs
+#: skip genus computations for inputs of absurdly large degree
+MAX_GENUS_DEGREE = 20
 
 
 @dataclass
 class Match:
+    r"""One structural match: a family together with extracted data.
+
+    ATTRIBUTES:
+
+    - ``slug`` -- string; the matched family's registry slug.
+    - ``data`` -- dict of family-specific extracted data, with stringified
+      values (e.g. ``{"D": "61", "N": "1"}`` for a Pell match, a-invariants
+      for a Weierstrass match).  A ``"roles"`` entry, when present, maps
+      structural roles to the user's variable names (used by solvers to
+      order solution tuples).
+    - ``summary`` -- string; one-line human-readable description with the
+      parameters filled in.
+    - ``transform`` -- string; description of any normalization applied
+      before the pattern matched (sign flip, variable swap, ...); empty when
+      the equation was already in standard form.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import classify
+        sage: m = classify("x^2 - 61*y^2 = 1").primary
+        sage: m.slug, m.data["D"]
+        ('pell', '61')
+    """
     slug: str
     data: dict = field(default_factory=dict)
     summary: str = ""
     transform: str = ""
 
     def __repr__(self):
+        r"""Terse representation.
+
+        EXAMPLES::
+
+            sage: from diophantine_classifier import classify
+            sage: classify("x^2 - 61*y^2 = 1").primary
+            Match('pell')
+        """
         return f"Match({self.slug!r})"
 
 
 def _sign_of(c):
-    """-1/0/+1 for coefficients that are honest constants; None if parametric."""
+    r"""Return -1/0/+1 for constant coefficients, ``None`` if parametric.
+
+    INPUT:
+
+    - ``c`` -- a coefficient: an element of ``QQ`` or of ``QQ[params]``
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.matchers import _sign_of
+        sage: from sage.all import QQ, PolynomialRing
+        sage: _sign_of(QQ(-3)), _sign_of(QQ(0)), _sign_of(QQ(2))
+        (-1, 0, 1)
+        sage: R = PolynomialRing(QQ, "k")
+        sage: _sign_of(R.gen()) is None
+        True
+    """
     try:
         q = QQ(c)
     except (TypeError, ValueError):
@@ -39,6 +93,17 @@ def _sign_of(c):
 
 
 def _as_int(c):
+    r"""Coerce a coefficient to a Sage integer, or return ``None``.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.matchers import _as_int
+        sage: from sage.all import QQ
+        sage: _as_int(QQ(7))
+        7
+        sage: _as_int(QQ(1)/2) is None
+        True
+    """
     try:
         return ZZ(c)
     except (TypeError, ValueError):
@@ -46,6 +111,24 @@ def _as_int(c):
 
 
 def _homogeneous_parts(P):
+    r"""Decompose a polynomial into its homogeneous components.
+
+    INPUT:
+
+    - ``P`` -- multivariate polynomial
+
+    OUTPUT: dict mapping total degree to the homogeneous component
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.matchers import _homogeneous_parts
+        sage: R.<x, y> = QQ[]
+        sage: parts = _homogeneous_parts(y^2 - x^3 + 2)
+        sage: sorted(parts)
+        [0, 2, 3]
+        sage: parts[3]
+        -x^3
+    """
     parts = {}
     for c, m in zip(P.coefficients(), P.monomials()):
         d = m.degree()
@@ -54,9 +137,30 @@ def _homogeneous_parts(P):
 
 
 def _diagonal_scan(P, R):
-    """If every nonconstant monomial of P is a pure power of a distinct
-    variable, return (entries, const) with entries = [(coeff, varname, exp)];
-    otherwise None."""
+    r"""Detect a diagonal shape: every nonconstant monomial a pure power.
+
+    INPUT:
+
+    - ``P`` -- multivariate polynomial
+    - ``R`` -- its parent ring
+
+    OUTPUT: ``(entries, const)`` with ``entries`` a list of triples
+    ``(coefficient, variable name, exponent)``, one per variable used, and
+    ``const`` the constant term — or ``None`` if some monomial mixes
+    variables or a variable occurs with two different exponents
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.matchers import _diagonal_scan
+        sage: R.<x, y, z> = QQ[]
+        sage: entries, const = _diagonal_scan(x^3 + y^3 + z^3 - 42, R)
+        sage: [(str(v), e) for _, v, e in entries]
+        [('x', 3), ('y', 3), ('z', 3)]
+        sage: const
+        -42
+        sage: _diagonal_scan(x*y + z, R) is None
+        True
+    """
     entries = []
     seen = set()
     const = P.parent().base_ring().zero()
@@ -78,7 +182,15 @@ def _diagonal_scan(P, R):
 
 
 def _gram(P, R):
-    """Gram matrix (as a list of lists of rationals) of a quadratic form."""
+    r"""Gram matrix of a quadratic form, as a list of lists of rationals.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.matchers import _gram
+        sage: R.<x, y> = QQ[]
+        sage: _gram(x^2 + 3*x*y - y^2, R)
+        [[1, 3/2], [3/2, -1]]
+    """
     gens = R.gens()
     k = len(gens)
     G = [[QQ(0)] * k for _ in range(k)]
@@ -91,6 +203,20 @@ def _gram(P, R):
 
 
 def _plane_curve_genus(P):
+    r"""Geometric genus of the plane curve ``P = 0``, or ``None``.
+
+    Returns ``None`` for degrees above :data:`MAX_GENUS_DEGREE` or when the
+    curve construction fails (reducible input, etc.).
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.matchers import _plane_curve_genus
+        sage: R.<x, y> = QQ[]
+        sage: _plane_curve_genus(y^2 - x^5 + x - 1)
+        2
+        sage: _plane_curve_genus(y^2 - x^3)     # cuspidal cubic
+        0
+    """
     if P.total_degree() > MAX_GENUS_DEGREE:
         return None
     try:
@@ -100,6 +226,17 @@ def _plane_curve_genus(P):
 
 
 def _is_irreducible(P):
+    r"""Whether ``P`` is irreducible (up to constants), or ``None`` on failure.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.matchers import _is_irreducible
+        sage: R.<x, y> = QQ[]
+        sage: _is_irreducible(x^2 + y^2 - 1)
+        True
+        sage: _is_irreducible(x^2 - y^2)
+        False
+    """
     try:
         fac = P.factor()
     except Exception:
@@ -113,6 +250,26 @@ def _is_irreducible(P):
 # --------------------------------------------------------------------------
 
 def _match_polynomial(pe):
+    r"""Matches for a purely polynomial equation.
+
+    Always emits ``general-polynomial`` with basic invariants, then
+    dispatches on the number of unknowns.
+
+    INPUT:
+
+    - ``pe`` -- a polynomial :class:`~diophantine_classifier.parsing.ParsedEquation`
+
+    OUTPUT: list of :class:`Match`
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.parsing import parse
+        sage: from diophantine_classifier.matchers import _match_polynomial
+        sage: [m.slug for m in _match_polynomial(parse("3*x + 5*y = 1"))]
+        ['general-polynomial', 'linear']
+        sage: [m.slug for m in _match_polynomial(parse("x^2 - 5*x + 6 = 0"))]
+        ['general-polynomial', 'univariate']
+    """
     P, R = pe.poly, pe.poly_ring
     k = R.ngens()
     d = P.total_degree()
@@ -144,6 +301,31 @@ def _match_polynomial(pe):
 
 
 def _match_binary(pe, P, R, d):
+    r"""Matches for polynomial equations in two unknowns.
+
+    Degree 2 goes through the binary-quadratic battery (Pell, sums of two
+    squares, representation by a form); degree ≥ 3 through binary forms
+    (Thue), curve shapes (Weierstrass, quartic, hyperelliptic,
+    superelliptic), then genus routing.
+
+    INPUT:
+
+    - ``pe`` -- the parsed equation; ``P`` its polynomial in ring ``R``;
+      ``d`` the total degree
+
+    OUTPUT: list of :class:`Match`
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.parsing import parse
+        sage: from diophantine_classifier.matchers import _match_binary
+        sage: pe = parse("x^2 - 61*y^2 = 5")
+        sage: [m.slug for m in _match_binary(pe, pe.poly, pe.poly_ring, 2)]
+        ['binary-quadratic', 'binary-qf-representation', 'pell-like']
+        sage: pe = parse("x^3 + 2*y^3 = 11")
+        sage: [m.slug for m in _match_binary(pe, pe.poly, pe.poly_ring, 3)]
+        ['thue']
+    """
     x, y = R.gens()
     out = []
     if d == 2:
@@ -167,9 +349,12 @@ def _match_binary(pe, P, R, d):
             if _sign_of(a) == -1:
                 a, b, c, n = -a, -b, -c, -n
                 transform = "multiplied by -1"
-            if b == 0 and _sign_of(a) == 1 and _sign_of(c) == -1 and a != 1 and c == -1:
+            if b == 0 and _sign_of(a) == 1 and _sign_of(c) == -1 \
+                    and a != 1 and c == -1:
                 # D x^2 - y^2 = N: swap roles so it reads x^2 - D y^2
-                a, c, transform = -c, -a, (transform + "; " if transform else "") + "swapped variables"
+                a, c = -c, -a
+                transform = (transform + "; " if transform else "") \
+                    + "swapped variables"
             out.append(Match(
                 "binary-qf-representation",
                 data={"a": str(a), "b": str(b), "c": str(c), "n": str(n),
@@ -189,33 +374,40 @@ def _match_binary(pe, P, R, d):
                         if Dz.is_square():
                             out.append(Match(
                                 "binary-form-reducible",
-                                data={"factors": f"(x - {Dz.sqrt()}*y)*(x + {Dz.sqrt()}*y)",
+                                data={"factors":
+                                      f"(x - {Dz.sqrt()}*y)*(x + {Dz.sqrt()}*y)",
                                       "m": str(n)},
-                                summary=f"x^2 - {Dz}y^2 factors (D is a square): "
-                                        "solve by divisor enumeration",
+                                summary=f"x^2 - {Dz}y^2 factors (D is a "
+                                        "square): solve by divisor "
+                                        "enumeration",
                                 transform=transform,
                             ))
                         else:
                             Nz = _as_int(n)
                             out.append(Match(
                                 "pell-like", data={"D": str(Dz), "N": str(n)},
-                                summary=f"x^2 - {Dz}y^2 = {n}", transform=transform,
+                                summary=f"x^2 - {Dz}y^2 = {n}",
+                                transform=transform,
                             ))
                             if Nz is not None and Nz in (1, -1):
                                 out.append(Match(
                                     "pell", data={"D": str(Dz), "N": str(Nz)},
                                     summary=f"Pell equation with D = {Dz}"
-                                            + (" (negative Pell)" if Nz == -1 else ""),
+                                            + (" (negative Pell)"
+                                               if Nz == -1 else ""),
                                     transform=transform,
                                 ))
                     elif Dz is None:
                         # parametric D
-                        out.append(Match("pell-like", data={"D": str(D), "N": str(n)},
+                        out.append(Match("pell-like",
+                                         data={"D": str(D), "N": str(n)},
                                          summary=f"x^2 - ({D})y^2 = {n}",
                                          transform=transform))
                         if n == 1:
-                            out.append(Match("pell", data={"D": str(D), "N": "1"},
-                                             summary=f"Pell equation with D = {D}",
+                            out.append(Match("pell",
+                                             data={"D": str(D), "N": "1"},
+                                             summary=f"Pell equation with "
+                                                     f"D = {D}",
                                              transform=transform))
         elif dd == 0 and ee == 0 and f0 == 0:
             out.append(Match(
@@ -235,7 +427,7 @@ def _match_binary(pe, P, R, d):
         F = parts[d]
         m = -c0
         data = {"form": str(F), "m": str(m), "degree": ZZ(d),
-                "fx": str(F.subs({y: 1}))}
+                "fx": str(F.subs({y: 1})), "x": str(x), "y": str(y)}
         if not pe.is_concrete:
             out.append(Match("binary-form", data=data,
                              summary=f"binary form of degree {d} = {m}"))
@@ -275,12 +467,31 @@ def _match_binary(pe, P, R, d):
 
 
 def _match_two_var_shapes(pe, P, R, d):
-    """Weierstrass / quartic / hyperelliptic / superelliptic shapes.
+    r"""Weierstrass / quartic / hyperelliptic / superelliptic shapes.
 
-    Two passes over both variable orderings: the quadratic-in-v shapes
+    Two passes over both variable orderings: the quadratic-in-``v`` shapes
     (Weierstrass, quartic, hyperelliptic) are tried for *both* orientations
     before any superelliptic shape, so that e.g. ``x^2 = y^3 - k`` is
     recognized as a Mordell equation rather than as ``y^3 = x^2 + k``.
+
+    OUTPUT: list of :class:`Match`, or ``None`` when no shape applies (the
+    caller then falls through to genus routing)
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.parsing import parse
+        sage: from diophantine_classifier.matchers import _match_two_var_shapes
+        sage: pe = parse("y^2 = x^3 - 2")
+        sage: [m.slug for m in
+        ....:  _match_two_var_shapes(pe, pe.poly, pe.poly_ring, 3)]
+        ['elliptic-weierstrass', 'mordell']
+        sage: pe = parse("y^3 = x^4 + 2")
+        sage: [m.slug for m in
+        ....:  _match_two_var_shapes(pe, pe.poly, pe.poly_ring, 4)]
+        ['superelliptic']
+        sage: pe = parse("y^2 = x^3")     # cusp: shapes decline, genus routes
+        sage: _match_two_var_shapes(pe, pe.poly, pe.poly_ring, 3) is None
+        True
     """
     orientations = (tuple(R.gens()), tuple(reversed(R.gens())))
     for v, u in orientations:
@@ -378,7 +589,26 @@ def _match_two_var_shapes(pe, P, R, d):
 
 
 def _genus_route(pe, P, affine=True):
-    """Route an irreducible plane curve by genus."""
+    r"""Route an irreducible plane curve by genus.
+
+    Mirrors the Library's classification plan: genus 0 → parametrize,
+    genus 1 → find a point then reduce to Weierstrass form, genus ≥ 2 →
+    Faltings finiteness and Chabauty-type methods.
+
+    OUTPUT: list of at most one :class:`Match` (empty for parametric input,
+    reducible polynomials, or when the genus computation is skipped)
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.parsing import parse
+        sage: from diophantine_classifier.matchers import _genus_route
+        sage: pe = parse("x^2*y^2 = x^3 + 1")
+        sage: [m.slug for m in _genus_route(pe, pe.poly)]
+        ['genus-one-curve']
+        sage: pe = parse("y^2 = x^3")
+        sage: [m.slug for m in _genus_route(pe, pe.poly)]
+        ['genus-zero-curve']
+    """
     if not pe.is_concrete:
         return []
     if _is_irreducible(P) is not True:
@@ -400,6 +630,25 @@ def _genus_route(pe, P, affine=True):
 
 
 def _match_multivar(pe, P, R, k, d):
+    r"""Matches for polynomial equations in three or more unknowns.
+
+    Handles quadratic forms (isotropy, representation, affine quadrics),
+    Markov–Hurwitz shapes, diagonal equations (generalized Fermat, sums of
+    cubes, Waring, equal sums of like powers), and plane projective curves.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.parsing import parse
+        sage: from diophantine_classifier.matchers import _match_multivar
+        sage: pe = parse("x^2 + y^2 = z^2")
+        sage: [m.slug for m in
+        ....:  _match_multivar(pe, pe.poly, pe.poly_ring, 3, 2)]
+        ['quadratic-form-zero', 'legendre', 'pythagorean']
+        sage: pe = parse("x^3 + y^3 + z^3 = 42")
+        sage: [m.slug for m in
+        ....:  _match_multivar(pe, pe.poly, pe.poly_ring, 3, 3)]
+        ['sum-of-three-cubes']
+    """
     out = []
     gens = R.gens()
     parts = _homogeneous_parts(P)
@@ -413,8 +662,8 @@ def _match_multivar(pe, P, R, k, d):
             if c0 == 0:
                 out.append(Match("quadratic-form-zero",
                                  data={"gram": str(gram), "k": k},
-                                 summary=f"isotropy of a quadratic form in {k} "
-                                         "variables (Hasse-Minkowski)"))
+                                 summary=f"isotropy of a quadratic form in "
+                                         f"{k} variables (Hasse-Minkowski)"))
                 scan = _diagonal_scan(Q2, R)
                 if scan and k == 3:
                     entries, _ = scan
@@ -433,15 +682,22 @@ def _match_multivar(pe, P, R, k, d):
                                         f"({a})x^2 + ({b})y^2 + ({c})z^2 = 0",
                             ))
                             if sorted(coeffs) == [-1, 1, 1]:
+                                legs = [entries[i][1] for i in range(3)
+                                        if coeffs[i] == 1]
+                                hyp = [entries[i][1] for i in range(3)
+                                       if coeffs[i] == -1][0]
                                 out.append(Match(
-                                    "pythagorean", data={},
+                                    "pythagorean",
+                                    data={"roles": {"legs": legs,
+                                                    "hypotenuse": hyp}},
                                     summary="Pythagorean equation: solutions "
                                             "(m^2-n^2, 2mn, m^2+n^2)",
                                 ))
             else:
                 n = -c0
                 out.append(Match("quadratic-form-representation",
-                                 data={"gram": str(gram), "n": str(n), "k": k},
+                                 data={"gram": str(gram), "n": str(n),
+                                       "k": k},
                                  summary=f"representation of {n} by a "
                                          f"quadratic form in {k} variables"))
                 scan = _diagonal_scan(P, R)
@@ -451,16 +707,19 @@ def _match_multivar(pe, P, R, k, d):
                         if k == 3:
                             out.append(Match("sum-of-three-squares",
                                              data={"n": str(n)},
-                                             summary=f"three squares: n = {n}"))
+                                             summary=f"three squares: "
+                                                     f"n = {n}"))
                         elif k == 4:
                             out.append(Match("sum-of-four-squares",
                                              data={"n": str(n)},
-                                             summary=f"four squares: n = {n}"))
+                                             summary=f"four squares: "
+                                                     f"n = {n}"))
         else:
             out.append(Match("quadric",
                              data={"k": k},
                              summary="affine quadric: complete the square, "
-                                     "then Hasse-Minkowski / Grunewald-Segal"))
+                                     "then Hasse-Minkowski / "
+                                     "Grunewald-Segal"))
         return out
 
     # --- degree >= 3 ---
@@ -549,14 +808,16 @@ def _match_multivar(pe, P, R, k, d):
                 if e >= 3 and all(c == 1 for c in coeffs):
                     out.append(Match(
                         "waring", data={"k": ZZ(e), "s": k, "n": str(n)},
-                        summary=f"Waring-type: sum of {k} {e}-th powers = {n}",
+                        summary=f"Waring-type: sum of {k} {e}-th powers "
+                                f"= {n}",
                     ))
                     return out
                 if e >= 3:
                     out.append(Match(
                         "diagonal-form",
                         data={"k": ZZ(e), "s": k,
-                              "coeffs": [str(c) for c in coeffs], "n": str(n)},
+                              "coeffs": [str(c) for c in coeffs],
+                              "n": str(n)},
                         summary=f"diagonal equation of degree {e}",
                     ))
                     return out
@@ -594,8 +855,8 @@ def _match_multivar(pe, P, R, k, d):
             if smooth:
                 out.append(Match(
                     "plane-cubic", data={"F": str(P)},
-                    summary="smooth plane cubic: genus 1; find a point, then "
-                            "reduce to Weierstrass form (Nagell)",
+                    summary="smooth plane cubic: genus 1; find a point, "
+                            "then reduce to Weierstrass form (Nagell)",
                 ))
                 return out
         routed = _genus_route(pe, P, affine=False)
@@ -611,6 +872,25 @@ def _match_multivar(pe, P, R, k, d):
 # --------------------------------------------------------------------------
 
 def _match_exponential(pe):
+    r"""Matches for equations with exponential content.
+
+    Dispatches on the composition of the terms: purely exponential (Pillai,
+    S-unit), variable powers (Catalan, symbolic Fermat, Lebesgue–Nagell,
+    Schinzel–Tijdeman power values), polynomial + one exponential
+    (Ramanujan–Nagell, Thue–Mahler), with ``polynomial-exponential`` as the
+    root fallback.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.parsing import parse
+        sage: from diophantine_classifier.matchers import _match_exponential
+        sage: [m.slug for m in _match_exponential(parse("x^2 + 7 = 2^n"))]
+        ['polynomial-exponential', 'ramanujan-nagell']
+        sage: [m.slug for m in _match_exponential(parse("x^p - y^q = 1"))]
+        ['polynomial-exponential', 'catalan']
+        sage: [m.slug for m in _match_exponential(parse("3^m - 2^n = 5"))]
+        ['polynomial-exponential', 'exponential-diophantine', 'pillai']
+    """
     terms = pe.terms
     pure_exp = [t for t in terms
                 if t.exp_terms and not t.var_powers and not t.powers]
@@ -633,7 +913,8 @@ def _match_exponential(pe):
 
     # ---- purely exponential: sum of c * prod(b^n) terms and constants
     if not var_pow and not nonconst_poly and not mixed and pure_exp:
-        bases = sorted({b for t in pure_exp for b, _ in t.exp_terms}, key=str)
+        bases = sorted({b for t in pure_exp for b, _ in t.exp_terms},
+                       key=str)
         out.append(Match(
             "exponential-diophantine",
             data={"terms": len(pure_exp), "bases": [str(b) for b in bases]},
@@ -652,7 +933,8 @@ def _match_exponential(pe):
                     "pillai",
                     data={"a": str(a), "b": str(b), "c": str(-c0),
                           "roles": {"x": xvar, "y": yvar}},
-                    summary=f"Pillai equation {a}^{xvar} - {b}^{yvar} = {-c0}",
+                    summary=f"Pillai equation {a}^{xvar} - {b}^{yvar} "
+                            f"= {-c0}",
                 ))
             else:
                 out.append(Match(
@@ -685,15 +967,17 @@ def _match_exponential(pe):
                     "thue-mahler",
                     data={"form": form, "m": str(m), "degree": ZZ(d),
                           "primes": [str(p) for p in primes]},
-                    summary=f"Thue-Mahler equation of degree {d} with primes "
-                            f"{primes}",
+                    summary=f"Thue-Mahler equation of degree {d} with "
+                            f"primes {primes}",
                 ))
                 return out
 
     # ---- var^var families
     simple_vv = [t for t in var_pow
-                 if len(t.var_powers) == 1 and not t.powers and not t.exp_terms]
-    if len(simple_vv) == len(var_pow) and var_pow and not pure_exp and not mixed:
+                 if len(t.var_powers) == 1 and not t.powers
+                 and not t.exp_terms]
+    if len(simple_vv) == len(var_pow) and var_pow and not pure_exp \
+            and not mixed:
         if len(var_pow) == 2 and not nonconst_poly and not param_const:
             t1, t2 = var_pow
             s1, s2 = _sign_of(t1.coeff), _sign_of(t2.coeff)
@@ -708,16 +992,18 @@ def _match_exponential(pe):
                         (xb, pv), (yb, qv) = (yb, qv), (xb, pv)
                     out.append(Match(
                         "catalan",
-                        data={"roles": {"x": xb, "p": pv, "y": yb, "q": qv}},
-                        summary=f"Catalan equation {xb}^{pv} - {yb}^{qv} = 1: "
-                                "only 3^2 - 2^3 = 1 (Mihailescu)",
+                        data={"roles": {"x": xb, "p": pv, "y": yb,
+                                        "q": qv}},
+                        summary=f"Catalan equation {xb}^{pv} - {yb}^{qv} "
+                                "= 1: only 3^2 - 2^3 = 1 (Mihailescu)",
                     ))
                     return out
                 if xb != yb:
                     out.append(Match(
                         "pillai",
                         data={"c": str(c), "variable_bases": True,
-                              "roles": {"x": xb, "p": pv, "y": yb, "q": qv}},
+                              "roles": {"x": xb, "p": pv, "y": yb,
+                                        "q": qv}},
                         summary=f"perfect-power difference {xb}^{pv} - "
                                 f"{yb}^{qv} = {c} (Pillai's conjecture)",
                     ))
@@ -750,8 +1036,10 @@ def _match_exponential(pe):
         if len(var_pow) == 1 and nonconst_poly and not param_const:
             t = var_pow[0]
             base, expvar = t.var_powers[0]
-            polyvars = sorted({v for tt in nonconst_poly for v, _ in tt.powers})
-            if len(polyvars) == 1 and polyvars[0] != base and abs(t.coeff) == 1:
+            polyvars = sorted({v for tt in nonconst_poly
+                               for v, _ in tt.powers})
+            if len(polyvars) == 1 and polyvars[0] != base \
+                    and abs(t.coeff) == 1:
                 u = polyvars[0]
                 # f(u) = c * base^expvar with c = -t.coeff
                 fcoeffs = {}
@@ -797,6 +1085,9 @@ def _match_exponential(pe):
                 fcoeffs[e] = fcoeffs.get(e, QQ(0)) + tt.coeff
             degf = max(fcoeffs)
             if degf == 2:
+                if _sign_of(fcoeffs[2]) == -1:
+                    fcoeffs = {e: -c for e, c in fcoeffs.items()}
+                    k_coeff = -k_coeff
                 base_desc = "*".join(f"{b}^{n}" for b, n in t.exp_terms)
                 dval = fcoeffs.get(0, QQ(0))
                 monic_pure = (fcoeffs.get(2) == 1 and not fcoeffs.get(1))
@@ -805,13 +1096,14 @@ def _match_exponential(pe):
                         "exp": base_desc,
                         "roles": {"x": u, "n": t.exp_terms[0][1]}}
                 classical = (monic_pure and k_coeff == 1 and dval == 7
-                             and len(t.exp_terms) == 1 and t.exp_terms[0][0] == 2)
+                             and len(t.exp_terms) == 1
+                             and t.exp_terms[0][0] == 2)
                 out.append(Match(
                     "ramanujan-nagell", data=data,
                     summary=("the Ramanujan-Nagell equation x^2 + 7 = 2^n: "
                              "n in {3, 4, 5, 7, 15}" if classical else
-                             f"generalized Ramanujan-Nagell: quadratic in {u} "
-                             f"= ({k_coeff})*{base_desc}"),
+                             f"generalized Ramanujan-Nagell: quadratic in "
+                             f"{u} = ({k_coeff})*{base_desc}"),
                 ))
                 return out
 
@@ -823,6 +1115,18 @@ def _match_exponential(pe):
 # --------------------------------------------------------------------------
 
 def _match_fractional(pe):
+    r"""Matches from the unit-fraction structure of the *uncleared* input.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.parsing import parse
+        sage: from diophantine_classifier.matchers import _match_fractional
+        sage: pe = parse("4/n = 1/x + 1/y + 1/z", params="n")
+        sage: [m.slug for m in _match_fractional(pe)]
+        ['egyptian-fractions', 'erdos-straus']
+        sage: _match_fractional(parse("x^2 + y^2 = 610"))
+        []
+    """
     fs = pe.fractional
     out = []
     if fs is None:
@@ -836,7 +1140,7 @@ def _match_fractional(pe):
     ))
     if k == 3 and a == 4:
         out.append(Match(
-            "erdos-straus", data={"n": str(n)},
+            "erdos-straus", data={"n": str(n), "a": "4", "k": "3"},
             summary=f"Erdos-Straus equation 4/{n} = 1/x + 1/y + 1/z",
         ))
     elif k == 3 and a == 5:
@@ -845,7 +1149,24 @@ def _match_fractional(pe):
 
 
 def run(pe):
-    """Collect matches from all applicable matchers, deduplicated by slug."""
+    r"""Collect matches from all applicable matchers, deduplicated by slug.
+
+    INPUT:
+
+    - ``pe`` -- a :class:`~diophantine_classifier.parsing.ParsedEquation`
+
+    OUTPUT: list of :class:`Match`, in emission order (ranking by
+    specificity happens in :mod:`~diophantine_classifier.classify`)
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.parsing import parse
+        sage: from diophantine_classifier.matchers import run
+        sage: [m.slug for m in run(parse("y^2 = x^3 - 2"))]
+        ['general-polynomial', 'elliptic-weierstrass', 'mordell']
+        sage: [m.slug for m in run(parse("2^a + 3^b = 5^c"))]
+        ['polynomial-exponential', 'exponential-diophantine', 's-unit']
+    """
     matches = []
     matches.extend(_match_fractional(pe))
     if pe.is_polynomial:

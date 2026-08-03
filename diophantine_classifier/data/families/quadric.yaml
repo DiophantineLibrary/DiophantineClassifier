@@ -1,0 +1,23 @@
+# Family: General quadratic Diophantine equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: quadric
+name: General quadratic Diophantine equation
+priority: 2
+status: algorithmic
+class: quadratic
+form: Q(x_1,...,x_k) + L(x_1,...,x_k) + c = 0, k >= 3
+parents:
+- general-polynomial
+matcher: true
+methods:
+- completing the square
+- Hasse-Minkowski
+- Grunewald-Segal
+software:
+  pari: qfsolve (after reduction)
+references:
+- key: GrunewaldSegal1981
+  why: general decision procedure for quadratic equations over ZZ
+- key: Siegel1972
+  why: finiteness and structure theory for integral quadratic equations
