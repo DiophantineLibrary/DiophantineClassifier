@@ -257,6 +257,16 @@ perfect power).
 **References.** Schinzel–Tijdeman 1976; Erdős–Selfridge 1975; Shorey–Tijdeman,
 *Exponential Diophantine Equations* (1986) — the standard reference for this whole section.
 
+### `skolem` — Zeros of linear recurrences (Skolem problem) — P2, partial, decidability open
+**Form.** u_n = 0 where u is a linear recurrence sequence (LRS) of order k.
+**Status.** Zero set = finite ∪ arithmetic progressions (Skolem–Mahler–Lech,
+ineffective p-adic proof); decidable for order ≤ 4 (Mignotte–Shorey–Tijdeman,
+Vereshchagin 1985); **open for order ≥ 5** — a marquee decidability-boundary
+exhibit; recent conditional algorithms for simple LRS (Bilu–Luca–Nieuwveld–
+Ouaknine–Purser–Worrell 2022, assuming p-adic Schanuel + Skolem conjecture).
+**References.** Skolem 1934; Ouaknine–Worrell, "Decision problems for linear
+recurrence sequences" (2012 survey); BLNOPW 2022.
+
 ### `exponential-diophantine` — Purely exponential equations — P2, effective (few terms)
 **Form.** c₁·b₁^{n₁} + ⋯ + c_k·b_k^{n_k} = c (fixed bases, unknown exponents);
 e.g. 2ᵃ + 3ᵇ = 5ᶜ, Jeśmanowicz conjecture instances. An unknown base raised to an
