@@ -1,0 +1,29 @@
+# Family: Norm form equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: norm-form
+name: Norm form equation
+priority: 2
+status: partial
+class: normform
+form: N_{K/QQ}(x_1*w_1 + ... + x_k*w_k) = m
+parents:
+- decomposable-form
+matcher: false
+notes: The listed software solves N(alpha) = m for alpha in the full ring of
+  integers (or an order); a proper submodule needs the general decomposable-form
+  machinery.
+methods:
+- Schmidt subspace theorem (finiteness)
+- unit-group orbits (full modules)
+software:
+  pari: bnfisintnorm (full ring of integers only)
+  magma: NormEquation (full ring of integers only)
+  sage: K.elements_of_norm(m) (full ring of integers only)
+references:
+- key: Schmidt1972
+  why: finiteness for nondegenerate norm form equations via the subspace theorem
+- key: FinckePohst1983
+  why: the algorithm for algebraic integers of given norm behind NormEquation and bnfisintnorm
+- key: FreiLoughranNewton2018
+  why: 'the Hasse norm principle: when local solvability of N(alpha) = m implies global'
