@@ -283,6 +283,13 @@ conditions, ineffective in general (subspace theorem).
 **References.** Evertse–Győry, *Discriminant Equations in Diophantine Number Theory*
 (2017) and *Unit Equations* (2015).
 
+### `index-form` — Index form / power integral bases — P3, algorithmic (low degree)
+**Form.** I(x₂,…,x_k) = ±m (index form of an order in a number field K).
+**Status.** Finite for m fixed (Győry, effective); complete practical algorithms
+for degrees 3–5 and many sextic/octic families (Gaál and school).
+**Software.** Gaál's Magma/Maple codes; case-by-case.
+**References.** Győry 1976; Gaál, *Diophantine Equations and Power Integral Bases*
+(2nd ed. 2019).
 
 ---
 
