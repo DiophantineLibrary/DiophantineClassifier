@@ -772,6 +772,44 @@ def _nonnegative_line(names, coeffs, b, direction):
                        complete=True, stream=stream)
 
 
+def _solve_qf_zero(cls, match, gram=None):
+    r"""
+    Nontrivial zero of a quadratic form, or the local obstruction.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: S = solve("x^2 + y^2 = 2*z^2")
+        sage: S.solutions[0]
+        (1, 1, -1)
+        sage: solve("x^2 + y^2 = 3*z^2").kind
+        'empty'
+    """
+    if gram is None:
+        gram = sage_eval(str(match.data["gram"]))
+    G = matrix(QQ, gram)
+    try:
+        res = qfsolve(G)
+    except Exception as err:
+        raise SolverUnavailable(f"qfsolve failed: {err}") from None
+    if res in ZZ:
+        place = "the real place" if res == -1 else f"p = {res}"
+        return SolutionSet(_normalized(match), [], "empty",
+                           f"no nontrivial solutions: local obstruction at "
+                           f"{place}", complete=True)
+    vec = [QQ(t) for t in res]
+    den = lcm([t.denominator() for t in vec])
+    ivec = [ZZ(t * den) for t in vec]
+    g = gcd(ivec)
+    ivec = tuple(t // g for t in ivec)
+    if sum(1 for t in ivec if t < 0) > sum(1 for t in ivec if t > 0):
+        ivec = tuple(-t for t in ivec)
+    return SolutionSet(_normalized(match), [ivec], "parametrized",
+                       "one nontrivial solution; all others arise from it by "
+                       "the standard conic/quadric parametrization",
+                       complete=False)
+
+
 def _solve_egyptian(cls, match):
     r"""
     Unit fraction equations ``1/x_1 + ... + 1/x_k = a/n``, concrete case.
@@ -826,6 +864,7 @@ def _solve_egyptian(cls, match):
 SOLVERS = {
     "univariate": _solve_univariate,
     "linear": _solve_linear,
+    "quadratic-form-zero": _solve_qf_zero,
     "egyptian-fractions": _solve_egyptian,
 }
 

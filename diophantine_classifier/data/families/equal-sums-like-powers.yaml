@@ -1,0 +1,21 @@
+# Family: Equal sums of like powers
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: equal-sums-like-powers
+name: Equal sums of like powers
+priority: 3
+status: partial
+class: surface
+form: x_1^k + ... + x_s^k = y_1^k + ... + y_t^k
+parents:
+- diagonal-form
+matcher: true
+notes: Euler's conjecture false for k = 4 (Elkies 1988) and k = 5 (Lander-Parkin
+  1966).
+examples:
+- x^4 + y^4 + z^4 = w^4
+references:
+- key: LanderParkin1966
+  why: counterexample to Euler's conjecture for fifth powers
+- key: Elkies1988
+  why: counterexample for fourth powers via elliptic fibrations
