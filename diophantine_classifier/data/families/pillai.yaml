@@ -1,0 +1,22 @@
+# Family: Pillai equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: pillai
+name: Pillai equation
+priority: 1
+status: effective
+class: expdioph
+form: a^x - b^y = c (a, b fixed)
+parents:
+- exponential-diophantine
+matcher: true
+methods:
+- linear forms in logarithms; at most 2 solutions outside known list (Bennett)
+examples:
+- 3^m - 2^n = 1
+- 3^m - 2^n = 5
+references:
+- key: Pillai1936
+  why: origin of the problem
+- key: Bennett2001
+  why: at most two solutions for fixed bases
