@@ -19,6 +19,7 @@ CORPUS = [
     ("3*x^2 + 7*y^2 = 19", "", "binary-qf-representation"),
     # quadratic, more variables
     ("x^2 + 3*y^2 = 7*z^2", "", "legendre"),
+    ("x^2 + y^2 + z^2 = n", "n", "sum-of-three-squares"),
     ("x^2 - 3*y^2 + 5*z^2 - 7*w^2 = 0", "", "quadratic-form-zero"),
     ("x^2 + x*y + y^2 + z^2 = 14", "", "quadratic-form-representation"),
     ("x^2 + y^2 - z^2 + 3*x - 7 = 0", "", "quadric"),
