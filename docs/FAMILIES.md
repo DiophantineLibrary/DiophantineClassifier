@@ -189,6 +189,18 @@ PARI: `hyperellratpoints`.
 **References.** Baker 1969; Faltings 1983; Chabauty 1941, Coleman 1985;
 McCallum–Poonen survey 2012; Balakrishnan–Dogra–Müller–Tuitman–Vonk 2019.
 
+### `genus-two` — Genus 2 curves — P1, partial (rational points), effective (integral)
+**Form.** y² = f(x), deg f ∈ {5, 6}, f squarefree.
+**Status.** The best-supported genus ≥ 2 case: Igusa invariants identify the curve
+up to ℚ̄-isomorphism (the classifier's identification handle in genus 2, per the
+Library design), BSD-style databases exist (LMFDB), Chabauty machinery mature — but
+no algorithm for the rational points is proven to terminate (Chabauty needs rank < 2;
+the Mordell–Weil sieve is a heuristic that usually succeeds). Integral points are
+effective via Baker-type bounds.
+**Software.** Magma: full pipeline (`Jacobian`, `RankBound`, `Chabauty`);
+Sage: `HyperellipticCurve`, `igusa_clebsch_invariants`; LMFDB genus 2 database.
+**References.** Igusa 1960; Cassels–Flynn; Stoll's surveys.
+
 ### `superelliptic` — Superelliptic curves — P1, effective (integral)
 **Form.** yᵐ = f(x), m ≥ 2, deg f ≥ 2 (genus ≥ 1 cases).
 **Status.** Integral points finite and effective (Baker); reduction to Thue

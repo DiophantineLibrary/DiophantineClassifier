@@ -27,6 +27,7 @@ CORPUS = [
     # higher-genus curves and binary forms
     ("x^3 + 2*y^3 = 11", "", "thue"),
     ("x^4 - 2*y^4 = 1", "", "thue"),
+    ("y^2 = x^5 - x + 1", "", "genus-two"),
     ("y^2 = x^7 + 3", "", "hyperelliptic"),
     ("y^3 = x^4 + 2", "", "superelliptic"),
     ("x^3*y + y^3*z + z^3*x = 0", "", "general-curve"),     # Klein quartic

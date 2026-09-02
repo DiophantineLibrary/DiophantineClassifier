@@ -1,0 +1,31 @@
+# Family: Genus 2 curve
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: genus-two
+name: Genus 2 curve
+priority: 1
+status: partial
+class: curve
+form: y^2 = f(x), deg f in {5, 6}
+constraints: f squarefree
+parents:
+- hyperelliptic
+matcher: true
+lmfdb: g2c.q
+notes: 'Rational points: no algorithm proven to terminate (Chabauty needs rank < 2;
+  the Mordell-Weil sieve usually succeeds but is a heuristic). Integral points:
+  effective via Baker-type bounds.'
+methods:
+- Igusa invariants for identification
+- Chabauty machinery
+software:
+  magma: full pipeline (Jacobian, RankBound, Chabauty)
+  sage: HyperellipticCurve; igusa_clebsch_invariants
+examples:
+- y^2 = x^5 - x + 1
+references:
+- key: Igusa1960
+  why: the invariants identifying a genus-2 curve up to isomorphism (the classifier's
+    genus-2 handle)
+- key: CasselsFlynn1996
+  why: explicit arithmetic of genus-2 Jacobians
