@@ -74,6 +74,12 @@ def test_thue():
     assert_valid_solutions("x^3 + 2*y^3 = 11", s.solutions)
 
 
+def test_ramanujan_nagell():
+    s = solve("x^2 + 7 = 2^n")
+    assert (11, 7) in s.solutions and len(s.solutions) == 5
+    assert s.complete
+
+
 def test_unavailable_carries_hints():
     with pytest.raises(SolverUnavailable) as err:
         solve("y^2 = x^7 + 3")

@@ -248,6 +248,17 @@ equations: a miscellany" (Int. J. Number Theory 11, 2015).
 
 ## 6. Polynomial–exponential equations
 
+### `ramanujan-nagell` — (Generalized) Ramanujan–Nagell — P1, effective
+**Form.** x² + d = k·bⁿ (classical: x² + 7 = 2ⁿ); more generally f(x) = k·bⁿ with
+f quadratic.
+**Status.** Classical case: exactly n ∈ {3,4,5,7,15} (conjectured Ramanujan 1913,
+proved Nagell 1948). Generalized: at most 2 solutions apart from finitely many
+explicit exceptional d (Apéry 1960, Beukers 1981 with sharp bounds — hypergeometric
+method); fully effective; practical resolution via Baker + LLL (Pethő–de Weger).
+**Software.** scripts via PARI/Sage (no standard intrinsic); de Weger's algorithms.
+**References.** Ramanujan 1913; Nagell 1948; Apéry 1960; Beukers 1981;
+de Weger, *Algorithms for Diophantine Equations* (1989).
+
 ### `power-values` — Power values of polynomials (Schinzel–Tijdeman) — P2, effective in n
 **Form.** f(x) = c·yⁿ, f fixed polynomial with ≥ 2 distinct roots, n ≥ 2 unknown.
 **Status.** n is effectively bounded (Schinzel–Tijdeman 1976); for each fixed n it

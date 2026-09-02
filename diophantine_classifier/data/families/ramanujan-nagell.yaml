@@ -1,0 +1,26 @@
+# Family: Generalized Ramanujan-Nagell equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: ramanujan-nagell
+name: Generalized Ramanujan-Nagell equation
+priority: 1
+status: effective
+class: expdioph
+form: 'x^2 + d = k*b^n (classical: x^2 + 7 = 2^n)'
+parents:
+- polynomial-exponential
+matcher: true
+methods:
+- hypergeometric method (Beukers)
+- Baker + LLL (Petho-de Weger)
+notes: 'Classical case: n in {3,4,5,7,15}. At most 2 solutions for general d (Beukers).'
+examples:
+- x^2 + 7 = 2^n
+- x^2 + 11 = 3^n
+references:
+- key: Nagell1961
+  why: the proof that n lies in {3, 4, 5, 7, 15}
+- key: Beukers1981
+  why: 'sharp bounds: at most two solutions of the generalized equation'
+- key: deWeger1989
+  why: the Baker + LLL toolkit for concrete instances
