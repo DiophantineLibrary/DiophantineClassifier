@@ -1,0 +1,22 @@
+# Family: Sum of four squares (Lagrange)
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: sum-of-four-squares
+name: Sum of four squares (Lagrange)
+priority: 1
+status: solved
+class: quadratic
+form: x^2 + y^2 + z^2 + w^2 = n
+parents:
+- quadratic-form-representation
+matcher: true
+methods:
+- always solvable (Lagrange 1770)
+- Rabin-Shallit
+software:
+  sage: four_squares(n)
+code:
+  sage: four_squares({n})
+references:
+- key: RabinShallit1986
+  why: randomized polynomial-time four-squares algorithm

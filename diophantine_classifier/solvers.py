@@ -943,6 +943,48 @@ def _solve_pell_like(cls, match):
                        complete=True, stream=stream)
 
 
+def _solve_four_squares(cls, match):
+    r"""
+    All representations ``n = x^2 + y^2 + z^2 + w^2``, ``x <= y <= z <= w``.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: solve("x^2 + y^2 + z^2 + w^2 = 7").solutions
+        [(1, 1, 1, 2)]
+    """
+    n = _zz(match.data, "n")
+    if n is None:
+        raise SolverUnavailable("needs concrete n")
+    if n < 0:
+        return SolutionSet(_normalized(match), [], "empty", "n < 0",
+                           complete=True)
+    if n > MAX_FOUR_SQUARES:
+        sol = four_squares(n)
+        return SolutionSet(_normalized(match), [tuple(sol)], "witness",
+                           "one representation (Lagrange: always solvable; "
+                           "n too large for full enumeration)",
+                           complete=False)
+    sols = []
+    x = 0
+    while 4 * x * x <= n:
+        y = x
+        while x * x + 3 * y * y <= n:
+            z = y
+            while x * x + y * y + 2 * z * z <= n:
+                w2 = n - x * x - y * y - z * z
+                w = isqrt(w2)
+                if w * w == w2 and w >= z:
+                    sols.append((ZZ(x), ZZ(y), ZZ(z), ZZ(w)))
+                z += 1
+            y += 1
+        x += 1
+    return SolutionSet(_normalized(match), sols, "finite-complete",
+                       "all representations with 0 <= x <= y <= z <= w; the "
+                       "rest differ by signs and order (Lagrange: always "
+                       "solvable)", complete=True)
+
+
 def _solve_bqf(cls, match):
     r"""
     Representations by a binary quadratic form.
@@ -1158,6 +1200,7 @@ SOLVERS = {
     "univariate": _solve_univariate,
     "linear": _solve_linear,
     "pell-like": _solve_pell_like,
+    "sum-of-four-squares": _solve_four_squares,
     "binary-qf-representation": _solve_bqf,
     "quadratic-form-zero": _solve_qf_zero,
     "legendre": _solve_legendre,
