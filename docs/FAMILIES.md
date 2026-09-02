@@ -167,6 +167,14 @@ transformation step for this part of the classifier.
 **References.** Evertse–Győry, *Unit Equations in Diophantine Number Theory*;
 Cremona–Stoll, "On the reduction theory of binary forms" (J. reine angew. Math. 565, 2003).
 
+### `binary-form-reducible` — Reducible binary form = m — P1, solved
+**Form.** F(x, y) = m with F reducible over ℚ.
+**Status.** Elementary reduction: factor F over ℚ, split m among the factors as
+divisors, and solve each factor equation in its own family (linear, Pell-type, Thue)
+recursively — e.g. (x² − 2y²)² = 1 hands off to x² − 2y² = ±1; for m = 0,
+rational lines give the solutions.
+**Software.** direct in Sage.
+
 ### `thue` — Thue equation — P1, algorithmic
 **Form.** F(x, y) = m, F irreducible of degree ≥ 3.
 **Status.** Finite (Thue 1909, via Diophantine approximation — ineffective);
