@@ -129,6 +129,14 @@ sympy `diophantine` handles some shapes.
 **References.** Siegel 1972; Grunewald–Segal, "How to solve a quadratic equation
 in integers" (Math. Proc. Camb. Phil. Soc. 89, 1981).
 
+### `congruent-number` — Congruent number problem — P2, partial/open
+**Form.** System: x² + y² = z², xy = 2n with n > 0 squarefree and x, y, z rational;
+equivalently positive rank of y² = x³ − n²x. (Over ℤ the system is a finite divisor
+problem.)
+**Status.** Tunnell's criterion: n congruent ⇒ the theta-series counts agree
+(unconditional, via Coates–Wiles); the converse is known only under BSD. A flagship "system + elliptic curve bridge" family.
+**Software.** Sage/Magma via the elliptic curve rank; Tunnell counts via theta series.
+**References.** Tunnell 1983; Coates–Wiles 1977; Koblitz, *Introduction to Elliptic Curves and Modular Forms*.
 
 ---
 
