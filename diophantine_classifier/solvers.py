@@ -1154,6 +1154,40 @@ def _solve_egyptian(cls, match):
         "permutations give the rest", complete=True)
 
 
+def _solve_catalan(cls, match):
+    r"""
+    Catalan's equation: Mihailescu's theorem, as a witness.
+
+    Mihailescu's theorem says `3^2 - 2^3 = 1` is the only solution with
+    `x, y, p, q \ge 2`.  The *bare* integer equation has infinitely many
+    degenerate solutions outside those hypotheses (`p = 1` or `q = 1` with
+    any base, `y = 0` with `x^p = 1`, `x = \pm 1`, ...), and the parser does
+    not yet carry side conditions, so the result is a witness: the one
+    solution under the conventional hypotheses, with ``complete=False`` and
+    the hypotheses spelled out in the description.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: S = solve("x^p - y^q = 1")
+        sage: S.solutions                       # unknowns (x, p, y, q)
+        [(3, 2, 2, 3)]
+        sage: S.kind, S.complete
+        ('witness', False)
+        sage: "x, y, p, q >= 2" in S.description
+        True
+    """
+    # 3^2 - 2^3 = 1 in the standard coordinates (x, p, y, q)
+    standard = {"x": ZZ(3), "p": ZZ(2), "y": ZZ(2), "q": ZZ(3)}
+    names = _normalized(match)
+    return SolutionSet(
+        names, [tuple(standard[v] for v in names)], "witness",
+        "Mihailescu's theorem: 3^2 - 2^3 = 1 is the only solution with "
+        "x, y, p, q >= 2; the bare equation also has infinitely many "
+        "degenerate solutions (an exponent 1, a base 0 or ±1) that are not "
+        "listed", complete=False)
+
+
 SOLVERS = {
     "univariate": _solve_univariate,
     "linear": _solve_linear,
@@ -1164,6 +1198,7 @@ SOLVERS = {
     "elliptic-weierstrass": _solve_weierstrass,
     "thue": _solve_thue,
     "egyptian-fractions": _solve_egyptian,
+    "catalan": _solve_catalan,
 }
 
 

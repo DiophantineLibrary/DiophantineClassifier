@@ -243,6 +243,14 @@ primitive solutions with min ≥ 2 exponents; Fermat–Catalan/Beal conjectures 
 Poonen–Schaefer–Stoll 2007; Bennett–Chen–Dahmen–Yazdani, "Generalized Fermat
 equations: a miscellany" (Int. J. Number Theory 11, 2015).
 
+### `catalan` — Catalan's equation — P1, solved
+**Form.** x^p − y^q = 1, x, y > 0, p, q ≥ 2.
+**Status.** Only 3² − 2³ = 1 (Mihăilescu 2002/2004, published Crelle 2004), using
+cyclotomic fields — no logarithm bounds needed. Tijdeman 1976 had given effective
+finiteness.
+**References.** Catalan 1844; Tijdeman 1976; Mihăilescu 2004; Bilu–Bugeaud–Mignotte,
+*The Problem of Catalan* (2014).
+
 
 ---
 
