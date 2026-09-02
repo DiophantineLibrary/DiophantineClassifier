@@ -1,0 +1,26 @@
+# Family: Thue-Mahler equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: thue-mahler
+name: Thue-Mahler equation
+priority: 1
+status: algorithmic
+class: curve
+form: F(x, y) = m * p_1^N_1 * ... * p_s^N_s
+parents:
+- thue
+matcher: true
+methods:
+- S-unit reduction (Tzanakis-de Weger)
+- Gherga-Siksek algorithm
+software:
+  magma: Gherga-Siksek ThueMahler (GitHub)
+examples:
+- x^3 + 2*y^3 = 5^a * 11^b
+references:
+- key: Mahler1933
+  why: "origin of the problem: finiteness with prime-power right-hand sides (p-adic method)"
+- key: TzanakisDeWeger1992
+  why: the classical practical algorithm
+- key: GhergaSiksek2022
+  why: the modern efficient implementation (Magma code)

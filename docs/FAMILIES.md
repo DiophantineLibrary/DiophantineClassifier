@@ -177,6 +177,15 @@ certification for large fields); Magma: `Thue`.
 **References.** Thue 1909; Baker 1968; Bilu–Hanrot, "Solving Thue equations of high
 degree" (J. Number Theory 60, 1996).
 
+### `thue-mahler` — Thue–Mahler equation — P1, effective/algorithmic
+**Form.** F(x, y) = m · p₁^{N₁} ⋯ p_s^{N_s}, F irreducible deg ≥ 3, gcd(x,y) restrictions.
+**Status.** Finite (Mahler 1933), effective (Coates 1969); practical algorithm
+Tzanakis–de Weger 1992; modern efficient implementation Gherga–Siksek.
+**Software.** Magma: Gherga–Siksek `ThueMahler` code (GitHub); PARI ≥ 2.17 has
+S-unit tooling to script it.
+**References.** Mahler 1933; Tzanakis–de Weger 1992; Gherga–Siksek,
+"Efficient resolution of Thue–Mahler equations" (2022).
+
 ### `hyperelliptic` — Hyperelliptic curves — P1, effective (integral) / ineffective (rational)
 **Form.** y² = f(x), f squarefree, deg f ≥ 5.
 **Status.** Integral points: finite, effective (Baker); practical via Baker + LLL
