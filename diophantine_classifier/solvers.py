@@ -1154,6 +1154,30 @@ def _solve_egyptian(cls, match):
         "permutations give the rest", complete=True)
 
 
+def _solve_ramanujan_nagell(cls, match):
+    r"""
+    The classical Ramanujan-Nagell equation ``x^2 + 7 = 2^n``.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: solve("x^2 + 7 = 2^n").solutions
+        [(1, 3), (3, 4), (5, 5), (11, 7), (181, 15)]
+    """
+    d, k, base = _zz(match.data, "d"), _zz(match.data, "k"), _zz(match.data, "base")
+    if (d, k, base) != (7, 1, 2):
+        raise SolverUnavailable(
+            "only the classical x^2 + 7 = 2^n is hardwired; general (d, k, b) "
+            "need a Baker + LLL computation (Petho-de Weger)")
+    pairs = [(ZZ(x), ZZ(n))
+             for x, n in [(1, 3), (3, 4), (5, 5), (11, 7), (181, 15)]]
+    return SolutionSet(
+        _normalized(match), pairs, "finite-complete",
+        "Nagell's theorem: n ∈ {3, 4, 5, 7, 15} (x > 0 shown; -x symmetric)",
+        complete=True)
+
+
+#: dispatch table: family slug -> solver function
 SOLVERS = {
     "univariate": _solve_univariate,
     "linear": _solve_linear,
@@ -1164,6 +1188,7 @@ SOLVERS = {
     "elliptic-weierstrass": _solve_weierstrass,
     "thue": _solve_thue,
     "egyptian-fractions": _solve_egyptian,
+    "ramanujan-nagell": _solve_ramanujan_nagell,
 }
 
 

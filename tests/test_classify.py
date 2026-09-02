@@ -39,6 +39,8 @@ CORPUS = [
     # diagonal / surfaces
     ("x^4 + y^4 + z^4 = w^4", "", "equal-sums-like-powers"),   # Elkies
     # polynomial-exponential
+    ("x^2 + 7 = 2^n", "", "ramanujan-nagell"),
+    ("x^2 + 11 = 3^n", "", "ramanujan-nagell"),
     ("x^3 - 4 = y^n", "", "power-values"),
     # unit fractions
     ("1/x + 1/y + 1/z = 1", "", "egyptian-fractions"),
@@ -71,6 +73,12 @@ def test_gen_fermat_regimes():
     assert spherical.data["regime"] == "spherical"
     hyperbolic = classify("x^2 + y^7 = z^3")
     assert hyperbolic.data["regime"] == "hyperbolic"
+
+
+def test_explain_smoke():
+    text = classify("x^2 + 7 = 2^n").explain()
+    assert "ramanujan-nagell" in text
+    assert "Nagell" in text or "1948" in text
 
 
 def test_match_lookup_by_slug():
