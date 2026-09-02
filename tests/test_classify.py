@@ -24,6 +24,7 @@ CORPUS = [
     ("x^2 + y^2 - z^2 + 3*x - 7 = 0", "", "quadric"),
     # genus one
     ("y^2 + y = x^3 - x^2 - 10*x - 20", "", "elliptic-weierstrass"),
+    ("y^2 = x^4 + 3*x + 1", "", "elliptic-quartic"),
     # higher-genus curves and binary forms
     ("x^3 + 2*y^3 = 11", "", "thue"),
     ("x^4 - 2*y^4 = 1", "", "thue"),
