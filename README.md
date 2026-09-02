@@ -17,11 +17,11 @@ standalone library.
 
 > **Status of this branch.** This is one PR of a stacked series that builds the
 > classifier layer by layer; the description above is where the series lands.
-> What runs *here* is the parser, the registry, the bibliography, the matchers
-> and the classification pipeline — the examples below all work on this branch,
-> and they use the three families registered so far. The solvers and the
-> remaining 61 families arrive in the later PRs; the closing PR restores the
-> full README.
+> Every layer — parser, registry, matchers, classification, solvers, CLI — runs
+> *here*, but only over the three families registered so far, which is why the
+> examples below are linear and univariate rather than Pell and Mordell. Each
+> remaining family arrives in its own PR; the closing PR restores the full
+> README.
 
 ## Quick start
 
@@ -32,21 +32,32 @@ sage -pip install -e .        # or: use sage -python from the repo root
 ```
 
 ```python
-sage: from diophantine_classifier import classify, parse, families
+sage: from diophantine_classifier import classify, solve, families
 
 sage: classify("3*x + 5*y = 1")
 Classification('3*x + 5*y = 1' -> linear)
-sage: classify("x^2 - 5*x + 6 = 0").slug
-'univariate'
-sage: classify("x^2 + y^3 + z^5 = 7").slug     # last-resort answer
-'general-polynomial'
 
-sage: cls = classify("(x^2 - 2)*(y^2 - 3) = 0")    # reducible: components
-sage: cls.slug, [c.slug for c in cls.components]
-('reducible', ['univariate', 'univariate'])
+sage: S = solve("3*x + 5*y = 1")               # infinite: iterable
+sage: S.kind, S.solutions
+('infinite', [(2, -1)])
+sage: S.first(4)
+[(2, -1), (-3, 2), (7, -4), (-8, 5)]
+
+sage: solve("x^2 - 5*x + 6 = 0").solutions     # finite: complete list
+[(2,), (3,)]
 
 sage: sorted(families())                       # the registry, so far
 ['general-polynomial', 'linear', 'univariate']
+```
+
+An equation whose family has no wired-up solver raises `SolverUnavailable`,
+carrying the registry's software pointers and filled code templates.
+
+Command line:
+
+```bash
+sage -python -m diophantine_classifier.cli "3*x + 5*y = 1" --solve
+dioclassify "x^2 - 5*x + 6 = 0" --solve --json    # after install
 ```
 
 ## The family registry
@@ -96,13 +107,17 @@ reports the most specific match and the full lineage.
   ranked by depth in the family DAG so the most specific family wins, and
   `explain()` / `as_dict()` give the human report and the JSON contract for
   the website backend.
+- **Solvers** for the families where standard software is definitive — on
+  this branch, linear (Bezout plus the solution lattice) and univariate (root
+  finding). **Infinite solution sets are iterable** (`S.first(10)`, or just
+  iterate). Each further solver arrives with its family.
+- **The command line**: `dioclassify`, with `--solve` and `--json`.
 
 ## Coming in the rest of the series
 
-- **Solvers** for the families where standard software is definitive, with
-  iterable solution sets for infinite families, and the command-line
-  interface.
-- **The remaining families**, one PR each.
+- **The remaining families**, one PR each: its registry entry, its prose in
+  `docs/FAMILIES.md`, its references, its corpus rows and, where standard
+  software is definitive, its solver.
 
 See [docs/DESIGN.md](docs/DESIGN.md) for the target architecture and the
 roadmap beyond this series (wave 2: transformations — completing the square,

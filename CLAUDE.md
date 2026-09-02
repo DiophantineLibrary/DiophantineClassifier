@@ -13,7 +13,7 @@ Classification engine for the Diophantine Library
 - CI: `.github/workflows/ci.yml` runs unit tests, doctests, coverage and the
   references pipeline in the `sagemath/sagemath` container on every PR; that
   image has no `make`, so the steps spell out the commands
-- CLI: `sage -python -m diophantine_classifier.cli "x^2 - 61*y^2 = 1" --solve`  *(later in the series)*
+- CLI: `sage -python -m diophantine_classifier.cli "x^2 - 61*y^2 = 1" --solve`
 
 ## Architecture (see docs/DESIGN.md)
 
@@ -39,7 +39,7 @@ are specified here but land in a later PR of the series.
   structural roles. Solvers work normalized and `pull_back()`.
 - `classify.py` — factor-split, run matchers, rank by DAG depth (most
   specific family wins), `explain()` / `as_dict()`.
-- `solvers.py` *(later in the series)* — per-family solvers (Sage/PARI); `SolutionSet` is iterable
+- `solvers.py` — per-family solvers (Sage/PARI); `SolutionSet` is iterable
   (streams for infinite families); `SolverUnavailable` carries code
   templates for the rest.
 - `docs/FAMILIES.md` — the human-readable, referenced enumeration.
