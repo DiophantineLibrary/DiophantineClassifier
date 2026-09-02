@@ -288,6 +288,15 @@ conditions, ineffective in general (subspace theorem).
 
 ## 8. Surfaces, higher dimension, and thin orbits
 
+### `apollonian` — Apollonian gaskets and thin orbits — P3, partial
+**Form.** Descartes: (a+b+c+d)² = 2(a²+b²+c²+d²); orbits of the Apollonian group.
+**Status.** Almost every admissible integer appears as a curvature (Bourgain–Kontorovich
+2014); the local-global conjecture is **false** (Haag–Kertzer–Rickards–Stange,
+Ann. of Math. 2024) — a striking recent reversal and a flagship "thin group"
+family.
+**References.** Graham–Lagarias–Mallows–Wilks–Yan 2003; Bourgain–Kontorovich 2014;
+Haag–Kertzer–Rickards–Stange 2024.
+
 ### `egyptian-fractions` — Unit fraction equations — P1 (Erdős–Straus), open
 **Form.** 1/x₁ + ⋯ + 1/x_k = a/n.
 **Status.** For fixed k, a, n: finitely many, enumerable by branch-and-bound.
