@@ -295,6 +295,14 @@ As n varies: `erdos-straus` below; rich combinatorics (Erdős–Graham problems,
 Bloom 2021 density result for unit fractions).
 **References.** Graham's surveys; Bloom 2021.
 
+### `waring` — Waring-type diagonal representations — P2, partial
+**Form.** x₁^k + ⋯ + x_s^k = n (x_i ≥ 0).
+**Status.** g(k) essentially known (g(3)=9, g(4)=19 — Wieferich, Balasubramanian–
+Deshouillers–Dress); G(k) known only for k = 2, 4; circle method gives asymptotics
+for s large; individual (k, s, n) instances: search + local conditions.
+**References.** Hardy–Littlewood; Vaughan, *The Hardy–Littlewood Method*;
+Vaughan–Wooley survey 2002.
+
 ### `diagonal-form` — Diagonal equations — P2, umbrella
 **Form.** a₁x₁^k + ⋯ + a_sx_s^k = c.
 **Status.** Umbrella for `waring`, `sum-of-three-cubes`, `equal-sums-like-powers`,
