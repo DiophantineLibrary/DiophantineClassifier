@@ -17,10 +17,11 @@ standalone library.
 
 > **Status of this branch.** This is one PR of a stacked series that builds the
 > classifier layer by layer; the description above is where the series lands.
-> What runs *here* is the parser, the family registry, the bibliography and the
-> structural matchers — the examples below all work on this branch. The
-> classification pipeline, the solvers and the remaining 61 families arrive in
-> the later PRs of the series; the closing PR restores the full README.
+> What runs *here* is the parser, the registry, the bibliography, the matchers
+> and the classification pipeline — the examples below all work on this branch,
+> and they use the three families registered so far. The solvers and the
+> remaining 61 families arrive in the later PRs; the closing PR restores the
+> full README.
 
 ## Quick start
 
@@ -31,23 +32,21 @@ sage -pip install -e .        # or: use sage -python from the repo root
 ```
 
 ```python
-sage: from diophantine_classifier import parse, families, family
+sage: from diophantine_classifier import classify, parse, families
 
-sage: pe = parse("x^2 - 61*y^2 = 1")     # the parser: this branch
-sage: pe.unknowns
-('x', 'y')
-sage: pe.poly
-x^2 - 61*y^2 - 1
+sage: classify("3*x + 5*y = 1")
+Classification('3*x + 5*y = 1' -> linear)
+sage: classify("x^2 - 5*x + 6 = 0").slug
+'univariate'
+sage: classify("x^2 + y^3 + z^5 = 7").slug     # last-resort answer
+'general-polynomial'
 
-sage: sorted(families())                 # the registry: this branch
+sage: cls = classify("(x^2 - 2)*(y^2 - 3) = 0")    # reducible: components
+sage: cls.slug, [c.slug for c in cls.components]
+('reducible', ['univariate', 'univariate'])
+
+sage: sorted(families())                       # the registry, so far
 ['general-polynomial', 'linear', 'univariate']
-
-sage: family("linear").status
-'solved'
-sage: family("linear").parents           # the specialization DAG
-('general-polynomial',)
-sage: family("linear").formatted_references()[0][0]
-'NivenZuckermanMontgomery1991'
 ```
 
 ## The family registry
@@ -91,18 +90,18 @@ reports the most specific match and the full lineage.
 - **The bibliography and its pipeline**: BibTeX parsing and display
   formatting, plus `tools/check_references.py` and its monotone verification
   ledger.
-- **Structural matchers**: `matchers.run()` recognizes the shapes of ~45
-  families and extracts each one's data. They are inert for families the
-  registry does not have yet: the classifier ranks matches through the
-  registry, which is what lets the families land one PR at a time.
+- **Structural matchers** for ~45 families, and a genus-based geometry
+  fallback routing irreducible plane curves by genus.
+- **Classification**: reducible equations split into components, matches are
+  ranked by depth in the family DAG so the most specific family wins, and
+  `explain()` / `as_dict()` give the human report and the JSON contract for
+  the website backend.
 
 ## Coming in the rest of the series
 
-- **Classification**: reducible equations split into components, matches are
-  ranked by depth in the family DAG, and `explain()` / `as_dict()` produce
-  the human report and the JSON contract for the website backend.
 - **Solvers** for the families where standard software is definitive, with
-  iterable solution sets for infinite families.
+  iterable solution sets for infinite families, and the command-line
+  interface.
 - **The remaining families**, one PR each.
 
 See [docs/DESIGN.md](docs/DESIGN.md) for the target architecture and the
