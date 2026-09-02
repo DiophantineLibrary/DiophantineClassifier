@@ -1,0 +1,22 @@
+# Family: Unit fraction (Egyptian fraction) equations
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: egyptian-fractions
+name: Unit fraction (Egyptian fraction) equations
+priority: 1
+status: algorithmic
+class: special
+form: 1/x_1 + ... + 1/x_k = a/n
+parents:
+- general-polynomial
+matcher: true
+methods:
+- branch-and-bound enumeration for fixed parameters
+examples:
+- 1/x + 1/y + 1/z = 1
+references:
+- key: Graham2013
+  why: survey of Erdos-style unit fraction problems
+- key: Bloom2021
+  why: 'density result: positive-density sets yield unit-fraction representations
+    of 1'

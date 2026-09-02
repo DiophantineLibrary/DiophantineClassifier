@@ -13,6 +13,19 @@ CORPUS = [
     ("3*x + 5*y = 1", "", "linear"),
     ("12*x - 21*y + 30*z = 9", "", "linear"),
     ("x^2 - 5*x + 6 = 0", "", "univariate"),
+    # quadratic, more variables
+    ("x^2 + y^2 - z^2 + 3*x - 7 = 0", "", "quadric"),
+    # higher-genus curves and binary forms
+    ("x^3*y + y^3*z + z^3*x = 0", "", "general-curve"),     # Klein quartic
+    # Fermat-type
+    ("x^2 + y^4 = z^3", "", "generalized-fermat"),
+    ("2*x^3 + 3*y^3 = 5*z^3", "", "generalized-fermat"),
+    ("3*x^3 + 4*y^3 + 5*z^3 = 0", "", "generalized-fermat"),  # Selmer
+    ("x^p + y^q = z^r", "", "generalized-fermat"),            # Beal
+    # polynomial-exponential
+    ("x^3 - 4 = y^n", "", "power-values"),
+    # unit fractions
+    ("1/x + 1/y + 1/z = 1", "", "egyptian-fractions"),
 ]
 
 
@@ -35,6 +48,13 @@ def test_parametric_quadratic_form_classifies():
     """A parametric quadratic form must classify, not raise (matchers._gram)."""
     cls = classify("x^2 + y^2 = D*z^2", params="D")
     assert cls.slug in {"quadratic-form-zero", "general-polynomial"}
+
+
+def test_gen_fermat_regimes():
+    spherical = classify("x^2 + y^4 = z^3")
+    assert spherical.data["regime"] == "spherical"
+    hyperbolic = classify("x^2 + y^7 = z^3")
+    assert hyperbolic.data["regime"] == "hyperbolic"
 
 
 def test_match_lookup_by_slug():

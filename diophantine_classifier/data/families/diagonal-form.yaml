@@ -1,0 +1,15 @@
+# Family: Diagonal form equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: diagonal-form
+name: Diagonal form equation
+priority: 2
+status: partial
+class: surface
+form: a_1*x_1^k + ... + a_s*x_s^k = c
+parents:
+- general-polynomial
+matcher: true
+references:
+- key: DavenportLewis1963
+  why: solvability theory for homogeneous additive equations
