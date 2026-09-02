@@ -17,10 +17,10 @@ standalone library.
 
 > **Status of this branch.** This is one PR of a stacked series that builds the
 > classifier layer by layer; the description above is where the series lands.
-> What runs *here* is the parser, the family registry and the bibliography —
-> the examples below all work on this branch. Matchers, classification,
-> solvers and the remaining 61 families arrive in the later PRs of the series;
-> the closing PR restores the full README.
+> What runs *here* is the parser, the family registry, the bibliography and the
+> structural matchers — the examples below all work on this branch. The
+> classification pipeline, the solvers and the remaining 61 families arrive in
+> the later PRs of the series; the closing PR restores the full README.
 
 ## Quick start
 
@@ -91,11 +91,13 @@ reports the most specific match and the full lineage.
 - **The bibliography and its pipeline**: BibTeX parsing and display
   formatting, plus `tools/check_references.py` and its monotone verification
   ledger.
+- **Structural matchers**: `matchers.run()` recognizes the shapes of ~45
+  families and extracts each one's data. They are inert for families the
+  registry does not have yet: the classifier ranks matches through the
+  registry, which is what lets the families land one PR at a time.
 
 ## Coming in the rest of the series
 
-- **Structural matchers** for ~45 families, and a genus-based geometry
-  fallback for irreducible plane curves.
 - **Classification**: reducible equations split into components, matches are
   ranked by depth in the family DAG, and `explain()` / `as_dict()` produce
   the human report and the JSON contract for the website backend.
