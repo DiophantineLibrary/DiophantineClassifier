@@ -31,6 +31,7 @@ CORPUS = [
     ("y^3 = x^4 + 2", "", "superelliptic"),
     ("x^3*y + y^3*z + z^3*x = 0", "", "general-curve"),     # Klein quartic
     ("x^2*y^2 = x^3 + 1", "", "genus-one-curve"),
+    ("y^2 = x^3", "", "genus-zero-curve"),                  # cuspidal
     # Fermat-type
     ("x^2 + y^4 = z^3", "", "generalized-fermat"),
     ("2*x^3 + 3*y^3 = 5*z^3", "", "generalized-fermat"),
