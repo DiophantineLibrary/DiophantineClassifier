@@ -283,6 +283,17 @@ conditions, ineffective in general (subspace theorem).
 **References.** Evertse–Győry, *Discriminant Equations in Diophantine Number Theory*
 (2017) and *Unit Equations* (2015).
 
+### `norm-form` — Norm form equations — P2, partial/algorithmic
+**Form.** N_{K/ℚ}(x₁ω₁ + ⋯ + x_kω_k) = m.
+**Status.** Schmidt 1972: finiteness iff nondegenerate (subspace theorem,
+ineffective); full-module case: solutions = finitely many orbits under the unit
+group, computable (this is the algorithmic core of `bnfisintnorm`); effective
+results for special modules (Győry). Local-global: the Hasse norm principle can fail
+(Frei–Loughran–Newton 2018 quantify how often, for abelian extensions).
+**Software.** PARI: `bnfisintnorm`; Magma: `NormEquation`; Sage: `K.elements_of_norm` —
+all for the full ring of integers (or an order), not an arbitrary submodule.
+**References.** Schmidt 1972; Győry 1980s; Fincke–Pohst 1983; Frei–Loughran–Newton 2018.
+
 
 ---
 
