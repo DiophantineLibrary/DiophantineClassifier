@@ -39,6 +39,7 @@ CORPUS = [
     # diagonal / surfaces
     ("x^4 + y^4 + z^4 = w^4", "", "equal-sums-like-powers"),   # Elkies
     # polynomial-exponential
+    ("x^2 + 2 = y^n", "", "lebesgue-nagell"),
     ("x^3 - 4 = y^n", "", "power-values"),
     # unit fractions
     ("1/x + 1/y + 1/z = 1", "", "egyptian-fractions"),

@@ -248,6 +248,15 @@ equations: a miscellany" (Int. J. Number Theory 11, 2015).
 
 ## 6. Polynomial–exponential equations
 
+### `lebesgue-nagell` — Lebesgue–Nagell equation — P1, partial/effective
+**Form.** x² + d = yⁿ (n ≥ 3 unknown along with x, y).
+**Status.** n effectively bounded (Schinzel–Tijdeman); solved completely for
+1 ≤ d ≤ 100 (Bugeaud–Mignotte–Siksek 2006, combining Baker's method, the modular
+method, and classical algebraic techniques); many other d in the literature
+(Lebesgue 1850: d = 1 has no solutions; Cohn: 77 values).
+**References.** Lebesgue 1850; Cohn 1993; Bugeaud–Mignotte–Siksek,
+"Classical and modular approaches to exponential Diophantine equations II" (2006).
+
 ### `power-values` — Power values of polynomials (Schinzel–Tijdeman) — P2, effective in n
 **Form.** f(x) = c·yⁿ, f fixed polynomial with ≥ 2 distinct roots, n ≥ 2 unknown.
 **Status.** n is effectively bounded (Schinzel–Tijdeman 1976); for each fixed n it

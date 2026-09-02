@@ -1,0 +1,24 @@
+# Family: Lebesgue-Nagell equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: lebesgue-nagell
+name: Lebesgue-Nagell equation
+priority: 1
+status: partial
+class: expdioph
+form: x^2 + d = y^n
+parents:
+- power-values
+matcher: true
+methods:
+- Baker + modular method (Bugeaud-Mignotte-Siksek)
+notes: Solved completely for 1 <= d <= 100 (BMS 2006); d = 1 Lebesgue 1850.
+examples:
+- x^2 + 2 = y^n
+references:
+- key: Lebesgue1850
+  why: the case d = 1
+- key: Cohn1993
+  why: resolution for 77 values of d by algebraic methods
+- key: BugeaudMignotteSiksek2006b
+  why: complete resolution for 1 <= d <= 100 (Baker + modular methods)
