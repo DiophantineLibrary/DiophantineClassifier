@@ -14,7 +14,10 @@ CORPUS = [
     ("12*x - 21*y + 30*z = 9", "", "linear"),
     ("x^2 - 5*x + 6 = 0", "", "univariate"),
     # quadratic, two variables
+    ("x^2 - 61*y^2 = 1", "", "pell"),
+    ("x^2 - 2*y^2 = -1", "", "pell"),
     ("x^2 - 61*y^2 = 5", "", "pell-like"),
+    ("x^2 - D*y^2 = 1", "D", "pell"),
     ("2*x^2 + 3*x*y - 5*y^2 + x - 7 = 0", "", "binary-quadratic"),
     ("3*x^2 + 7*y^2 = 19", "", "binary-qf-representation"),
     # quadratic, more variables
@@ -60,6 +63,13 @@ def test_reducible():
     assert sorted(c.slug for c in cls.components) == ["univariate", "univariate"]
 
 
+def test_lineage_pell():
+    cls = classify("x^2 - 61*y^2 = 1")
+    assert cls.lineage[0] == "pell-like"
+    assert "binary-qf-representation" in cls.lineage
+    assert cls.data["D"] == "61"
+
+
 def test_parametric_quadratic_form_classifies():
     """A parametric quadratic form must classify, not raise (matchers._gram)."""
     cls = classify("x^2 + y^2 = D*z^2", params="D")
@@ -71,6 +81,13 @@ def test_gen_fermat_regimes():
     assert spherical.data["regime"] == "spherical"
     hyperbolic = classify("x^2 + y^7 = z^3")
     assert hyperbolic.data["regime"] == "hyperbolic"
+
+
+def test_as_dict_roundtrip():
+    import json
+    cls = classify("x^2 - 61*y^2 = 1")
+    blob = json.dumps(cls.as_dict())
+    assert "pell" in blob
 
 
 def test_match_lookup_by_slug():
@@ -93,6 +110,16 @@ def test_code_is_filled_from_each_match_not_the_primary():
     assert "{gram}" not in gram
     assert "[[1, 0, 0], [0, 3, 0], [0, 0, -7]]" in gram
 
+
+def test_code_skips_families_that_were_not_matched():
+    cls = classify("x^2 - 61*y^2 = 1")
+    emitted = {m.slug for m in cls.matches}
+    assert "quadric" in cls.lineage and "quadric" not in emitted
+    assert all(key.rsplit("(", 1)[1].rstrip(")") in emitted
+               for key in cls.code())
+
+
+# --- reduction keeps the source problem (brief 6.2) ----------------------
 
 def test_repeated_factor_preserves_input():
     text = "(x + y)^2 = 0"
@@ -170,6 +197,17 @@ def test_lineage_output_is_deterministic():
     runs = [classify("3*x + 5*y = 1").as_dict()["lineage_paths"]
             for _ in range(5)]
     assert all(run == runs[0] for run in runs)
+
+
+def test_transform_serializes_structurally():
+    """The website contract gets the same object the solvers use."""
+    import json
+    cls = classify("5*x^2 - y^2 = 1")
+    transform = cls.as_dict()["transform"]
+    assert transform["to_normalized"] == {"x": "y", "y": "x"}
+    assert transform["to_source"] == {"x": "y", "y": "x"}
+    assert transform["identity"] is False
+    json.dumps(transform)
 
 
 def test_conditions_serialize_structurally():

@@ -80,6 +80,16 @@ under the automorph group.
 `qfbcornacchia`.
 **References.** Cox, *Primes of the form x²+ny²*; Cornacchia 1908.
 
+### `pell` — Pell equation — P1, solved
+**Form.** x² − Dy² = ±1, D > 0 nonsquare.
+**Status.** Infinitely many solutions forming ⟨fundamental solution⟩ × {±1};
+fundamental solution from the continued fraction of √D (period parity decides the
+−1 case). Regulator-size caveat: the fundamental solution can be exponentially
+large in √D; compact representations exist.
+**Software.** Sage: `continued_fraction`, `QuadraticField(D).unit_group()`;
+PARI: `quadunit`; Magma: `FundamentalUnit`.
+**References.** Lagrange 1768; Lenstra, "Solving the Pell equation," Notices AMS 49 (2002).
+
 ### `pell-like` — Generalized Pell equation — P1, algorithmic
 **Form.** x² − Dy² = N (D > 0 nonsquare).
 **Status.** Finitely many classes of solutions, each an orbit under the Pell

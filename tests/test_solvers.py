@@ -25,6 +25,18 @@ def test_solver_does_not_emit_denominator_pole():
     assert_valid_solutions("1/(x - 1) = 1/(y - 1)", S.first(30))
 
 
+def test_pell_61():
+    s = solve("x^2 - 61*y^2 = 1")
+    assert s.kind == "infinite"
+    assert s.solutions[0] == (1766319049, 226153980)
+    assert_valid_solutions("x^2 - 61*y^2 = 1", s.first(6))
+
+
+def test_negative_pell():
+    s = solve("x^2 - 2*y^2 = -1")
+    assert s.solutions[0] == (1, 1)
+
+
 def test_pell_like():
     s = solve("x^2 - 2*y^2 = 7")
     assert s.solutions
@@ -79,6 +91,14 @@ def test_unavailable_carries_hints():
         solve("y^2 = x^7 + 3")
     assert "magma" in str(err.value).lower() or "Chabauty" in str(err.value)
 
+
+def test_solve_accepts_classification():
+    cls = classify("x^2 - 61*y^2 = 1")
+    s = solve(cls)
+    assert s.solutions
+
+
+# --- the requested domain is honored, never ignored (brief 7.2) -----------
 
 def test_linear_over_qq_is_not_integer_gcd_problem():
     S = solve("2*x + 4*y = 1", domain="QQ")
@@ -136,6 +156,17 @@ def test_parametric_univariate_declines_cleanly():
     with pytest.raises(SolverUnavailable):
         solve("x^2 - k = 0", params="k")
 
+
+def test_integer_solver_is_not_reused_for_a_rational_question():
+    """Filtering the ZZ answer would silently drop the rational solutions."""
+    from diophantine_classifier.solvers import SOLVER_DOMAINS
+    assert "QQ" not in SOLVER_DOMAINS["pell"]
+    with pytest.raises(SolverUnavailable) as err:
+        solve("x^2 - 61*y^2 = 1", domain="QQ")
+    assert "QQ" in str(err.value)
+
+
+# --- SolutionSet says what it means (brief 7.4) ---------------------------
 
 def test_high_rank_linear_set_is_iterable():
     eq = " + ".join(f"x{i}" for i in range(10)) + " = 0"
@@ -205,6 +236,37 @@ def test_solver_receives_its_own_match(monkeypatch):
     assert seen["slug"] == "general-polynomial"
     assert "degree" in seen["data"]        # its own data ...
     assert "coeffs" not in seen["data"]    # ... not the linear match's
+
+
+def test_unmatched_ancestor_solver_is_not_invoked(monkeypatch):
+    """A DAG edge is not evidence that the primary data fits an ancestor."""
+    from diophantine_classifier import solvers
+    called = []
+
+    def capture(cls, match):
+        called.append(match.slug)
+        return solvers.SolutionSet(match.transform.normalized_variables, [],
+                                   "empty", "", complete=True)
+
+    cls = classify("x^2 - 61*y^2 = 1")
+    assert "quadric" in cls.lineage                       # an ancestor ...
+    assert cls.match_for("quadric") is None               # ... never matched
+    monkeypatch.setattr(solvers, "SOLVERS", {"quadric": capture})
+    with pytest.raises(SolverUnavailable):
+        solve(cls)
+    assert called == []
+
+
+# --- solutions come back in the user's coordinates (brief 7.3 / 7.6) -----
+
+def test_pell_swap_is_transported_back():
+    """5*x^2 - y^2 = 1 is Pell in the user's y; the answer must not be
+    stated in the standard coordinates."""
+    S = solve("5*x^2 - y^2 = 1")
+    assert S.variables == ("x", "y")
+    sols = S.first(6)
+    assert all(5 * x ** 2 - y ** 2 == 1 for x, y in sols)
+    assert_valid_solutions("5*x^2 - y^2 = 1", sols)
 
 
 def test_component_of_a_rational_equation_keeps_the_parent_conditions():
@@ -394,3 +456,14 @@ def test_conditional_identity_in_two_variables():
     assert_valid_solutions("(x - y)/(x - y) = 1", sols)
 
 
+def test_pell_template_yields_the_plus_one_fundamental_solution():
+    """D = 61 has an odd period: the convergent gives the norm -1 unit and
+    the template must square it (review comment on PR 11)."""
+    import sage.all
+    from sage.repl.preparse import preparse
+    from diophantine_classifier import families
+    code = families()["pell"].fill_code({"D": 61})["sage"]
+    env = dict(vars(sage.all))
+    exec(preparse(code), env)
+    assert env["x1"] ** 2 - 61 * env["y1"] ** 2 == 1
+    assert (env["x1"], env["y1"]) == (1766319049, 226153980)
