@@ -33,6 +33,32 @@ def test_matcher_flags_match_implementation():
         assert fams[slug].matcher, f"{slug}: emitted but matcher flag is false"
 
 
+def test_examples_classify_to_their_family():
+    """Registry examples must classify to the family that lists them (or a
+    descendant, e.g. the fermat example listed under generalized-fermat)."""
+    from diophantine_classifier import classify
+    from diophantine_classifier.registry import ancestors as anc
+    fams = families()
+    for fam in fams.values():
+        if not fam.matcher:
+            continue
+        for ex in fam.examples:
+            cls = classify(ex, params=_infer_params(ex))
+            ok = (cls.slug == fam.slug or fam.slug in anc(cls.slug)
+                  or cls.slug in anc(fam.slug))
+            assert ok, (f"{fam.slug}: example {ex!r} classified as "
+                        f"{cls.slug!r}")
+
+
+def _infer_params(example):
+    """Parameters used in registry examples: single letters not serving as
+    unknowns in that example's family form."""
+    KNOWN = {"x^2 + y^2 + z^2 = n": "n", "x^2 + y^2 + z^2 + w^2 = n": "n",
+             "x^4 + y^4 + z^4 + w^4 = n": "n",
+             "4/n = 1/x + 1/y + 1/z": "n"}
+    return KNOWN.get(example, "")
+
+
 # --- ancestry is paths and edges, not a flattened chain (brief 4.1) -------
 
 def test_path_traversal_on_a_diamond_invents_no_edge():
@@ -124,4 +150,27 @@ def test_list_entries_have_balanced_parentheses():
     for fam in families().values():
         for entry in fam.methods + fam.aliases + fam.examples:
             assert entry.count("(") == entry.count(")"), (fam.slug, entry)
+
+
+def test_sage_code_templates_run_on_their_examples():
+    """Every filled Sage template must execute on the family's own examples
+    (this is what a user copies from the equation page)."""
+    import sage.all
+    from sage.repl.preparse import preparse
+    from diophantine_classifier import classify
+    ran = 0
+    for fam in families().values():
+        if "sage" not in fam.code or not fam.matcher:
+            continue
+        for ex in fam.examples:
+            cls = classify(ex, params=_infer_params(ex))
+            match = next((m for m in cls.matches if m.slug == fam.slug), None)
+            if match is None:
+                continue
+            code = fam.fill_code(match.data)["sage"]
+            assert "{" not in code, (fam.slug, code)
+            env = dict(vars(sage.all))
+            exec(preparse(code), env)
+            ran += 1
+    assert ran >= 1
 

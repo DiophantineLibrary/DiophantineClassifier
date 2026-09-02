@@ -9,7 +9,7 @@ Classification engine for the Diophantine Library
 - Doctests: `make doctest` (= `PYTHONPATH=. sage -t diophantine_classifier/`)
 - Docstring coverage: `make coverage` (must stay 100%)
 - References pipeline: `make references` (regenerates references/REPORT.md)
-- Smoke: `make smoke`  *(later in the series)*
+- Smoke: `make smoke`
 - CI: `.github/workflows/ci.yml` runs unit tests, doctests, coverage and the
   references pipeline in the `sagemath/sagemath` container on every PR; that
   image has no `make`, so the steps spell out the commands
@@ -37,7 +37,7 @@ are specified here but land in a later PR of the series.
 - `transforms.py` — `CoordinateTransform`: the executable, invertible map
   from the user's variables to a family's standard coordinates, plus the
   structural roles. Solvers work normalized and `pull_back()`.
-- `classify.py` *(later in the series)* — factor-split, run matchers, rank by DAG depth (most
+- `classify.py` — factor-split, run matchers, rank by DAG depth (most
   specific family wins), `explain()` / `as_dict()`.
 - `solvers.py` *(later in the series)* — per-family solvers (Sage/PARI); `SolutionSet` is iterable
   (streams for infinite families); `SolverUnavailable` carries code
