@@ -1,0 +1,20 @@
+# Family: Zeros of linear recurrences (Skolem problem)
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: skolem
+name: Zeros of linear recurrences (Skolem problem)
+priority: 2
+status: partial
+class: expdioph
+form: u_n = 0, u a linear recurrence
+parents:
+- exponential-diophantine
+matcher: false
+notes: Decidable for order <= 4; open for order >= 5 - a decidability-boundary exhibit.
+references:
+- key: Skolem1934
+  why: the p-adic method behind the Skolem-Mahler-Lech theorem
+- key: OuaknineWorrell2012
+  why: 'survey: decidability known only up to order 4'
+- key: Bilu2022
+  why: conditional decision procedure for simple recurrences
