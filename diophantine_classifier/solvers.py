@@ -772,9 +772,61 @@ def _nonnegative_line(names, coeffs, b, direction):
                        complete=True, stream=stream)
 
 
+def _solve_egyptian(cls, match):
+    r"""
+    Unit fraction equations ``1/x_1 + ... + 1/x_k = a/n``, concrete case.
+
+    Enumerates all solutions in positive integers with
+    ``x_1 <= x_2 <= ... <= x_k`` by branch-and-bound.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: solve("1/x + 1/y + 1/z = 1").solutions
+        [(2, 3, 6), (2, 4, 4), (3, 3, 3)]
+        sage: solve("4/5 = 1/x + 1/y + 1/z").solutions[:2]
+        [(2, 4, 20), (2, 5, 10)]
+    """
+    a = _zz(match.data, "a")
+    n = _zz(match.data, "n")
+    k = _zz(match.data, "k")
+    if k is None and match.slug == "erdos-straus":
+        a, k = ZZ(4), ZZ(3)
+    if a is None and match.slug == "erdos-straus":
+        a = ZZ(4)
+    if None in (a, n, k):
+        raise SolverUnavailable(
+            "unit-fraction enumeration needs concrete a and n (parametric "
+            "n is the open conjecture territory)")
+    if k > 5 or n > MAX_EGYPTIAN_N:
+        raise SolverUnavailable("enumeration bound exceeded (k <= 5, "
+                                f"n <= {MAX_EGYPTIAN_N})")
+    sols = []
+
+    def rec(k_left, target, minimum, acc):
+        if target <= 0:
+            return
+        if k_left == 1:
+            if target.numerator() == 1 and target.denominator() >= minimum:
+                sols.append(acc + (ZZ(target.denominator()),))
+            return
+        lo = max(minimum, (QQ(1) / target).floor() + 1)
+        hi = (QQ(k_left) / target).floor()
+        for x in range(lo, hi + 1):
+            rec(k_left - 1, target - QQ(1) / x, x, acc + (ZZ(x),))
+
+    rec(int(k), QQ(a) / QQ(n), 1, ())
+    kind = "finite-complete" if sols else "empty"
+    return SolutionSet(
+        _normalized(match), sorted(sols), kind,
+        "all solutions in positive integers with x_1 <= ... <= x_k; "
+        "permutations give the rest", complete=True)
+
+
 SOLVERS = {
     "univariate": _solve_univariate,
     "linear": _solve_linear,
+    "egyptian-fractions": _solve_egyptian,
 }
 
 

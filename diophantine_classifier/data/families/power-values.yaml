@@ -1,0 +1,22 @@
+# Family: Power values of polynomials (Schinzel-Tijdeman)
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: power-values
+name: Power values of polynomials (Schinzel-Tijdeman)
+priority: 2
+status: effective
+class: expdioph
+form: f(x) = c*y^n, n unknown
+parents:
+- polynomial-exponential
+matcher: true
+methods:
+- Schinzel-Tijdeman bound on n
+- then superelliptic for each n
+examples:
+- x^3 - 4 = y^n
+references:
+- key: SchinzelTijdeman1976
+  why: the effective bound on the exponent n
+- key: ShoreyTijdeman1986
+  why: systematic theory of power values of polynomials

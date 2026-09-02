@@ -1,0 +1,19 @@
+# Family: Decomposable form equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: decomposable-form
+name: Decomposable form equation
+priority: 2
+status: partial
+class: normform
+form: F(x_1,...,x_k) = m, F a product of linear forms over QQbar
+parents:
+- general-polynomial
+matcher: false
+methods:
+- S-unit theory (Evertse-Gyory)
+references:
+- key: EvertseGyory2015
+  why: the unifying S-unit framework for decomposable form equations
+- key: EvertseGyory2017
+  why: discriminant and index form equations within the same framework

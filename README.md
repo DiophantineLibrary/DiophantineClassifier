@@ -17,11 +17,11 @@ standalone library.
 
 > **Status of this branch.** This is one PR of a stacked series that builds the
 > classifier layer by layer; the description above is where the series lands.
-> Every layer — parser, registry, matchers, classification, solvers, CLI — runs
-> *here*, but only over the three families registered so far, which is why the
-> examples below are linear and univariate rather than Pell and Mordell. Each
-> remaining family arrives in its own PR; the closing PR restores the full
-> README.
+> Every layer runs *here*, and the examples below use `linear` and `univariate`
+> because those hold at every point in the series; the registry holds the families that have landed so
+> far, and each remaining family arrives in its own PR with its prose entry,
+> its registry file, its references and its solver. The closing PR restores the
+> full README.
 
 ## Quick start
 
@@ -32,7 +32,7 @@ sage -pip install -e .        # or: use sage -python from the repo root
 ```
 
 ```python
-sage: from diophantine_classifier import classify, solve, families
+sage: from diophantine_classifier import classify, solve
 
 sage: classify("3*x + 5*y = 1")
 Classification('3*x + 5*y = 1' -> linear)
@@ -45,9 +45,6 @@ sage: S.first(4)
 
 sage: solve("x^2 - 5*x + 6 = 0").solutions     # finite: complete list
 [(2,), (3,)]
-
-sage: sorted(families())                       # the registry, so far
-['general-polynomial', 'linear', 'univariate']
 ```
 
 An equation whose family has no wired-up solver raises `SolverUnavailable`,
@@ -68,8 +65,8 @@ The mathematical content lives in synchronized places:
   enumeration of families of Diophantine equations: standard forms,
   solvability status, methods, software, and the specialization DAG, from
   linear equations through the undecidability boundary of Hilbert's tenth
-  problem. Three families are enumerated on this branch; each of the
-  remaining ~60 arrives in its own PR, with its prose entry, its registry
+  problem. The families that have landed so far are enumerated here; each
+  remaining one arrives in its own PR, with its prose entry, its registry
   file and its references reviewed together.
 - **[diophantine_classifier/data/families/](diophantine_classifier/data/families)**
   — the machine-readable registry driving the classifier: one YAML file per

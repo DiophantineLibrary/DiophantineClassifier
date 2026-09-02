@@ -1,0 +1,19 @@
+# Family: Polynomial-exponential equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: polynomial-exponential
+name: Polynomial-exponential equation
+priority: 2
+status: partial
+class: expdioph
+form: mixed polynomial and exponential terms
+parents: []
+matcher: true
+methods:
+- Baker's method case by case; undecidable in general (DPR 1961)
+notes: Umbrella for every equation mixing polynomial and exponential terms, including
+  unknown bases with unknown exponents (x^p - y^q = 1). Its purely exponential
+  subclass (fixed bases, unknown exponents only) is exponential-diophantine.
+references:
+- key: ShoreyTijdeman1986
+  why: the standard monograph on exponential and polynomial-exponential equations

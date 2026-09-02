@@ -12,3 +12,9 @@ def test_linear_stream():
     assert all(3 * x + 5 * y == 1 for x, y in sols)
 
 
+def test_egyptian_complete():
+    s = solve("1/x + 1/y + 1/z = 1")
+    assert s.solutions == [(2, 3, 6), (2, 4, 4), (3, 3, 3)]
+    assert s.complete
+
+
