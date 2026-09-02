@@ -40,6 +40,8 @@ CORPUS = [
     ("x^4 + y^4 + z^4 = w^4", "", "equal-sums-like-powers"),   # Elkies
     # polynomial-exponential
     ("x^3 - 4 = y^n", "", "power-values"),
+    ("3^m - 2^n = 1", "", "pillai"),
+    ("3^m - 2^n = 5", "", "pillai"),
     # unit fractions
     ("1/x + 1/y + 1/z = 1", "", "egyptian-fractions"),
 ]

@@ -243,6 +243,16 @@ primitive solutions with min ≥ 2 exponents; Fermat–Catalan/Beal conjectures 
 Poonen–Schaefer–Stoll 2007; Bennett–Chen–Dahmen–Yazdani, "Generalized Fermat
 equations: a miscellany" (Int. J. Number Theory 11, 2015).
 
+### `pillai` — Pillai's equation — P1, effective (fixed bases) / open (general)
+**Form.** aˣ − bʸ = c (a, b fixed ≥ 2; x, y unknown exponents); Pillai's conjecture:
+for each c, finitely many perfect-power pairs differing by c.
+**Status.** Fixed bases: finite and effective (Baker-type bounds; at most 2
+solutions except finitely many explicitly known triples — Bennett 2001);
+general (unknown bases and exponents, c arbitrary): Pillai's conjecture, wide open
+(c = 1 is Catalan/Mihăilescu).
+**Software.** linear-forms-in-logs scripts (PARI); no turnkey solver.
+**References.** Pillai 1936/1945; Stroeker–Tijdeman 1982; Bennett, "On some
+exponential equations of S. S. Pillai" (Canad. J. Math 53, 2001).
 
 ---
 
