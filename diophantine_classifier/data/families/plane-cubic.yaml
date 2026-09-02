@@ -1,0 +1,26 @@
+# Family: Plane cubic curve (ternary cubic)
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: plane-cubic
+name: Plane cubic curve (ternary cubic)
+priority: 2
+status: algorithmic
+class: genus1
+form: C(x, y, z) = 0 homogeneous cubic
+parents:
+- genus-one-curve
+matcher: true
+lmfdb: ec.q
+methods:
+- point search
+- Nagell reduction to Weierstrass form
+- descent on torsors
+software:
+  sage: EllipticCurve_from_cubic; Curve.rational_points(bound)
+  magma: MinimalModel; ThreeDescent
+notes: 'May fail the Hasse principle (Selmer: 3x^3 + 4y^3 + 5z^3 = 0).'
+references:
+- key: Nagell1928
+  why: the classical reduction of a cubic with a rational point to Weierstrass form
+- key: Selmer1951
+  why: '3x^3 + 4y^3 + 5z^3 = 0: failure of the Hasse principle for plane cubics'
