@@ -1,0 +1,23 @@
+# Family: Frobenius / numerical semigroup membership
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: frobenius
+name: Frobenius / numerical semigroup membership
+priority: 2
+status: algorithmic
+class: linear
+form: a_1*x_1 + ... + a_k*x_k = b
+constraints: a_i positive integers with gcd 1; x_i >= 0
+parents:
+- linear
+matcher: false
+methods:
+- numerical semigroups
+- lattice point counting
+software:
+  other: GAP package NumericalSgps
+references:
+- key: RamirezAlfonsin2005
+  why: the reference monograph on the Frobenius problem
+- key: Kannan1992
+  why: polynomial-time algorithm for the Frobenius number in fixed dimension
