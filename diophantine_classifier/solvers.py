@@ -1157,6 +1157,7 @@ def _solve_egyptian(cls, match):
 SOLVERS = {
     "univariate": _solve_univariate,
     "linear": _solve_linear,
+    "pell": _solve_pell,
     "pell-like": _solve_pell_like,
     "binary-qf-representation": _solve_bqf,
     "quadratic-form-zero": _solve_qf_zero,

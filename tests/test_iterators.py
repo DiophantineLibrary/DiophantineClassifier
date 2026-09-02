@@ -5,6 +5,23 @@ from sage.all import gcd
 from diophantine_classifier import solve
 
 
+def test_pell_stream():
+    s = solve("x^2 - 2*y^2 = 1")
+    sols = s.first(10)
+    assert sols[:2] == [(1, 0), (-1, 0)]
+    assert (3, 2) in sols
+    assert len(set(sols)) == 10
+    assert all(x ** 2 - 2 * y ** 2 == 1 for x, y in sols)
+
+
+def test_negative_pell_stream():
+    s = solve("x^2 - 2*y^2 = -1")
+    sols = s.first(8)
+    assert sols[0] == (1, 1)
+    assert (7, 5) in sols
+    assert all(x ** 2 - 2 * y ** 2 == -1 for x, y in sols)
+
+
 def test_pell_like_stream():
     s = solve("x^2 - 2*y^2 = 7")
     sols = s.first(12)
