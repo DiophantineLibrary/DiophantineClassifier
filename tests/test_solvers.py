@@ -25,6 +25,32 @@ def test_solver_does_not_emit_denominator_pole():
     assert_valid_solutions("1/(x - 1) = 1/(y - 1)", S.first(30))
 
 
+def test_pell_like():
+    s = solve("x^2 - 2*y^2 = 7")
+    assert s.solutions
+    for x, y in s.solutions:
+        assert x ** 2 - 2 * y ** 2 == 7
+    assert s.complete    # orbit representatives + automorph action
+
+
+def test_bqf():
+    s = solve("3*x^2 + 7*y^2 = 19")
+    assert s.solutions == [(-2, -1), (-2, 1), (2, -1), (2, 1)]
+    assert s.complete
+
+
+def test_legendre():
+    s = solve("x^2 + y^2 = 2*z^2")
+    ((x, y, z),) = s.solutions
+    assert x ** 2 + y ** 2 == 2 * z ** 2
+    assert (x, y, z) != (0, 0, 0)
+
+
+def test_legendre_obstruction():
+    s = solve("x^2 + y^2 = 3*z^2")
+    assert s.kind == "empty" and s.complete
+
+
 def test_linear():
     s = solve("3*x + 5*y = 1")
     ((x, y),) = s.solutions
@@ -39,6 +65,19 @@ def test_linear_empty():
 def test_univariate():
     s = solve("x^2 - 5*x + 6 = 0")
     assert [t[0] for t in s.solutions] == [2, 3]
+
+
+def test_thue():
+    s = solve("x^3 + 2*y^3 = 11")
+    assert (3, -2) in s.solutions
+    assert s.complete
+    assert_valid_solutions("x^3 + 2*y^3 = 11", s.solutions)
+
+
+def test_unavailable_carries_hints():
+    with pytest.raises(SolverUnavailable) as err:
+        solve("y^2 = x^7 + 3")
+    assert "magma" in str(err.value).lower() or "Chabauty" in str(err.value)
 
 
 def test_linear_over_qq_is_not_integer_gcd_problem():

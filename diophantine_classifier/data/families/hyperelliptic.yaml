@@ -1,0 +1,29 @@
+# Family: Hyperelliptic curve
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: hyperelliptic
+name: Hyperelliptic curve
+priority: 1
+status: effective
+class: curve
+form: y^2 = f(x), deg f >= 5
+parents:
+- superelliptic
+matcher: true
+methods:
+- Baker (integral points)
+- Chabauty-Coleman + MW sieve (rational points)
+software:
+  magma: IntegralPoints (genus 2); Chabauty
+  pari: hyperellratpoints
+code:
+  magma: |
+    C := HyperellipticCurve(Polynomial({magma_coeffs}));
+    J := Jacobian(C); RankBound(J);
+examples:
+- y^2 = x^7 + 3
+references:
+- key: Baker1969
+  why: effective bounds for integral points
+- key: McCallumPoonen2012
+  why: the Chabauty-Coleman method for rational points

@@ -772,6 +772,230 @@ def _nonnegative_line(names, coeffs, b, direction):
                        complete=True, stream=stream)
 
 
+def _pell_unit(D):
+    r"""
+    Fundamental solution of ``x^2 - D*y^2 = ±1`` by continued fractions.
+
+    OUTPUT: triple ``(x1, y1, norm)`` with ``x1^2 - D*y1^2 = norm ∈ {1, -1}``
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.solvers import _pell_unit
+        sage: _pell_unit(61)
+        (29718, 3805, -1)
+        sage: _pell_unit(3)
+        (2, 1, 1)
+    """
+    cf = continued_fraction(QuadraticField(D).gen())
+    ell = len(cf.period())
+    conv = cf.convergent(ell - 1)
+    x1, y1 = conv.numerator(), conv.denominator()
+    return x1, y1, x1 ** 2 - D * y1 ** 2
+
+
+def _signed_orbit_stream(D, fund, unit, include_trivial):
+    r"""
+    Stream all solutions of ``x^2 - D*y^2 = ±1`` from the fundamental one.
+
+    INPUT:
+
+    - ``D`` -- the Pell parameter
+    - ``fund`` -- fundamental solution of the target equation
+    - ``unit`` -- fundamental solution ``(t, u)`` of the ``+1`` equation
+    - ``include_trivial`` -- whether ``(±1, 0)`` are solutions (the ``+1``
+      case)
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier.solvers import _signed_orbit_stream
+        sage: s = _signed_orbit_stream(2, (3, 2), (3, 2), True)()
+        sage: [next(s) for _ in range(6)]
+        [(1, 0), (-1, 0), (3, 2), (3, -2), (-3, 2), (-3, -2)]
+    """
+    t, u = unit
+
+    def stream():
+        if include_trivial:
+            yield (ZZ(1), ZZ(0))
+            yield (ZZ(-1), ZZ(0))
+        x, y = fund
+        while True:
+            yield (x, y)
+            yield (x, -y)
+            yield (-x, y)
+            yield (-x, -y)
+            x, y = t * x + D * u * y, u * x + t * y
+    return stream
+
+
+def _solve_pell(cls, match):
+    r"""
+    Solve ``x^2 - D*y^2 = ±1``: fundamental solution + full enumeration.
+
+    ``solutions[0]`` is the fundamental solution; iteration enumerates all
+    integer solutions ordered by the power of the fundamental unit, with sign
+    pattern ``(x, y), (x, -y), (-x, y), (-x, -y)``.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: S = solve("x^2 - 61*y^2 = 1")
+        sage: S.solutions[0]
+        (1766319049, 226153980)
+        sage: S = solve("x^2 - 2*y^2 = -1")     # negative Pell
+        sage: S.first(3)
+        [(1, 1), (1, -1), (-1, 1)]
+        sage: solve("x^2 - 3*y^2 = -1").kind    # no negative Pell for D = 3
+        'empty'
+    """
+    D = _zz(match.data, "D")
+    N = _zz(match.data, "N")
+    if D is None or N not in (1, -1):
+        raise SolverUnavailable("Pell solver needs concrete D and N = ±1")
+    x1, y1, norm = _pell_unit(D)
+    if N == 1:
+        if norm == 1:
+            fund = (x1, y1)
+        else:
+            fund = (x1 ** 2 + D * y1 ** 2, 2 * x1 * y1)
+        desc = (f"infinitely many: ±(fundamental)^k for the fundamental "
+                f"solution {fund}; iteration enumerates them all")
+        return SolutionSet(_normalized(match), [fund], "infinite", desc,
+                           complete=True,
+                           stream=_signed_orbit_stream(D, fund, fund, True))
+    if norm == -1:
+        unit = (x1 ** 2 + D * y1 ** 2, 2 * x1 * y1)
+        desc = (f"infinitely many: odd powers of the fundamental unit; "
+                f"fundamental solution {(x1, y1)}")
+        return SolutionSet(_normalized(match), [(x1, y1)], "infinite", desc,
+                           complete=True,
+                           stream=_signed_orbit_stream(D, (x1, y1), unit,
+                                                       False))
+    return SolutionSet(_normalized(match), [], "empty",
+                       f"x^2 - {D}y^2 = -1 has no solutions (continued "
+                       "fraction period is even)", complete=True)
+
+
+def _solve_pell_like(cls, match):
+    r"""
+    Solve ``x^2 - D*y^2 = N``: orbit representatives + full enumeration.
+
+    PARI's ``qfbsolve`` provides representatives of the finitely many orbits
+    under the automorph group; iteration walks the orbits outward by
+    applying the fundamental automorphism in both directions.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: S = solve("x^2 - 2*y^2 = 7")
+        sage: sols = S.first(8)
+        sage: all(x^2 - 2*y^2 == 7 for x, y in sols)
+        True
+        sage: len(set(sols))
+        8
+    """
+    D = _zz(match.data, "D")
+    N = _zz(match.data, "N")
+    if D is None or N is None:
+        raise SolverUnavailable("generalized Pell solver needs concrete D, N")
+    if N in (1, -1):
+        return _solve_pell(cls, match)
+    try:
+        res = pari(f"qfbsolve(Qfb(1,0,{-D}),{N},1)")
+        reps = [(ZZ(v[0]), ZZ(v[1])) for v in res]
+    except Exception as err:
+        raise SolverUnavailable(f"PARI qfbsolve failed: {err}") from None
+    reps = [s for s in reps if s[0] ** 2 - D * s[1] ** 2 == N]
+    if not reps:
+        return SolutionSet(_normalized(match), [], "empty", "no solutions",
+                           complete=True)
+    x1, y1, norm = _pell_unit(D)
+    if norm == -1:
+        t, u = x1 ** 2 + D * y1 ** 2, 2 * x1 * y1
+    else:
+        t, u = x1, y1
+    seeds = set()
+    for x, y in reps:
+        seeds.update({(x, y), (x, -y), (-x, y), (-x, -y)})
+
+    def key(s):
+        return (max(abs(s[0]), abs(s[1])), s)
+
+    def stream():
+        seen = set()
+        level = sorted(seeds, key=key)
+        while level:
+            nxt = []
+            for s in level:
+                if s in seen:
+                    continue
+                seen.add(s)
+                yield s
+                x, y = s
+                nxt.append((t * x + D * u * y, u * x + t * y))
+                nxt.append((t * x - D * u * y, -u * x + t * y))
+            level = sorted(set(nxt) - seen, key=key)
+
+    desc = (f"{len(reps)} orbit representative(s) under the automorph group "
+            f"(fundamental automorphism {(t, u)}); iteration enumerates the "
+            "full orbits")
+    return SolutionSet(_normalized(match), sorted(reps), "orbits", desc,
+                       complete=True, stream=stream)
+
+
+def _solve_bqf(cls, match):
+    r"""
+    Representations by a binary quadratic form.
+
+    Definite forms: the complete (finite) list of representations.
+    Indefinite forms: a witness via ``BinaryQF.solve_integer``.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: solve("3*x^2 + 7*y^2 = 19").solutions
+        [(-2, -1), (-2, 1), (2, -1), (2, 1)]
+        sage: solve("3*x^2 + 7*y^2 = 5").kind
+        'empty'
+    """
+    a, b, c, n = (_zz(match.data, k) for k in ("a", "b", "c", "n"))
+    if None in (a, b, c, n):
+        raise SolverUnavailable("needs concrete form and n")
+    disc = b ** 2 - 4 * a * c
+    if disc < 0 and a > 0 and abs(n) <= MAX_BQF:
+        if n < 0:
+            return SolutionSet(_normalized(match), [], "empty",
+                               "positive definite form cannot represent a "
+                               "negative integer", complete=True)
+        sols = []
+        Y = isqrt(4 * a * n // (-disc)) + 1
+        for y in range(-Y, Y + 1):
+            discx = (b * y) ** 2 - 4 * a * (c * y * y - n)
+            if discx < 0:
+                continue
+            s = isqrt(discx)
+            if s * s != discx:
+                continue
+            for sgn in ((s,) if s == 0 else (s, -s)):
+                num = -b * y + sgn
+                if num % (2 * a) == 0:
+                    sols.append((ZZ(num // (2 * a)), ZZ(y)))
+        sols = sorted(set(sols))
+        kind = "finite-complete" if sols else "empty"
+        return SolutionSet(_normalized(match), sols, kind,
+                           "all representations (definite form)",
+                           complete=True)
+    form = BinaryQF([a, b, c])
+    sol = form.solve_integer(n)
+    if sol is None:
+        return SolutionSet(_normalized(match), [], "empty",
+                           "no representation", complete=disc < 0)
+    return SolutionSet(_normalized(match), [tuple(sol)], "witness",
+                       "one representation (BinaryQF.solve_integer); for "
+                       "indefinite forms the full set is a union of "
+                       "automorph orbits", complete=False)
+
+
 def _solve_qf_zero(cls, match, gram=None):
     r"""
     Nontrivial zero of a quadratic form, or the local obstruction.
@@ -808,6 +1032,75 @@ def _solve_qf_zero(cls, match, gram=None):
                        "one nontrivial solution; all others arise from it by "
                        "the standard conic/quadric parametrization",
                        complete=False)
+
+
+def _solve_legendre(cls, match):
+    r"""
+    Legendre equation ``a x^2 + b y^2 + c z^2 = 0`` via ``qfsolve``.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: x, y, z = solve("x^2 + 3*y^2 = 7*z^2").solutions[0]
+        sage: x^2 + 3*y^2 == 7*z^2
+        True
+    """
+    a, b, c = (_zz(match.data, k) for k in ("a", "b", "c"))
+    if None in (a, b, c):
+        raise SolverUnavailable("needs concrete coefficients")
+    return _solve_qf_zero(cls, match,
+                          gram=[[a, 0, 0], [0, b, 0], [0, 0, c]])
+
+
+def _solve_weierstrass(cls, match):
+    r"""
+    Integral points on a Weierstrass model via ``E.integral_points``.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: sorted(solve("y^2 = x^3 - 2").solutions)   # unknowns (y, x)
+        [(-5, 3), (5, 3)]
+    """
+    if not cls.working.is_concrete:
+        raise SolverUnavailable("needs concrete coefficients")
+    ainvs = sage_eval(str(match.data["ainvs"])) if "ainvs" in match.data \
+        else [0, 0, 0, 0, sage_eval(str(match.data["k"]))]
+    E = EllipticCurve(QQ, [QQ(t) for t in ainvs])
+    pts = E.integral_points(both_signs=True)
+    sols = [(P[0], P[1]) for P in pts]
+    return SolutionSet(
+        _normalized(match), sorted(sols), "finite-complete",
+        f"all integral points on {E.ainvs()} (rank {E.rank()}); rational "
+        "points are infinite iff the rank is positive", complete=True)
+
+
+def _solve_thue(cls, match):
+    r"""
+    Thue equation via PARI's certified ``thue`` solver.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: solve("x^3 + 2*y^3 = 11").solutions
+        [(3, -2)]
+        sage: solve("x^4 - 2*y^4 = 1").solutions
+        [(-1, 0), (1, 0)]
+    """
+    pe = cls.working
+    P = pe.poly
+    x, y = pe.poly_ring.gens()
+    m = -P.constant_coefficient()
+    F = P + m
+    fu = F.subs({y: 1}).univariate_polynomial().change_variable_name("X")
+    try:
+        res = pari(f"thue(thueinit({fu},1),{m})")
+        sols = [(ZZ(v[0]), ZZ(v[1])) for v in res]
+    except Exception as err:
+        raise SolverUnavailable(f"PARI thue failed: {err}") from None
+    sols = [s for s in sols if F.subs({x: s[0], y: s[1]}) == m]
+    return SolutionSet(_normalized(match), sorted(sols), "finite-complete",
+                       "all solutions (PARI thue, certified)", complete=True)
 
 
 def _solve_egyptian(cls, match):
@@ -864,7 +1157,12 @@ def _solve_egyptian(cls, match):
 SOLVERS = {
     "univariate": _solve_univariate,
     "linear": _solve_linear,
+    "pell-like": _solve_pell_like,
+    "binary-qf-representation": _solve_bqf,
     "quadratic-form-zero": _solve_qf_zero,
+    "legendre": _solve_legendre,
+    "elliptic-weierstrass": _solve_weierstrass,
+    "thue": _solve_thue,
     "egyptian-fractions": _solve_egyptian,
 }
 

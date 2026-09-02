@@ -1,0 +1,30 @@
+# Family: Legendre equation (diagonal ternary quadratic)
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: legendre
+name: Legendre equation (diagonal ternary quadratic)
+priority: 1
+status: algorithmic
+class: quadratic
+form: a*x^2 + b*y^2 + c*z^2 = 0
+parents:
+- quadratic-form-zero
+- diagonal-form
+matcher: true
+methods:
+- Legendre criterion
+- Holzer bounds
+- conic parametrization
+software:
+  sage: Conic([a,b,c]).has_rational_point(point=True)
+  pari: qfsolve
+  magma: HasRationalPoint
+code:
+  sage: Conic(QQ, [{a}, {b}, {c}]).rational_point()
+examples:
+- x^2 + y^2 = 2*z^2
+references:
+- key: CremonaRusin2003
+  why: efficient algorithms for finding a rational point on a conic
+- key: Holzer1950
+  why: existence of solutions of small height (Holzer's bound)
