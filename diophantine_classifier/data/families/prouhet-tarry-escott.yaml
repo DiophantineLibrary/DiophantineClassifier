@@ -1,0 +1,18 @@
+# Family: Prouhet-Tarry-Escott problem
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: prouhet-tarry-escott
+name: Prouhet-Tarry-Escott problem
+priority: 3
+status: open
+class: surface
+form: sum_{i=1}^n x_i^j = sum_{i=1}^n y_i^j for j = 1..k
+constraints: (x_1..x_n) and (y_1..y_n) distinct multisets of integers
+parents:
+- equal-sums-like-powers
+matcher: false
+notes: A solution has size n and degree k; it is ideal when n = k + 1, the largest
+  degree a given size allows.
+references:
+- key: BorweinIngalls1994
+  why: survey of ideal solutions and open problems
