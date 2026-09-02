@@ -1,0 +1,29 @@
+# Family: Representation by a binary quadratic form
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: binary-qf-representation
+name: Representation by a binary quadratic form
+priority: 1
+status: algorithmic
+class: quadratic
+form: a*x^2 + b*x*y + c*y^2 = n
+parents:
+- binary-quadratic
+matcher: true
+methods:
+- reduction theory
+- Cornacchia
+- class groups
+software:
+  sage: BinaryQF([a,b,c]).solve_integer(n)
+  pari: qfbsolve, qfbcornacchia
+code:
+  sage: BinaryQF([{a}, {b}, {c}]).solve_integer({n})
+  pari: qfbsolve(Qfb({a}, {b}, {c}), {n}, 1)
+examples:
+- 3*x^2 + 7*y^2 = 19
+references:
+- key: Cox1989
+  why: 'which n are represented: the class field theory of x^2 + ny^2'
+- key: Cornacchia1908
+  why: the classical algorithm for representations by definite forms

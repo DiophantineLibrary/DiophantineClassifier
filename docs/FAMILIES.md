@@ -71,6 +71,34 @@ unimodular reduction of the quadratic part.
 **References.** Gauss, *Disquisitiones*; Lagrange 1768; Matthews,
 "The Diophantine equation ax²+bxy+cy² = N" (J. Théor. Nombres Bordeaux 14, 2002).
 
+### `binary-qf-representation` — Representation by a binary quadratic form — P1, algorithmic
+**Form.** ax² + bxy + cy² = n (n ≠ 0).
+**Status.** Algorithmic via reduction theory and class-group structure; definite
+forms: finitely many representations (Cornacchia); indefinite: finitely many orbits
+under the automorph group.
+**Software.** Sage: `BinaryQF(a,b,c).solve_integer(n)`; PARI: `qfbsolve`,
+`qfbcornacchia`.
+**References.** Cox, *Primes of the form x²+ny²*; Cornacchia 1908.
+
+### `pell-like` — Generalized Pell equation — P1, algorithmic
+**Form.** x² − Dy² = N (D > 0 nonsquare).
+**Status.** Finitely many classes of solutions, each an orbit under the Pell
+automorph; found via continued fractions / LMM algorithm or quadratic-form class
+theory.
+**Software.** Sage: `solve_diophantine`; PARI: `qfbsolve(Qfb(1,0,-D), N)`.
+**References.** Lagrange–Matthews–Mollin; Matthews, "The Diophantine equation
+x²−Dy²=N" (2000); Mollin, *Fundamental Number Theory with Applications*.
+
+### `legendre` — Legendre / diagonal ternary quadratic — P1, algorithmic
+**Form.** ax² + by² + cz² = 0 (nontrivial solutions; usually abc squarefree, mixed signs).
+**Status.** Solvability by Legendre's criterion / Hasse–Minkowski; when solvable, a
+point of provably small height exists (Holzer) and efficient algorithms find it;
+all solutions parametrized from one (stereographic projection).
+**Software.** Sage: `Conic([a,b,c]).has_rational_point(point=True)`, `qfsolve`;
+PARI: `qfsolve`; Magma: `IsLocallySolvable`, `HasRationalPoint`.
+**References.** Legendre 1785; Holzer 1950; Cremona–Rusin, "Efficient solution of
+rational conics" (Math. Comp. 72, 2003); Simon 2005 (PARI `qfsolve`).
+
 ### `quadratic-form-zero` — Isotropy of a quadratic form — P1, algorithmic
 **Form.** Q(x₁,…,x_k) = 0, Q a nondegenerate integral quadratic form, k ≥ 3.
 **Status.** Hasse–Minkowski: solvable iff solvable over ℝ and all ℚ_p (finite
@@ -106,6 +134,18 @@ in integers" (Math. Proc. Camb. Phil. Soc. 89, 1981).
 
 ## 3. Cubic equations and genus one
 
+### `elliptic-weierstrass` — Elliptic curve, Weierstrass form — P1, algorithmic*
+**Form.** y² + a₁xy + a₃y = x³ + a₂x² + a₄x + a₆.
+**Status.** Rational points: finitely generated (Mordell); rank computation via
+descent is an algorithm *conditional* on Ш finiteness (hence the asterisk) but
+succeeds in practice; integral points: finite (Siegel), effective (Baker), computed
+by the elliptic-logarithm method once generators are known.
+**Software.** Sage: `EllipticCurve.gens()`, `.integral_points()`, `.S_integral_points()`
+(mwrank/eclib inside); PARI: `ellrank`, `ellratpoints`; Magma: `MordellWeilShaInformation`,
+`IntegralPoints`.
+**References.** Mordell 1922; Siegel 1929; Baker 1968; Gebel–Pethő–Zimmer 1994;
+Stroeker–Tzanakis 1994; Cremona, *Algorithms for Modular Elliptic Curves*.
+
 ### `cubic-surface` — Cubic surfaces / del Pezzo — P3, research
 **Form.** F(x, y, z, w) = 0 cubic (e.g. diagonal ax³+by³+cz³+dw³ = 0).
 **Status.** Rational points conjecturally dense once one exists (unirationality);
@@ -126,6 +166,28 @@ GL₂(ℤ)-reduction (Julia, Cremona–Stoll) brings F to a canonical form — t
 transformation step for this part of the classifier.
 **References.** Evertse–Győry, *Unit Equations in Diophantine Number Theory*;
 Cremona–Stoll, "On the reduction theory of binary forms" (J. reine angew. Math. 565, 2003).
+
+### `thue` — Thue equation — P1, algorithmic
+**Form.** F(x, y) = m, F irreducible of degree ≥ 3.
+**Status.** Finite (Thue 1909, via Diophantine approximation — ineffective);
+effective via Baker 1968; practical algorithms Tzanakis–de Weger 1989,
+Bilu–Hanrot 1996 (used by PARI). Fully automated today.
+**Software.** PARI/Sage: `thueinit` + `thue` (rigorous with flag 1, may need GRH
+certification for large fields); Magma: `Thue`.
+**References.** Thue 1909; Baker 1968; Bilu–Hanrot, "Solving Thue equations of high
+degree" (J. Number Theory 60, 1996).
+
+### `hyperelliptic` — Hyperelliptic curves — P1, effective (integral) / ineffective (rational)
+**Form.** y² = f(x), f squarefree, deg f ≥ 5.
+**Status.** Integral points: finite, effective (Baker); practical via Baker + LLL
+or via unit equations. Rational points: finite for genus ≥ 2 (Faltings,
+ineffective); in practice Chabauty–Coleman + Mordell–Weil sieve resolves most
+instances of moderate genus/rank, quadratic Chabauty extends the range.
+**Software.** Magma: `IntegralPoints` (genus 2), `Chabauty`, `MordellWeilSieve`;
+Sage: `monsky_washnitzer`/Coleman integration (partial), `rational_points(bound)`;
+PARI: `hyperellratpoints`.
+**References.** Baker 1969; Faltings 1983; Chabauty 1941, Coleman 1985;
+McCallum–Poonen survey 2012; Balakrishnan–Dogra–Müller–Tuitman–Vonk 2019.
 
 ### `superelliptic` — Superelliptic curves — P1, effective (integral)
 **Form.** yᵐ = f(x), m ≥ 2, deg f ≥ 2 (genus ≥ 1 cases).

@@ -1,0 +1,32 @@
+# Family: Thue equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: thue
+name: Thue equation
+priority: 1
+status: algorithmic
+class: curve
+form: F(x, y) = m, F irreducible of degree >= 3
+parents:
+- binary-form
+matcher: true
+methods:
+- Baker bounds + LLL (Tzanakis-de Weger, Bilu-Hanrot)
+software:
+  pari: thue(thueinit(f), m)
+  sage: gp interface to thue
+  magma: Thue
+code:
+  pari: thue(thueinit({fx}, 1), {m})
+  magma: Solutions(Thue(Polynomial({magma_coeffs})), {m});
+examples:
+- x^3 + 2*y^3 = 11
+references:
+- key: Baker1968
+  why: effective bounds via linear forms in logarithms, making the finiteness algorithmic
+- key: Thue1909
+  why: the original finiteness theorem
+- key: TzanakisDeWeger1989
+  why: the first complete practical solution method
+- key: BiluHanrot1996
+  why: the high-degree algorithm implemented in PARI

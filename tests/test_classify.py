@@ -14,12 +14,20 @@ CORPUS = [
     ("12*x - 21*y + 30*z = 9", "", "linear"),
     ("x^2 - 5*x + 6 = 0", "", "univariate"),
     # quadratic, two variables
+    ("x^2 - 61*y^2 = 5", "", "pell-like"),
     ("2*x^2 + 3*x*y - 5*y^2 + x - 7 = 0", "", "binary-quadratic"),
+    ("3*x^2 + 7*y^2 = 19", "", "binary-qf-representation"),
     # quadratic, more variables
+    ("x^2 + 3*y^2 = 7*z^2", "", "legendre"),
     ("x^2 - 3*y^2 + 5*z^2 - 7*w^2 = 0", "", "quadratic-form-zero"),
     ("x^2 + x*y + y^2 + z^2 = 14", "", "quadratic-form-representation"),
     ("x^2 + y^2 - z^2 + 3*x - 7 = 0", "", "quadric"),
+    # genus one
+    ("y^2 + y = x^3 - x^2 - 10*x - 20", "", "elliptic-weierstrass"),
     # higher-genus curves and binary forms
+    ("x^3 + 2*y^3 = 11", "", "thue"),
+    ("x^4 - 2*y^4 = 1", "", "thue"),
+    ("y^2 = x^7 + 3", "", "hyperelliptic"),
     ("y^3 = x^4 + 2", "", "superelliptic"),
     ("x^3*y + y^3*z + z^3*x = 0", "", "general-curve"),     # Klein quartic
     ("x^2*y^2 = x^3 + 1", "", "genus-one-curve"),
@@ -71,6 +79,19 @@ def test_match_lookup_by_slug():
     assert cls.data_for("linear")["b"] == "1"
     assert cls.match_for("no-such-family") is None
     assert cls.data_for("no-such-family") is None
+
+
+def test_code_is_filled_from_each_match_not_the_primary():
+    """An ancestor's template gets the ancestor's own data."""
+    cls = classify("x^2 + 3*y^2 = 7*z^2")
+    assert cls.slug == "legendre"
+    code = cls.code()
+    assert "[1, 3, -7]" in code["sage (legendre)"]
+    # quadratic-form-zero wants a Gram matrix, which the Legendre match's
+    # a/b/c cannot supply; it was matched too, so it fills from its own data
+    gram = code["sage (quadratic-form-zero)"]
+    assert "{gram}" not in gram
+    assert "[[1, 0, 0], [0, 3, 0], [0, 0, -7]]" in gram
 
 
 def test_repeated_factor_preserves_input():
@@ -159,6 +180,21 @@ def test_conditions_serialize_structurally():
                          "variables": ["x"], "source": "denominator"}
     json.dumps(d)
 
+
+def test_multi_parent_lineage_has_no_false_edge():
+    """legendre specializes both quadratic-form-zero and diagonal-form;
+    those two are siblings, and no output may put an arrow between them."""
+    cls = classify("x^2 + 3*y^2 = 7*z^2")
+    assert cls.slug == "legendre"
+    paths = cls.as_dict()["lineage_paths"]
+    assert {path[1] for path in paths} == {"quadratic-form-zero",
+                                           "diagonal-form"}
+    for line in _lineage_lines(cls):
+        assert "quadratic-form-zero → diagonal-form" not in line
+        assert "diagonal-form → quadratic-form-zero" not in line
+
+
+# --- conditional identities never reach the matchers (brief 3.3) ---------
 
 def test_conditional_identity_does_not_enter_polynomial_matchers():
     cls = classify("x/x = 1")
