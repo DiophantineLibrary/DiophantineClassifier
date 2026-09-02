@@ -257,6 +257,14 @@ perfect power).
 **References.** Schinzel–Tijdeman 1976; Erdős–Selfridge 1975; Shorey–Tijdeman,
 *Exponential Diophantine Equations* (1986) — the standard reference for this whole section.
 
+### `recurrence-powers` — Perfect powers in recurrences — P2, partial (effective sequence by sequence)
+**Form.** u_n = y^p for a fixed recurrence (Fibonacci, Lucas, …).
+**Status.** Fibonacci perfect powers are exactly 0, 1, 8, 144
+(Bugeaud–Mignotte–Siksek, Ann. of Math. 163 (2006) — modular method + Baker);
+Lucas perfect powers are exactly 1, 4 (same paper); similar results for many binary
+recurrences; general LRS open.
+**References.** Bugeaud–Mignotte–Siksek 2006; Pethő 1982.
+
 ### `exponential-diophantine` — Purely exponential equations — P2, effective (few terms)
 **Form.** c₁·b₁^{n₁} + ⋯ + c_k·b_k^{n_k} = c (fixed bases, unknown exponents);
 e.g. 2ᵃ + 3ᵇ = 5ᶜ, Jeśmanowicz conjecture instances. An unknown base raised to an
