@@ -1,0 +1,20 @@
+# Family: Brocard-Ramanujan equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: brocard
+name: Brocard-Ramanujan equation
+priority: 3
+status: open
+class: special
+form: n! + 1 = m^2
+parents: []
+matcher: false
+notes: Known n in {4,5,7}; finite under abc (Overholt 1993); no further solution
+  for n <= 10^9 (Berndt-Galway 2000), extended to n <= 4*10^11 (Matson 2017).
+references:
+- key: Overholt1993
+  why: finiteness under the abc conjecture
+- key: BerndtGalway2000
+  why: computational verification up to n = 10^9
+- key: Matson2017
+  why: extends the search to n <= 4*10^11 via quadratic residues

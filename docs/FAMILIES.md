@@ -269,6 +269,12 @@ side of the decidability boundary.
 **References.** Shorey–Tijdeman 1986; Evertse–Schlickewei–Schmidt 2002 (subspace);
 Davis–Putnam–Robinson 1961.
 
+### `brocard` — Brocard–Ramanujan — P3, open
+**Form.** n! + 1 = m².
+**Status.** Known n ∈ {4, 5, 7}; finiteness follows from the abc conjecture
+(Overholt 1993); no further solution for n ≤ 10⁹ (Berndt–Galway 2000), extended to
+n ≤ 4·10¹¹ (Matson 2017).
+**References.** Brocard 1876; Ramanujan 1913; Overholt 1993; Berndt–Galway 2000; Matson 2017.
 
 ---
 
