@@ -1,0 +1,21 @@
+# Family: Figurate = perfect power equations
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: cannonball
+name: Cannonball problem (square pyramidal = square)
+priority: 3
+status: solved
+class: special
+form: 1^2 + 2^2 + ... + x^2 = y^2
+constraints: x >= 1 (x = 0 is the trivial solution)
+parents:
+- elliptic-weierstrass
+matcher: false
+notes: 'x = 1, 24 only (Lucas 1875, Watson 1918). The general pattern "figurate
+  number = perfect power" reduces to integral points on elliptic or superelliptic
+  curves and is settled only case by case.'
+references:
+- key: Watson1918
+  why: the complete solution of the square-pyramid problem
+- key: Anglin1990
+  why: a modern elementary proof

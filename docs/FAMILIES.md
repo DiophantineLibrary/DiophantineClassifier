@@ -312,6 +312,12 @@ the multi-degree system version.
 **References.** Lander–Parkin 1966; Elkies 1988; Borwein, *Computational Excursions
 in Analysis and Number Theory* (PTE chapters).
 
+### `cannonball` — Cannonball problem — P3, solved
+**Form.** 1² + 2² + ⋯ + x² = y², x ≥ 1 (square pyramidal = square; x = 0 is trivial).
+**Status.** Only x = 1, 24 (Lucas 1875, proved Watson 1918; elementary proofs
+later); the general pattern "figurate number = perfect power" reduces to integral
+points on elliptic/superelliptic curves — a good pedagogical gateway family.
+**References.** Watson 1918; Anglin 1990.
 
 ---
 
