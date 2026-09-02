@@ -1164,6 +1164,7 @@ SOLVERS = {
     "elliptic-weierstrass": _solve_weierstrass,
     "thue": _solve_thue,
     "egyptian-fractions": _solve_egyptian,
+    "erdos-straus": _solve_egyptian,
 }
 
 

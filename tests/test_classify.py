@@ -41,6 +41,7 @@ CORPUS = [
     # polynomial-exponential
     ("x^3 - 4 = y^n", "", "power-values"),
     # unit fractions
+    ("4/n = 1/x + 1/y + 1/z", "n", "erdos-straus"),
     ("1/x + 1/y + 1/z = 1", "", "egyptian-fractions"),
 ]
 
@@ -72,6 +73,13 @@ def test_gen_fermat_regimes():
     hyperbolic = classify("x^2 + y^7 = z^3")
     assert hyperbolic.data["regime"] == "hyperbolic"
 
+
+def test_conditions_recorded():
+    cls = classify("4/n = 1/x + 1/y + 1/z", params="n")
+    assert cls.parsed.conditions  # denominators were cleared
+
+
+# --- each match keeps its own data (brief 6.1) ---------------------------
 
 def test_match_lookup_by_slug():
     cls = classify("3*x + 5*y = 1")
