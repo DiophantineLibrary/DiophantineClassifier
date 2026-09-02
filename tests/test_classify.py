@@ -37,6 +37,8 @@ CORPUS = [
     ("3*x^3 + 4*y^3 + 5*z^3 = 0", "", "generalized-fermat"),  # Selmer
     ("x^p + y^q = z^r", "", "generalized-fermat"),            # Beal
     # diagonal / surfaces
+    ("x^2 + y^2 + z^2 = 3*x*y*z", "", "markov-hurwitz"),
+    ("x^2 + y^2 + z^2 + w^2 = 4*x*y*z*w", "", "markov-hurwitz"),
     ("x^4 + y^4 + z^4 = w^4", "", "equal-sums-like-powers"),   # Elkies
     # polynomial-exponential
     ("x^3 - 4 = y^n", "", "power-values"),

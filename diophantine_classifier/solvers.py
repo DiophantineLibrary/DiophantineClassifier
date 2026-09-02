@@ -1103,6 +1103,65 @@ def _solve_thue(cls, match):
                        "all solutions (PARI thue, certified)", complete=True)
 
 
+def _solve_markov(cls, match):
+    r"""
+    Markov/Hurwitz equations: enumerate the Vieta tree.
+
+    Iteration yields ascending-ordered positive tuples, ordered by largest
+    entry; every solution is a permutation (with sign changes when the number
+    of negative entries is even... for the classical positive tree, a
+    permutation) of an enumerated tuple.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: solve("x^2 + y^2 + z^2 = 3*x*y*z").first(5)
+        [(1, 1, 1), (1, 1, 2), (1, 2, 5), (1, 5, 13), (2, 5, 29)]
+        sage: solve("x^2 + y^2 + z^2 + w^2 = 4*x*y*z*w").first(2)
+        [(1, 1, 1, 1), (1, 1, 1, 3)]
+    """
+    a = _zz(match.data, "a")
+    k = _zz(match.data, "k")
+    if a is None or k is None:
+        raise SolverUnavailable("needs concrete Hurwitz parameters")
+    from sage.misc.misc_c import prod as _prod
+    seeds = set()
+    if a == k:
+        seeds.add((ZZ(1),) * k)
+    if not seeds:
+        for cand in itertools.combinations_with_replacement(range(1, 6), k):
+            if sum(t * t for t in cand) == a * _prod(cand):
+                seeds.add(tuple(ZZ(t) for t in cand))
+    if not seeds:
+        return SolutionSet(
+            _normalized(match), [], "witness",
+            f"no fundamental solutions with entries <= 5 found for the "
+            f"Hurwitz equation with a = {a}, k = {k} (Hurwitz classified "
+            "the admissible a)", complete=False)
+
+    def stream():
+        heap = [(max(s), s) for s in seeds]
+        heapq.heapify(heap)
+        seen = set(seeds)
+        while heap:
+            _, s = heapq.heappop(heap)
+            yield s
+            others = _prod(s)
+            for i in range(k):
+                rest = others // s[i]
+                child = tuple(sorted(s[:i] + (a * rest - s[i],) + s[i + 1:]))
+                if child not in seen and all(t > 0 for t in child):
+                    seen.add(child)
+                    heapq.heappush(heap, (max(child), child))
+
+    first = list(itertools.islice(stream(), 4))
+    return SolutionSet(
+        _normalized(match), first, "infinite",
+        "the Vieta/Markov tree: ascending tuples ordered by largest entry; "
+        "all solutions are permutations of these", complete=True,
+        stream=stream)
+
+
 def _solve_egyptian(cls, match):
     r"""
     Unit fraction equations ``1/x_1 + ... + 1/x_k = a/n``, concrete case.
@@ -1163,6 +1222,7 @@ SOLVERS = {
     "legendre": _solve_legendre,
     "elliptic-weierstrass": _solve_weierstrass,
     "thue": _solve_thue,
+    "markov-hurwitz": _solve_markov,
     "egyptian-fractions": _solve_egyptian,
 }
 

@@ -288,6 +288,15 @@ conditions, ineffective in general (subspace theorem).
 
 ## 8. Surfaces, higher dimension, and thin orbits
 
+### `markov-hurwitz` — Markov and Hurwitz equations — P2, structured
+**Form.** x₁² + ⋯ + x_k² = a·x₁⋯x_k (Markov: k = 3, a = 3).
+**Status.** All solutions from base solutions by Vieta involutions (the Markov
+tree); Hurwitz determined when solutions exist; growth understood
+(Zagier; Baragar for general k); Frobenius' **uniqueness conjecture** (largest
+coordinate determines the triple) open since 1913.
+**References.** Markov 1879/80; Hurwitz 1907; Zagier 1982; Aigner,
+*Markov's Theorem and 100 Years of the Uniqueness Conjecture* (2013).
+
 ### `egyptian-fractions` — Unit fraction equations — P1 (Erdős–Straus), open
 **Form.** 1/x₁ + ⋯ + 1/x_k = a/n.
 **Status.** For fixed k, a, n: finitely many, enumerable by branch-and-bound.
