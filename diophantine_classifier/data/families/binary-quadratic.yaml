@@ -1,0 +1,27 @@
+# Family: General binary quadratic equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: binary-quadratic
+name: General binary quadratic equation
+priority: 1
+status: algorithmic
+class: quadratic
+form: a*x^2 + b*x*y + c*y^2 + d*x + e*y + f = 0
+parents:
+- quadric
+matcher: true
+methods:
+- completing the square
+- reduction of binary forms
+- Pell theory
+software:
+  sage: solve_diophantine (sympy)
+  pari: qfbsolve after reduction
+examples:
+- 2*x^2 + 3*x*y - 5*y^2 + x - 7 = 0
+references:
+- key: Matthews2002
+  why: explicit algorithm for the general binary quadratic equation with positive
+    discriminant
+- key: Dickson1920
+  why: history of the classical Lagrange/Gauss theory

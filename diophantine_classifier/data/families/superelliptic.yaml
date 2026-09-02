@@ -1,0 +1,21 @@
+# Family: Superelliptic curve
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: superelliptic
+name: Superelliptic curve
+priority: 1
+status: effective
+class: curve
+form: y^m = f(x), m >= 2
+parents:
+- general-curve
+matcher: true
+methods:
+- Baker's method via Thue equations over number fields
+examples:
+- y^3 = x^4 + 2
+references:
+- key: Baker1969
+  why: effective bounds for integral points
+- key: Bilu1995
+  why: effective analysis via reduction to unit equations

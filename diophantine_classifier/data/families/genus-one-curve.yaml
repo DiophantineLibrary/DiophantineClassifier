@@ -1,0 +1,24 @@
+# Family: Genus 1 curve (general model)
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: genus-one-curve
+name: Genus 1 curve (general model)
+priority: 1
+status: algorithmic
+class: curve
+form: C(x, y) = 0 irreducible of genus 1
+parents:
+- general-curve
+matcher: true
+methods:
+- point search
+- Nagell/Riemann-Roch reduction to Weierstrass
+- descent
+software:
+  magma: EllipticCurve(C, pt)
+  pari: hyperellratpoints (hyperelliptic models)
+references:
+- key: Poonen2002
+  why: survey of point-search and descent strategies on curves
+- key: Nagell1928
+  why: reduction to Weierstrass form once a rational point is found

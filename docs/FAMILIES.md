@@ -58,6 +58,38 @@ PARI: `matsolvemod`; every CAS.
 
 ## 2. Quadratic equations
 
+### `binary-quadratic` — General binary quadratic — P1, algorithmic
+**Form.** ax² + bxy + cy² + dx + ey + f = 0.
+**Status.** Completely algorithmic (Lagrange, Gauss). Behavior governed by
+D = b² − 4ac: D < 0 finite; D = 0 reduces to squares-and-linear; D > 0 nonsquare
+reduces to Pell-like (finitely many families of solutions from fundamental
+automorph); D > 0 square factors.
+**Transformations.** Completing the square: (2ax + by + d)² − D(y + t)² = s form;
+unimodular reduction of the quadratic part.
+**Software.** Sage: `solve_diophantine` (sympy), `BinaryQF`; PARI: `qfbsolve`,
+`qfbred`; Alperin's and Matthews' online solvers; Magma quadratic forms machinery.
+**References.** Gauss, *Disquisitiones*; Lagrange 1768; Matthews,
+"The Diophantine equation ax²+bxy+cy² = N" (J. Théor. Nombres Bordeaux 14, 2002).
+
+### `quadratic-form-zero` — Isotropy of a quadratic form — P1, algorithmic
+**Form.** Q(x₁,…,x_k) = 0, Q a nondegenerate integral quadratic form, k ≥ 3.
+**Status.** Hasse–Minkowski: solvable iff solvable over ℝ and all ℚ_p (finite
+check); k ≥ 5 indefinite always isotropic. Efficient point-finding via
+Simon's algorithm (lattice reduction + minimization).
+**Software.** Sage: `qfsolve(G)`; PARI: `qfsolve`; Magma: `IsotropicSubspace`.
+**References.** Hasse 1923; Cassels, *Rational Quadratic Forms*; Simon,
+"Solving quadratic equations using reduced unimodular quadratic forms" (Math. Comp. 74, 2005).
+
+### `quadratic-form-representation` — Representation by a quadratic form, k ≥ 3 — P1, algorithmic
+**Form.** Q(x₁,…,x_k) = n.
+**Status.** Local-global up to spinor genus (k = 3 subtleties: spinor exceptions;
+k ≥ 4: represented iff locally represented, for n large — effective); celebrated
+uniform results: 15-theorem (Conway–Schneeberger–Bhargava), 290-theorem
+(Bhargava–Hanke). Reduces to `quadratic-form-zero` in k+1 variables via Q(x) − n·t².
+**Software.** Sage: `QuadraticForm`, `qfsolve` on Q ⊥ ⟨−n⟩; PARI: `qfminim`,
+`qfsolve`; Magma: `RepresentationNumber`, ternary form machinery.
+**References.** Cassels; Bhargava 2000; Bhargava–Hanke 2005.
+
 ### `quadric` — General quadratic Diophantine equation — P2, algorithmic
 **Form.** Q(x₁,…,x_k) + L(x₁,…,x_k) + c = 0 (arbitrary quadratic, k ≥ 3).
 **Status.** Decidable in general — the deepest case of the quadratic theory
@@ -86,6 +118,23 @@ Brauer–Manin obstructions; decidability unknown. Research-level exhibits
 
 ## 4. Curves of higher genus and binary forms
 
+### `binary-form` — Binary form equation — P1, algorithmic
+**Form.** F(x, y) = m, F homogeneous of degree d ≥ 3.
+**Status.** Umbrella family; behavior splits on the factorization of F:
+irreducible → `thue`; repeated/linear factors → elementary (`binary-form-reducible`).
+GL₂(ℤ)-reduction (Julia, Cremona–Stoll) brings F to a canonical form — the model
+transformation step for this part of the classifier.
+**References.** Evertse–Győry, *Unit Equations in Diophantine Number Theory*;
+Cremona–Stoll, "On the reduction theory of binary forms" (J. reine angew. Math. 565, 2003).
+
+### `superelliptic` — Superelliptic curves — P1, effective (integral)
+**Form.** yᵐ = f(x), m ≥ 2, deg f ≥ 2 (genus ≥ 1 cases).
+**Status.** Integral points finite and effective (Baker); reduction to Thue
+equations over number fields; rational points as for general curves.
+**Software.** Magma/PARI scripts via Thue reduction; no single intrinsic.
+**References.** Baker 1969; Bilu, "Effective analysis of integral points on
+algebraic curves" (Israel J. Math 90, 1995).
+
 ### `general-curve` — Integral/rational points on a general curve — P1 (as fallback), ineffective
 **Form.** C(x, y) = 0 irreducible, genus g.
 **Status.** g = 0: reducible to conics/parametrization (integral points via
@@ -99,6 +148,16 @@ PARI `hyperellratpoints`, Magma `Chabauty`, `PointSearch`.
 **References.** Siegel 1929; Faltings 1983; Bombieri–Gubler, *Heights in Diophantine
 Geometry*; Stoll, "Rational points on curves" (survey, 2011).
 
+### `genus-one-curve` — Genus 1 curves (non-Weierstrass models) — P1, algorithmic*
+**Form.** C(x, y) = 0 irreducible of genus 1 (any plane model).
+**Status.** With a rational point: birational to an elliptic curve (Nagell/Riemann–Roch
+algorithms) and the Weierstrass machinery applies; without: torsor analysis, descent.
+Finding the initial point is the hard step (the classifier flags exactly this).
+Integral points on the given affine model: finite (Siegel), effective in principle
+(Baker via covers), delicate in practice.
+**Software.** Magma: `EllipticCurve(C, pt)`; Sage: `Jacobian`/genus-one model tools;
+point search: `ratpoints`, PARI `hyperellratpoints` for hyperelliptic models.
+**References.** Nagell 1928; Poonen, "Computing rational points on curves" (2002 survey).
 
 ---
 
@@ -181,6 +240,15 @@ Fermat quartic surfaces (e.g. x⁴+y⁴+z⁴ = w⁴: Euler's conjecture, disprov
 Elkies 1988 — elliptic fibration method; minimal solution Frye);
 local solvability decidable, global behavior varies wildly with (k, s).
 **References.** Davenport–Lewis 1963; Elkies 1988.
+
+### `equal-sums-like-powers` — Equal sums of like powers — P3, partial
+**Form.** x₁^k + ⋯ + x_s^k = y₁^k + ⋯ + y_t^k.
+**Status.** Euler's conjecture (s = 1, t = k−1) false for k = 4 (Elkies) and k = 5
+(Lander–Parkin 1966: 27⁵+84⁵+110⁵+133⁵ = 144⁵); rich computational frontier
+(k = 6 open for s = 1, t < 6? no counterexample known); Prouhet–Tarry–Escott is
+the multi-degree system version.
+**References.** Lander–Parkin 1966; Elkies 1988; Borwein, *Computational Excursions
+in Analysis and Number Theory* (PTE chapters).
 
 
 ---
