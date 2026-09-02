@@ -118,6 +118,13 @@ uniform results: 15-theorem (Conway–Schneeberger–Bhargava), 290-theorem
 `qfsolve`; Magma: `RepresentationNumber`, ternary form machinery.
 **References.** Cassels; Bhargava 2000; Bhargava–Hanke 2005.
 
+### `sum-of-four-squares` — Four squares (Lagrange) — P1, solved
+**Form.** x² + y² + z² + w² = n.
+**Status.** Always solvable (Lagrange 1770); Jacobi's formula counts representations;
+randomized polynomial-time algorithms.
+**Software.** Sage: `four_squares(n)`.
+**References.** Lagrange 1770; Jacobi 1834; Rabin–Shallit 1986.
+
 ### `quadric` — General quadratic Diophantine equation — P2, algorithmic
 **Form.** Q(x₁,…,x_k) + L(x₁,…,x_k) + c = 0 (arbitrary quadratic, k ≥ 3).
 **Status.** Decidable in general — the deepest case of the quadratic theory
