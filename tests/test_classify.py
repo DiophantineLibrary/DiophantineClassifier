@@ -38,6 +38,7 @@ CORPUS = [
     ("x^p + y^q = z^r", "", "generalized-fermat"),            # Beal
     # diagonal / surfaces
     ("x^4 + y^4 + z^4 = w^4", "", "equal-sums-like-powers"),   # Elkies
+    ("x^4 + y^4 + z^4 + w^4 = n", "n", "waring"),
     # polynomial-exponential
     ("x^3 - 4 = y^n", "", "power-values"),
     # unit fractions

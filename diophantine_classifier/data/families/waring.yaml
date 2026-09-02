@@ -1,0 +1,22 @@
+# Family: Waring-type diagonal representation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: waring
+name: Waring-type diagonal representation
+priority: 2
+status: partial
+class: surface
+form: x_1^k + ... + x_s^k = n
+parents:
+- diagonal-form
+matcher: true
+methods:
+- circle method (asymptotics)
+- search + local conditions (instances)
+examples:
+- x^4 + y^4 + z^4 + w^4 = n
+references:
+- key: VaughanWooley2002
+  why: survey of g(k) and G(k)
+- key: Vaughan1997
+  why: the circle-method machinery
