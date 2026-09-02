@@ -89,6 +89,15 @@ theory.
 **References.** Lagrange–Matthews–Mollin; Matthews, "The Diophantine equation
 x²−Dy²=N" (2000); Mollin, *Fundamental Number Theory with Applications*.
 
+### `simultaneous-pell` — Simultaneous Pell equations — P2, effective
+**Form.** x² − az² = 1, y² − bz² = 1 (and variants sharing a variable).
+**Status.** Finitely many; effective via linear forms in logarithms; at most 3
+solutions in many regimes (Bennett); practical resolution via LLL reduction of the
+Baker bound.
+**Software.** No turnkey solver; scripts on top of Sage/PARI following Anglin/de Weger.
+**References.** Anglin 1996; Bennett, "On the number of solutions of simultaneous
+Pell equations" (J. reine angew. Math. 498, 1998).
+
 ### `legendre` — Legendre / diagonal ternary quadratic — P1, algorithmic
 **Form.** ax² + by² + cz² = 0 (nontrivial solutions; usually abc squarefree, mixed signs).
 **Status.** Solvability by Legendre's criterion / Hasse–Minkowski; when solvable, a

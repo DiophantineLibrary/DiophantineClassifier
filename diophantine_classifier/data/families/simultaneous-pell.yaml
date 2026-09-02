@@ -1,0 +1,20 @@
+# Family: Simultaneous Pell equations
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: simultaneous-pell
+name: Simultaneous Pell equations
+priority: 2
+status: effective
+class: quadratic
+form: x^2 - a*z^2 = 1, y^2 - b*z^2 = 1
+parents:
+- pell-like
+matcher: false
+methods:
+- linear forms in logarithms
+- LLL reduction
+references:
+- key: Anglin1996
+  why: practical algorithm for simultaneous Pell systems
+- key: Bennett1998
+  why: sharp bound (at most three) on the number of solutions
