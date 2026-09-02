@@ -1052,6 +1052,38 @@ def _solve_legendre(cls, match):
                           gram=[[a, 0, 0], [0, b, 0], [0, 0, c]])
 
 
+def _solve_pythagorean(cls, match):
+    r"""
+    Pythagorean triples: Euclid's parametrization as a stream.
+
+    Iteration yields the primitive triples ``(m^2 - n^2, 2mn, m^2 + n^2)``
+    for ``m > n >= 1`` coprime of opposite parity, ordered by ``m``; the full
+    solution set consists of their multiples, sign changes, and leg swaps.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: S = solve("x^2 + y^2 = z^2")
+        sage: S.first(4)
+        [(3, 4, 5), (5, 12, 13), (15, 8, 17), (7, 24, 25)]
+    """
+    def stream():
+        # (leg, leg, hypotenuse) in the family's standard coordinates; which
+        # of the user's variables those are is the transform's business
+        for m in itertools.count(2):
+            for n in range(1, m):
+                if gcd(m, n) == 1 and (m - n) % 2 == 1:
+                    yield (m * m - n * n, 2 * m * n, m * m + n * n)
+
+    first = list(itertools.islice(stream(), 4))
+    return SolutionSet(
+        _normalized(match), first, "parametrized",
+        "primitive solutions (m^2 - n^2, 2mn, m^2 + n^2), gcd(m, n) = 1, "
+        "m ≢ n (mod 2); all solutions are multiples, sign changes and swaps "
+        "of these; iteration enumerates the primitive triples",
+        complete=True, stream=stream)
+
+
 def _solve_weierstrass(cls, match):
     r"""
     Integral points on a Weierstrass model via ``E.integral_points``.
@@ -1161,6 +1193,7 @@ SOLVERS = {
     "binary-qf-representation": _solve_bqf,
     "quadratic-form-zero": _solve_qf_zero,
     "legendre": _solve_legendre,
+    "pythagorean": _solve_pythagorean,
     "elliptic-weierstrass": _solve_weierstrass,
     "thue": _solve_thue,
     "egyptian-fractions": _solve_egyptian,
