@@ -943,6 +943,53 @@ def _solve_pell_like(cls, match):
                        complete=True, stream=stream)
 
 
+def _solve_three_squares(cls, match):
+    r"""
+    All representations ``n = x^2 + y^2 + z^2`` with ``x <= y <= z``.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: solve("x^2 + y^2 + z^2 = 62").solutions
+        [(1, 5, 6), (2, 3, 7)]
+        sage: S = solve("x^2 + y^2 + z^2 = 7")    # 7 ≡ 7 mod 8
+        sage: S.kind, S.complete
+        ('empty', True)
+    """
+    n = _zz(match.data, "n")
+    if n is None:
+        raise SolverUnavailable("needs concrete n")
+    if n < 0:
+        return SolutionSet(_normalized(match), [], "empty", "n < 0",
+                           complete=True)
+    m = n
+    while m % 4 == 0:
+        m //= 4
+    if m % 8 == 7:
+        return SolutionSet(_normalized(match), [], "empty",
+                           f"{n} = 4^a(8b+7): excluded by the Legendre-Gauss "
+                           "criterion", complete=True)
+    if n > MAX_THREE_SQUARES:
+        sol = three_squares(n)
+        return SolutionSet(_normalized(match), [tuple(sol)], "witness",
+                           "one representation (n too large for full "
+                           "enumeration)", complete=False)
+    sols = []
+    x = 0
+    while 3 * x * x <= n:
+        y = x
+        while x * x + 2 * y * y <= n:
+            z2 = n - x * x - y * y
+            z = isqrt(z2)
+            if z * z == z2 and z >= y:
+                sols.append((ZZ(x), ZZ(y), ZZ(z)))
+            y += 1
+        x += 1
+    return SolutionSet(_normalized(match), sols, "finite-complete",
+                       "all representations with 0 <= x <= y <= z; the rest "
+                       "differ by signs and order", complete=True)
+
+
 def _solve_bqf(cls, match):
     r"""
     Representations by a binary quadratic form.
@@ -1158,6 +1205,7 @@ SOLVERS = {
     "univariate": _solve_univariate,
     "linear": _solve_linear,
     "pell-like": _solve_pell_like,
+    "sum-of-three-squares": _solve_three_squares,
     "binary-qf-representation": _solve_bqf,
     "quadratic-form-zero": _solve_qf_zero,
     "legendre": _solve_legendre,

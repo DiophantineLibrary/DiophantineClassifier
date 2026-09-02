@@ -118,6 +118,13 @@ uniform results: 15-theorem (Conway–Schneeberger–Bhargava), 290-theorem
 `qfsolve`; Magma: `RepresentationNumber`, ternary form machinery.
 **References.** Cassels; Bhargava 2000; Bhargava–Hanke 2005.
 
+### `sum-of-three-squares` — Three squares — P1, solved
+**Form.** x² + y² + z² = n.
+**Status.** Solvable iff n ≠ 4^a(8b+7) (Legendre/Gauss); randomized polynomial-time
+algorithms (Rabin–Shallit, using class-group/Cornacchia steps).
+**Software.** Sage: `three_squares(n)`.
+**References.** Legendre 1798, Gauss DA art. 291; Rabin–Shallit 1986.
+
 ### `quadric` — General quadratic Diophantine equation — P2, algorithmic
 **Form.** Q(x₁,…,x_k) + L(x₁,…,x_k) + c = 0 (arbitrary quadratic, k ≥ 3).
 **Status.** Decidable in general — the deepest case of the quadratic theory

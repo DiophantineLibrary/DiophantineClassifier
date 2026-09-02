@@ -25,6 +25,12 @@ def test_egyptian_complete():
     assert s.complete
 
 
+def test_three_squares_complete():
+    s = solve("x^2 + y^2 + z^2 = 62")
+    assert s.solutions == [(1, 5, 6), (2, 3, 7)]
+    assert s.complete
+
+
 def test_finite_iteration_matches_list():
     s = solve("x^3 + 2*y^3 = 11")
     assert list(iter(s)) == s.solutions
