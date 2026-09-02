@@ -1,0 +1,21 @@
+# Family: Univariate polynomial equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: univariate
+name: Univariate polynomial equation
+priority: 1
+status: solved
+class: linear
+form: f(x) = 0
+parents:
+- general-polynomial
+matcher: true
+methods:
+- integer root finding via factorization
+software:
+  sage: f.roots(ZZ)
+examples:
+- x^2 - 5*x + 6 = 0
+references:
+- key: Cohen2007
+  why: standard algorithms for rational and integer root-finding

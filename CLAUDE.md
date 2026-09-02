@@ -8,7 +8,7 @@ Classification engine for the Diophantine Library
 - Unit tests: `sage -python -m pytest tests -q` (or `make test`)
 - Doctests: `make doctest` (= `PYTHONPATH=. sage -t diophantine_classifier/`)
 - Docstring coverage: `make coverage` (must stay 100%)
-- References pipeline: `make references` (regenerates references/REPORT.md)  *(later in the series)*
+- References pipeline: `make references` (regenerates references/REPORT.md)
 - Smoke: `make smoke`  *(later in the series)*
 - CI: `.github/workflows/ci.yml` runs unit tests, doctests, coverage and the
   references pipeline in the `sagemath/sagemath` container on every PR; that
@@ -26,7 +26,7 @@ are specified here but land in a later PR of the series.
 - `conditions.py` — the side conditions themselves: structured, exactly
   evaluated, three-valued; collected from the source syntax before Sage can
   cancel a denominator away.
-- `data/families/<slug>.yaml` *(later in the series)* — one registry file per family (slug ==
+- `data/families/<slug>.yaml` — one registry file per family (slug ==
   filename; DAG `parents`, priority, status, software, code templates,
   annotated references). `registry.py` loads the directory, and exposes
   `lineage_paths` / `lineage_graph` (genuine edges) beside flat `ancestors`.
@@ -42,7 +42,7 @@ are specified here but land in a later PR of the series.
 - `solvers.py` *(later in the series)* — per-family solvers (Sage/PARI); `SolutionSet` is iterable
   (streams for infinite families); `SolverUnavailable` carries code
   templates for the rest.
-- `docs/FAMILIES.md` *(later in the series)* — the human-readable, referenced enumeration.
+- `docs/FAMILIES.md` — the human-readable, referenced enumeration.
 
 ## Invariants (tests enforce most of these)
 
@@ -54,7 +54,7 @@ are specified here but land in a later PR of the series.
 - Registry `parents` form a DAG; priorities in {1,2,3}; statuses from
   `registry.STATUSES`; every reference key resolves in `references.bib` with
   a nonempty `why`; every family cites at least one reference.
-- `docs/FAMILIES.md` and the per-family YAML describe the same families —  *(later in the series)*
+- `docs/FAMILIES.md` and the per-family YAML describe the same families —
   update both when adding one.
 - `as_dict()` must stay JSON-serializable (website backend contract).
 - Adding a family = `data/families/<slug>.yaml` + FAMILIES.md entry + bib
