@@ -1,0 +1,25 @@
+# Family: Congruent number problem
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: congruent-number
+name: Congruent number problem
+priority: 2
+status: partial
+class: quadratic
+form: x^2 + y^2 = z^2, x*y = 2*n
+constraints: n > 0 squarefree; x, y, z rational (a right triangle of area n); over
+  ZZ the system is a finite divisor problem
+parents: []
+matcher: false
+methods:
+- equivalence with rank of y^2 = x^3 - n^2 x
+- Tunnell criterion (necessity unconditional via Coates-Wiles; sufficiency under BSD)
+software:
+  sage: EllipticCurve([0,0,0,-n^2,0]).rank()
+references:
+- key: Tunnell1983
+  why: the theta-series criterion; its converse direction needs BSD
+- key: CoatesWiles1977
+  why: analytic rank 0 forces rank 0, the unconditional half of Tunnell
+- key: Koblitz1993
+  why: book-length exposition of the congruent-number/elliptic-curve link
