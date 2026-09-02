@@ -1,0 +1,4 @@
+# Verification ledger: successes recorded by tools/check_references.py.
+# Monotone: records are appended, never removed. Each one fingerprints what was
+# verified, so it stops counting as current when that content changes.
+{}
