@@ -146,6 +146,15 @@ by the elliptic-logarithm method once generators are known.
 **References.** Mordell 1922; Siegel 1929; Baker 1968; Gebel–Pethő–Zimmer 1994;
 Stroeker–Tzanakis 1994; Cremona, *Algorithms for Modular Elliptic Curves*.
 
+### `sum-of-three-cubes` — Sums of three cubes — P1, open
+**Form.** x³ + y³ + z³ = n (n ≢ ±4 mod 9).
+**Status.** Conjecturally always solvable (density conjecture, Heath-Brown), wide
+open; no finiteness or algorithm known; spectacular searches: n = 33, 42 (Booker,
+Booker–Sutherland 2019), new representation of 3. A headline family for the site's
+"open problems with compute" theme.
+**Software.** Search codes (Elkies lattice method; Booker's algorithm); no CAS solver.
+**References.** Heath-Brown 1992; Elkies 2000; Booker 2019; Booker–Sutherland 2019.
+
 ### `cubic-surface` — Cubic surfaces / del Pezzo — P3, research
 **Form.** F(x, y, z, w) = 0 cubic (e.g. diagonal ax³+by³+cz³+dw³ = 0).
 **Status.** Rational points conjecturally dense once one exists (unirationality);
