@@ -99,6 +99,13 @@ PARI: `qfsolve`; Magma: `IsLocallySolvable`, `HasRationalPoint`.
 **References.** Legendre 1785; Holzer 1950; Cremona–Rusin, "Efficient solution of
 rational conics" (Math. Comp. 72, 2003); Simon 2005 (PARI `qfsolve`).
 
+### `pythagorean` — Pythagorean triples — P1, solved
+**Form.** x² + y² = z².
+**Status.** Completely parametrized: primitive solutions (m²−n², 2mn, m²+n²),
+gcd(m,n)=1, m ≢ n (mod 2). The template example of "solved by parametrization"
+(genus 0 with a rational point).
+**References.** Euclid, *Elements* X.29; Dickson, *History*, vol. II ch. IV.
+
 ### `quadratic-form-zero` — Isotropy of a quadratic form — P1, algorithmic
 **Form.** Q(x₁,…,x_k) = 0, Q a nondegenerate integral quadratic form, k ≥ 3.
 **Status.** Hasse–Minkowski: solvable iff solvable over ℝ and all ℚ_p (finite

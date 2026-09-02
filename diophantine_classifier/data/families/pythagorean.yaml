@@ -1,0 +1,20 @@
+# Family: Pythagorean triples
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: pythagorean
+name: Pythagorean triples
+priority: 1
+status: solved
+class: quadratic
+form: x^2 + y^2 = z^2
+parents:
+- legendre
+matcher: true
+methods:
+- Euclid parametrization
+notes: Primitive solutions (m^2-n^2, 2mn, m^2+n^2), gcd(m,n)=1, m != n mod 2.
+examples:
+- x^2 + y^2 = z^2
+references:
+- key: Dickson1920
+  why: history and the classical parametrization of rational right triangles

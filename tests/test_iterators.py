@@ -19,6 +19,15 @@ def test_linear_stream():
     assert all(3 * x + 5 * y == 1 for x, y in sols)
 
 
+def test_pythagorean_stream():
+    s = solve("x^2 + y^2 = z^2")
+    sols = s.first(6)
+    assert sols[0] == (3, 4, 5)
+    for x, y, z in sols:
+        assert x ** 2 + y ** 2 == z ** 2
+        assert gcd(gcd(x, y), z) == 1     # primitive
+
+
 def test_egyptian_complete():
     s = solve("1/x + 1/y + 1/z = 1")
     assert s.solutions == [(2, 3, 6), (2, 4, 4), (3, 3, 3)]

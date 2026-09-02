@@ -207,6 +207,14 @@ def test_solver_receives_its_own_match(monkeypatch):
     assert "coeffs" not in seen["data"]    # ... not the linear match's
 
 
+def test_pythagorean_roles_are_transported_back():
+    S = solve("a^2 + b^2 = c^2")
+    assert S.variables == ("a", "b", "c")
+    sols = S.first(4)
+    assert all(a ** 2 + b ** 2 == c ** 2 for a, b, c in sols)
+    assert_valid_solutions("a^2 + b^2 = c^2", sols)
+
+
 def test_component_of_a_rational_equation_keeps_the_parent_conditions():
     """(x - 2)(x - y)/y = 0 factors; y != 0 still binds each component."""
     cls = classify("(x - 2)*(x - y)/y = 0")
