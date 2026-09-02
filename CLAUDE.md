@@ -20,10 +20,10 @@ Classification engine for the Diophantine Library
 The architecture of the finished classifier; entries marked *(later in the series)*
 are specified here but land in a later PR of the series.
 
-- `parsing.py` *(later in the series)* — string → `ParsedEquation` (term model: polynomial + `2^n` +
+- `parsing.py` — string → `ParsedEquation` (term model: polynomial + `2^n` +
   `y^q` terms; params live in the coefficient ring; denominator clearing is
   recorded in `conditions`).
-- `conditions.py` *(later in the series)* — the side conditions themselves: structured, exactly
+- `conditions.py` — the side conditions themselves: structured, exactly
   evaluated, three-valued; collected from the source syntax before Sage can
   cancel a denominator away.
 - `data/families/<slug>.yaml` *(later in the series)* — one registry file per family (slug ==
