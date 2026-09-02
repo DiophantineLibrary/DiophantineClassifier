@@ -1,0 +1,26 @@
+# Family: Markov / Hurwitz equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: markov-hurwitz
+name: Markov / Hurwitz equation
+priority: 2
+status: partial
+class: surface
+form: x_1^2 + ... + x_k^2 = a * x_1 * ... * x_k
+parents:
+- general-polynomial
+matcher: true
+methods:
+- Vieta jumping / Markov tree
+notes: Uniqueness conjecture (Frobenius 1913) open for Markov numbers.
+examples:
+- x^2 + y^2 + z^2 = 3*x*y*z
+references:
+- key: Markov1879
+  why: the original equation and its role in the theory of binary quadratic forms
+- key: Hurwitz1907
+  why: the general x_1^2 + ... + x_n^2 = a x_1 ... x_n analysis
+- key: Aigner2013
+  why: the uniqueness conjecture and a century of progress
+- key: Zagier1982
+  why: growth of the Markov numbers
