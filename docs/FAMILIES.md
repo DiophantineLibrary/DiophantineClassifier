@@ -257,6 +257,14 @@ perfect power).
 **References.** Schinzel–Tijdeman 1976; Erdős–Selfridge 1975; Shorey–Tijdeman,
 *Exponential Diophantine Equations* (1986) — the standard reference for this whole section.
 
+### `nagell-ljunggren` — Nagell–Ljunggren equation — P2, open
+**Form.** (xⁿ − 1)/(x − 1) = y^q, x, y ≥ 2, n ≥ 3, q ≥ 2.
+**Status.** Three known solutions (x,n,y,q) = (3,5,11,2), (7,4,20,2), (18,3,7,3);
+conjecturally all; many partial results (Ljunggren: q = 2 solved; Bugeaud–Mignotte
+surveys); finiteness unknown in general.
+**References.** Nagell 1920; Ljunggren 1943; Bugeaud–Mignotte,
+"L'équation de Nagell–Ljunggren" (Enseign. Math. 48, 2002).
+
 ### `exponential-diophantine` — Purely exponential equations — P2, effective (few terms)
 **Form.** c₁·b₁^{n₁} + ⋯ + c_k·b_k^{n_k} = c (fixed bases, unknown exponents);
 e.g. 2ᵃ + 3ᵇ = 5ᶜ, Jeśmanowicz conjecture instances. An unknown base raised to an
