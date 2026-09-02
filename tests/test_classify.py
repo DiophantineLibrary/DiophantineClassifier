@@ -15,6 +15,7 @@ CORPUS = [
     ("x^2 - 5*x + 6 = 0", "", "univariate"),
     # quadratic, two variables
     ("x^2 - 61*y^2 = 5", "", "pell-like"),
+    ("x^2 + y^2 = 610", "", "sum-of-two-squares"),
     ("2*x^2 + 3*x*y - 5*y^2 + x - 7 = 0", "", "binary-quadratic"),
     ("3*x^2 + 7*y^2 = 19", "", "binary-qf-representation"),
     # quadratic, more variables

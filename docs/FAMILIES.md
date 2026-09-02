@@ -80,6 +80,14 @@ under the automorph group.
 `qfbcornacchia`.
 **References.** Cox, *Primes of the form x²+ny²*; Cornacchia 1908.
 
+### `sum-of-two-squares` — Sum of two squares — P1, solved
+**Form.** x² + y² = n.
+**Status.** Solvable iff v_p(n) even for all p ≡ 3 (mod 4) (Fermat, Euler);
+representation count via r₂(n) (Jacobi); fast algorithms via Cornacchia / Gaussian
+integer gcd (Rabin–Shallit randomized polynomial time).
+**Software.** Sage: `two_squares(n)`; PARI: `qfbcornacchia(1,p)`.
+**References.** Fermat 1640; Rabin–Shallit 1986.
+
 ### `pell-like` — Generalized Pell equation — P1, algorithmic
 **Form.** x² − Dy² = N (D > 0 nonsquare).
 **Status.** Finitely many classes of solutions, each an orbit under the Pell

@@ -1,0 +1,24 @@
+# Family: Sum of two squares
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: sum-of-two-squares
+name: Sum of two squares
+priority: 1
+status: solved
+class: quadratic
+form: x^2 + y^2 = n
+parents:
+- binary-qf-representation
+matcher: true
+methods:
+- Fermat criterion
+- Cornacchia / Gaussian gcd
+software:
+  sage: two_squares(n)
+code:
+  sage: two_squares({n})
+examples:
+- x^2 + y^2 = 610
+references:
+- key: RabinShallit1986
+  why: randomized polynomial-time algorithms for sums of two squares

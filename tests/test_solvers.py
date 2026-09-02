@@ -33,6 +33,12 @@ def test_pell_like():
     assert s.complete    # orbit representatives + automorph action
 
 
+def test_two_squares():
+    s = solve("x^2 + y^2 = 610")
+    assert s.solutions == [(9, 23), (13, 21)]
+    assert s.complete
+
+
 def test_bqf():
     s = solve("3*x^2 + 7*y^2 = 19")
     assert s.solutions == [(-2, -1), (-2, 1), (2, -1), (2, 1)]

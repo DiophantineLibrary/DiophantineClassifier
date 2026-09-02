@@ -943,6 +943,53 @@ def _solve_pell_like(cls, match):
                        complete=True, stream=stream)
 
 
+def _solve_two_squares(cls, match):
+    r"""
+    All representations ``n = x^2 + y^2`` with ``0 <= x <= y``.
+
+    For very large ``n`` (beyond ``MAX_TWO_SQUARES``), falls back to a single
+    witness from Sage's ``two_squares``.
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: solve("x^2 + y^2 = 610").solutions
+        [(9, 23), (13, 21)]
+        sage: solve("x^2 + y^2 = 21").kind
+        'empty'
+    """
+    n = _zz(match.data, "n")
+    if n is None:
+        raise SolverUnavailable("needs concrete n")
+    if n < 0:
+        return SolutionSet(_normalized(match), [], "empty", "n < 0",
+                           complete=True)
+    if n > MAX_TWO_SQUARES:
+        try:
+            x, y = two_squares(n)
+        except ValueError:
+            return SolutionSet(_normalized(match), [], "empty",
+                               "not a sum of two squares (a prime p ≡ 3 mod 4 "
+                               "divides n to an odd power)", complete=True)
+        return SolutionSet(_normalized(match), [(x, y)], "witness",
+                           "one representation (n too large for full "
+                           "enumeration)", complete=False)
+    sols = []
+    x = 0
+    while 2 * x * x <= n:
+        y2 = n - x * x
+        y = isqrt(y2)
+        if y * y == y2:
+            sols.append((ZZ(x), ZZ(y)))
+        x += 1
+    kind = "finite-complete" if sols else "empty"
+    desc = ("all representations with 0 <= x <= y; the rest differ by signs "
+            "and order" if sols else
+            "not a sum of two squares (a prime p ≡ 3 mod 4 divides n to an "
+            "odd power)")
+    return SolutionSet(_normalized(match), sols, kind, desc, complete=True)
+
+
 def _solve_bqf(cls, match):
     r"""
     Representations by a binary quadratic form.
@@ -1158,6 +1205,7 @@ SOLVERS = {
     "univariate": _solve_univariate,
     "linear": _solve_linear,
     "pell-like": _solve_pell_like,
+    "sum-of-two-squares": _solve_two_squares,
     "binary-qf-representation": _solve_bqf,
     "quadratic-form-zero": _solve_qf_zero,
     "legendre": _solve_legendre,
