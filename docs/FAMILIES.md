@@ -146,6 +146,17 @@ by the elliptic-logarithm method once generators are known.
 **References.** Mordell 1922; Siegel 1929; Baker 1968; Gebel–Pethő–Zimmer 1994;
 Stroeker–Tzanakis 1994; Cremona, *Algorithms for Modular Elliptic Curves*.
 
+### `elliptic-quartic` — Genus-one quartic — P1, algorithmic*
+**Form.** y² = q(x), q quartic with nonzero discriminant.
+**Status.** Genus 1; a 2-covering of its Jacobian. With a rational point, birational
+to Weierstrass form (classical invariant theory: I, J invariants); integral points
+effective (elliptic logs; Tzanakis).
+**Software.** Sage: `Jacobian` of genus-one models, `EllipticCurve_from_curve`;
+Magma: `IntegralQuarticPoints` (needs a square constant term, or a known rational
+point as second argument), `TwoCoverDescent`.
+**References.** Fermat; Tzanakis, *Elliptic Diophantine Equations* (2013);
+Cremona–Stoll, "Minimal models for 2-coverings of elliptic curves" (2002).
+
 ### `cubic-surface` — Cubic surfaces / del Pezzo — P3, research
 **Form.** F(x, y, z, w) = 0 cubic (e.g. diagonal ax³+by³+cz³+dw³ = 0).
 **Status.** Rational points conjecturally dense once one exists (unirationality);
