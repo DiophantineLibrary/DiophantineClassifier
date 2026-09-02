@@ -269,6 +269,13 @@ side of the decidability boundary.
 **References.** Shorey–Tijdeman 1986; Evertse–Schlickewei–Schmidt 2002 (subspace);
 Davis–Putnam–Robinson 1961.
 
+### `goormaghtigh` — Goormaghtigh equation — P3, open
+**Form.** (xᵐ − 1)/(x − 1) = (yⁿ − 1)/(y − 1), y > x ≥ 2, m > n ≥ 3.
+**Status.** Known (x, y, m, n): (2, 5, 5, 3), giving 31 = (2⁵−1)/1 = (5³−1)/4, and
+(2, 90, 13, 3), giving 8191;
+conjecturally all; finite effective for fixed (x, y) (Balasubramanian–Shorey 1980).
+**References.** Goormaghtigh 1917; Balasubramanian–Shorey 1980.
+
 
 ---
 
