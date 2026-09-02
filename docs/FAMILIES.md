@@ -153,6 +153,13 @@ Brauer–Manin obstructions; decidability unknown. Research-level exhibits
 (e.g. x³+y³+z³ = n sits here as an affine slice family).
 **References.** Colliot-Thélène–Kanevsky–Sansuc; Poonen, *Rational Points on Varieties*.
 
+### `taxicab` — Equal sums of two cubes — P3, solved (equation), open (taxicab numbers)
+**Form.** x³ + y³ = z³ + w³ (= n).
+**Status.** The surface is rational: Euler's and Binet's parametrizations give every
+rational solution, so the equation is solved. The taxicab problem proper — integers
+with exactly n representations, positive (Ta(n)) or signed (Cabtaxi) — is open beyond
+small n; general counting relates to Manin's conjecture for this cubic surface.
+**References.** Ramanujan; Silverman, "Taxicabs and sums of two cubes" (Amer. Math. Monthly 100, 1993).
 
 ---
 
