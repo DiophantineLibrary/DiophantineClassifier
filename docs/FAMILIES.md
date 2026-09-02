@@ -257,6 +257,16 @@ perfect power).
 **References.** Schinzel–Tijdeman 1976; Erdős–Selfridge 1975; Shorey–Tijdeman,
 *Exponential Diophantine Equations* (1986) — the standard reference for this whole section.
 
+### `s-unit` — S-unit equations — P2, algorithmic
+**Form.** ax + by = c with x, y S-units (over ℤ: ± products of fixed primes;
+generally in a number field K with finite S).
+**Status.** Finite (Siegel–Mahler), effective (Baker); practical algorithm
+de Weger 1987 (LLL); implemented in Sage for arbitrary K, S. The workhorse
+that many other families reduce to (Thue–Mahler, curves via étale covers).
+**Software.** Sage: `K.solve_S_unit_equation(S)`; Magma: S-unit machinery.
+**References.** Mahler 1933; de Weger 1987; Evertse–Győry, *Unit Equations* (2015);
+Alvarado et al. 2019 (Sage implementation).
+
 ### `exponential-diophantine` — Purely exponential equations — P2, effective (few terms)
 **Form.** c₁·b₁^{n₁} + ⋯ + c_k·b_k^{n_k} = c (fixed bases, unknown exponents);
 e.g. 2ᵃ + 3ᵇ = 5ᶜ, Jeśmanowicz conjecture instances. An unknown base raised to an
