@@ -74,6 +74,16 @@ def test_thue():
     assert_valid_solutions("x^3 + 2*y^3 = 11", s.solutions)
 
 
+def test_catalan():
+    s = solve("x^p - y^q = 1")
+    # unknowns ordered (x, p, y, q)
+    assert s.solutions == [(3, 2, 2, 3)]
+    # the bare equation has degenerate solutions such as (5, 1, 2, 2), so
+    # the Mihailescu witness must not claim completeness
+    assert s.kind == "witness" and not s.complete
+    assert "x, y, p, q >= 2" in s.description
+
+
 def test_unavailable_carries_hints():
     with pytest.raises(SolverUnavailable) as err:
         solve("y^2 = x^7 + 3")
