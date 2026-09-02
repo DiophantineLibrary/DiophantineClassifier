@@ -146,6 +146,16 @@ by the elliptic-logarithm method once generators are known.
 **References.** Mordell 1922; Siegel 1929; Baker 1968; Gebel–Pethő–Zimmer 1994;
 Stroeker–Tzanakis 1994; Cremona, *Algorithms for Modular Elliptic Curves*.
 
+### `mordell` — Mordell equation — P1, algorithmic*
+**Form.** y² = x³ + k, k ≠ 0.
+**Status.** Finitely many integral points (Mordell/Siegel), effective (Baker;
+best bounds Stark, Juricevic); completely tabulated for |k| ≤ 10⁷
+(Gebel–Pethő–Zimmer for 10⁴; Bennett–Ghadermarzi for 10⁷).
+**Software.** Sage: `EllipticCurve([0,0,0,0,k]).integral_points()`; Magma ditto;
+Bennett–Ghadermarzi online tables.
+**References.** Mordell 1913; Gebel–Pethő–Zimmer, "On Mordell's equation" (Compositio 110, 1998);
+Bennett–Ghadermarzi, "Mordell's equation: a classical approach" (LMS JCM 18, 2015).
+
 ### `cubic-surface` — Cubic surfaces / del Pezzo — P3, research
 **Form.** F(x, y, z, w) = 0 cubic (e.g. diagonal ax³+by³+cz³+dw³ = 0).
 **Status.** Rational points conjecturally dense once one exists (unirationality);

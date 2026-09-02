@@ -1161,6 +1161,7 @@ SOLVERS = {
     "binary-qf-representation": _solve_bqf,
     "quadratic-form-zero": _solve_qf_zero,
     "legendre": _solve_legendre,
+    "mordell": _solve_weierstrass,
     "elliptic-weierstrass": _solve_weierstrass,
     "thue": _solve_thue,
     "egyptian-fractions": _solve_egyptian,

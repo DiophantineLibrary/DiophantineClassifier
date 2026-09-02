@@ -23,6 +23,9 @@ CORPUS = [
     ("x^2 + x*y + y^2 + z^2 = 14", "", "quadratic-form-representation"),
     ("x^2 + y^2 - z^2 + 3*x - 7 = 0", "", "quadric"),
     # genus one
+    ("y^2 = x^3 - 2", "", "mordell"),
+    ("y^2 = x^3 + k", "k", "mordell"),
+    ("x^3 = y^2 - 2", "", "mordell"),
     ("y^2 + y = x^3 - x^2 - 10*x - 20", "", "elliptic-weierstrass"),
     # higher-genus curves and binary forms
     ("x^3 + 2*y^3 = 11", "", "thue"),
@@ -60,6 +63,12 @@ def test_reducible():
     assert sorted(c.slug for c in cls.components) == ["univariate", "univariate"]
 
 
+def test_mordell_data():
+    cls = classify("y^2 = x^3 - 2")
+    assert cls.data["k"] == "-2"
+    assert "elliptic-weierstrass" in cls.lineage
+
+
 def test_parametric_quadratic_form_classifies():
     """A parametric quadratic form must classify, not raise (matchers._gram)."""
     cls = classify("x^2 + y^2 = D*z^2", params="D")
@@ -71,6 +80,11 @@ def test_gen_fermat_regimes():
     assert spherical.data["regime"] == "spherical"
     hyperbolic = classify("x^2 + y^7 = z^3")
     assert hyperbolic.data["regime"] == "hyperbolic"
+
+
+def test_params_as_list():
+    cls = classify("y^2 = x^3 + k", params=["k"])
+    assert cls.slug == "mordell"
 
 
 def test_match_lookup_by_slug():

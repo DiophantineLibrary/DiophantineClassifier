@@ -67,6 +67,13 @@ def test_univariate():
     assert [t[0] for t in s.solutions] == [2, 3]
 
 
+def test_mordell_integral_points():
+    s = solve("y^2 = x^3 - 2")
+    # unknowns are ordered (y, x) by appearance in the input
+    assert set(s.solutions) == {(5, 3), (-5, 3)}
+    assert s.complete
+
+
 def test_thue():
     s = solve("x^3 + 2*y^3 = 11")
     assert (3, -2) in s.solutions
@@ -205,6 +212,13 @@ def test_solver_receives_its_own_match(monkeypatch):
     assert seen["slug"] == "general-polynomial"
     assert "degree" in seen["data"]        # its own data ...
     assert "coeffs" not in seen["data"]    # ... not the linear match's
+
+
+def test_curve_role_reversal_is_transported_back():
+    S = solve("u^2 = v^3 - 2")
+    assert S.variables == ("u", "v")
+    assert sorted(S.solutions) == [(-5, 3), (5, 3)]
+    assert_valid_solutions("u^2 = v^3 - 2", S.solutions)
 
 
 def test_component_of_a_rational_equation_keeps_the_parent_conditions():

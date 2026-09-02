@@ -1,0 +1,27 @@
+# Family: Mordell equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: mordell
+name: Mordell equation
+priority: 1
+status: algorithmic
+class: genus1
+form: y^2 = x^3 + k
+parents:
+- elliptic-weierstrass
+matcher: true
+lmfdb: ec.q
+methods:
+- elliptic logarithms
+- tabulated for |k| <= 10^7
+software:
+  sage: EllipticCurve([0,0,0,0,k]).integral_points()
+code:
+  sage: EllipticCurve([0, 0, 0, 0, {k}]).integral_points(both_signs=True)
+examples:
+- y^2 = x^3 - 2
+references:
+- key: GebelPethoZimmer1998
+  why: the method, with tables for |k| <= 10^4
+- key: BennettGhadermarzi2015
+  why: complete tables for |k| <= 10^7
