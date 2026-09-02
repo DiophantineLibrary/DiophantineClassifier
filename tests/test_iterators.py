@@ -25,6 +25,12 @@ def test_egyptian_complete():
     assert s.complete
 
 
+def test_erdos_straus_concrete():
+    s = solve("4/5 = 1/x + 1/y + 1/z")
+    assert s.solutions == [(2, 4, 20), (2, 5, 10)]
+    assert s.complete
+
+
 def test_finite_iteration_matches_list():
     s = solve("x^3 + 2*y^3 = 11")
     assert list(iter(s)) == s.solutions

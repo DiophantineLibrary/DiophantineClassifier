@@ -295,6 +295,18 @@ As n varies: `erdos-straus` below; rich combinatorics (Erdős–Graham problems,
 Bloom 2021 density result for unit fractions).
 **References.** Graham's surveys; Bloom 2021.
 
+### `erdos-straus` — Erdős–Straus conjecture — P1, open
+**Form.** 4/n = 1/x + 1/y + 1/z, x, y, z > 0.
+**Status.** Conjectured solvable for all n ≥ 2; verified to ≥ 10¹⁷ (Salez);
+residue-class identities (Mordell) settle all n outside a few classes mod 840;
+average/density results (Elsholtz–Tao 2013); the integral Brauer–Manin obstruction
+on the associated surfaces (Bright–Loughran 2020). Sierpiński's
+analogue 5/n likewise open. After clearing denominators: a cubic surface family —
+the classifier recognizes both shapes.
+**References.** Erdős–Straus 1948; Elsholtz–Tao, "Counting the number of solutions
+to the Erdős–Straus equation on unit fractions" (J. Aust. Math. Soc. 94, 2013);
+Bright–Loughran, "Brauer–Manin obstruction for Erdős–Straus surfaces" (2020).
+
 ### `diagonal-form` — Diagonal equations — P2, umbrella
 **Form.** a₁x₁^k + ⋯ + a_sx_s^k = c.
 **Status.** Umbrella for `waring`, `sum-of-three-cubes`, `equal-sums-like-powers`,
