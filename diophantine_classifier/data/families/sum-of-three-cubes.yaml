@@ -1,0 +1,27 @@
+# Family: Sums of three cubes
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: sum-of-three-cubes
+name: Sums of three cubes
+priority: 1
+status: open
+class: surface
+form: x^3 + y^3 + z^3 = n
+parents:
+- diagonal-form
+- cubic-surface
+matcher: true
+methods:
+- lattice searches (Elkies)
+- Booker's algorithm; no finiteness theory
+notes: Conjecturally solvable for all n != +-4 mod 9 (Heath-Brown); n = 33, 42 resolved
+  2019.
+examples:
+- x^3 + y^3 + z^3 = 42
+references:
+- key: HeathBrown1992
+  why: the density conjecture predicting solvability for all n != +-4 mod 9
+- key: Booker2019
+  why: the solution for n = 33 and the search algorithm behind it
+- key: BookerSutherland2021
+  why: solutions for n = 42 and the third representation of 3
