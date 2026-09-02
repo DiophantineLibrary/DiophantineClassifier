@@ -53,6 +53,14 @@ lattice, computed by the extended Euclidean algorithm / Hermite normal form.
 PARI: `matsolvemod`; every CAS.
 **References.** Classical (Bachet 1621, Euler). See Niven–Zuckerman–Montgomery ch. 5.
 
+### `linear-system` — Systems of linear equations over ℤ — P1, solved
+**Form.** Ax = b, A ∈ ℤ^{m×k}.
+**Status.** Complete theory via Smith normal form; solution set empty or a lattice coset.
+**Software.** Sage: `A.smith_form()`, `A.solve_right(b, extend=False)` + `A.right_kernel()`
+(without `extend=False`, `solve_right` returns rational solutions);
+PARI: `matsnf`, `matsolvemod`.
+**References.** Smith 1861; Cohen, *A Course in Computational Algebraic Number Theory*, §2.4.
+
 
 ---
 
