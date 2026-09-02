@@ -146,6 +146,16 @@ by the elliptic-logarithm method once generators are known.
 **References.** Mordell 1922; Siegel 1929; Baker 1968; Gebel–Pethő–Zimmer 1994;
 Stroeker–Tzanakis 1994; Cremona, *Algorithms for Modular Elliptic Curves*.
 
+### `plane-cubic` — Ternary cubic / plane cubic curve — P2, algorithmic*
+**Form.** C(x, y, z) = 0 homogeneous cubic (smooth).
+**Status.** Genus 1 torsor; may fail the Hasse principle (Selmer's 3x³ + 4y³ + 5z³ = 0);
+with a known rational point, Nagell's algorithm gives a birational map to Weierstrass
+form. Finding the first point is the hard step (descent, Brauer–Manin, heuristics) —
+mirrored in the classifier design.
+**Software.** Sage: `EllipticCurve_from_cubic`, `Curve.rational_points(bound)`;
+Magma: `MinimalModel`, `FourDescent`/`ThreeDescent` for point search.
+**References.** Nagell 1928; Selmer 1951; Poonen, *Rational Points on Varieties*.
+
 ### `cubic-surface` — Cubic surfaces / del Pezzo — P3, research
 **Form.** F(x, y, z, w) = 0 cubic (e.g. diagonal ax³+by³+cz³+dw³ = 0).
 **Status.** Rational points conjecturally dense once one exists (unirationality);
