@@ -1,0 +1,56 @@
+# The test suite runs under Sage's Python only, so CI runs inside the
+# official Sage container rather than installing Sage on the runner.  The
+# container is a minimal image (no bash, no make), so the steps below spell
+# out the commands the Makefile targets run.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Sage test suite
+    runs-on: ubuntu-latest
+    container:
+      image: sagemath/sagemath:latest
+      options: --user root
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install test dependencies
+        run: sage -pip install --no-input pyyaml pytest
+
+      - name: Unit tests            # make test
+        run: sage -python -m pytest tests -q
+
+      - name: Doctests              # make doctest
+        run: PYTHONPATH="$PWD" sage -t diophantine_classifier/
+
+      # No pipeline on the sage command: piping into `tee` would hand the
+      # step `tee`'s exit status, and the container's shell is too minimal
+      # to rely on `set -o pipefail`.  A missing SCORE line is a failure in
+      # its own right, and *every* score has to read 100.0%.
+      - name: Docstring coverage    # make coverage; must stay 100%
+        run: |
+          set -eu
+          sage --coverage diophantine_classifier/ > coverage.txt
+          cat coverage.txt
+          if ! grep -q '^SCORE' coverage.txt; then
+            echo "::error::sage --coverage emitted no SCORE line"
+            exit 1
+          fi
+          if grep '^SCORE' coverage.txt | grep -v ': 100.0%'; then
+            echo "::error::docstring coverage regressed (see the lines above)"
+            exit 1
+          fi
+
+      - name: Bibliography and registry validation      # make references
+        if: ${{ hashFiles('tools/check_references.py') != '' }}
+        run: sage -python tools/check_references.py --quiet
