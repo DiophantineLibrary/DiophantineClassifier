@@ -317,6 +317,22 @@ in Analysis and Number Theory* (PTE chapters).
 
 ## 9. The undecidability boundary
 
+### `universal-diophantine` — Hilbert's tenth problem exhibits — P3, undecidable
+**Form.** General polynomial p(x₁,…,x_k) = 0 over ℤ.
+**Status.** No algorithm decides solvability (Matiyasevich–Davis–Putnam–Robinson
+1970). Known bounds for undecidability: 9 unknowns over ℕ (Matiyasevich–Jones),
+11 unknowns over ℤ (Z.-W. Sun 2021); degree 4 suffices (with more variables);
+universal equation pairs (Jones 1982). Exponential Diophantine: undecidable
+already by DPR 1961. Over ℚ: **open**; over rings of integers of number fields:
+undecidable — completed 2024–25 via elliptic-curve rank-stability arguments
+(Koymans–Pagano; Alpöge–Bhargava–Ho–Shnidman), building on Denef–Lipshitz,
+Poonen, Shlapentokh.
+**Purpose in the Library.** Calibrates what a classifier can hope to do: the point
+of family classification is precisely to route equations into decidable islands;
+the site will exhibit concrete undecidable families and the current boundary
+(2 variables: open; degree 2: decidable; degree 4, many variables: undecidable).
+**References.** Matiyasevich 1970; Jones 1982; Poonen, "Undecidability in number
+theory" (Notices AMS 55, 2008); Koymans–Pagano 2025; Alpöge–Bhargava–Ho–Shnidman 2025.
 
 ---
 
