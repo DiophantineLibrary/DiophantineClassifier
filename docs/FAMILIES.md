@@ -210,6 +210,17 @@ PARI `hyperellratpoints`, Magma `Chabauty`, `PointSearch`.
 **References.** Siegel 1929; Faltings 1983; Bombieri–Gubler, *Heights in Diophantine
 Geometry*; Stoll, "Rational points on curves" (survey, 2011).
 
+### `genus-zero-curve` — Genus 0 curves — P1, algorithmic
+**Form.** C(x, y) = 0 irreducible of genus 0.
+**Status.** Rational points: none or a ℙ¹-parametrization (conic step:
+Hasse principle + Cremona–Rusin/Simon); integral points on the affine model:
+reduce along the parametrization to Pell-like/divisor conditions (finite when ≥ 3
+points at infinity, Siegel; with ≤ 2 either finite, as for xy = 2, or a Pell-type
+family; effective — Alvanos–Poulakis give complete algorithms).
+**Software.** Sage: `Conic`, `Conic.parametrization` (plane curves of genus 0 must
+first be mapped to a conic); Magma: `Conic`, `Parametrization`.
+**References.** Hilbert–Hurwitz 1890; Poulakis 2002; Alvanos–Poulakis 2011.
+
 ### `genus-one-curve` — Genus 1 curves (non-Weierstrass models) — P1, algorithmic*
 **Form.** C(x, y) = 0 irreducible of genus 1 (any plane model).
 **Status.** With a rational point: birational to an elliptic curve (Nagell/Riemann–Roch
