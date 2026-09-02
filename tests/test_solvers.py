@@ -74,6 +74,11 @@ def test_thue():
     assert_valid_solutions("x^3 + 2*y^3 = 11", s.solutions)
 
 
+def test_fermat():
+    s = solve("x^4 + y^4 = z^4")
+    assert s.kind == "empty" and s.complete
+
+
 def test_unavailable_carries_hints():
     with pytest.raises(SolverUnavailable) as err:
         solve("y^2 = x^7 + 3")

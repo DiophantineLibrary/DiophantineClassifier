@@ -225,6 +225,12 @@ point search: `ratpoints`, PARI `hyperellratpoints` for hyperelliptic models.
 
 ## 5. Fermat-type equations
 
+### `fermat` — Fermat's equation — P1, solved
+**Form.** xⁿ + yⁿ = zⁿ, n ≥ 3.
+**Status.** No nontrivial solutions (Wiles 1995, Taylor–Wiles); n = 2 is
+`pythagorean`. The historical engine behind modularity-based methods.
+**References.** Wiles 1995; Taylor–Wiles 1995.
+
 ### `generalized-fermat` — Generalized Fermat equation — P1, partial (the frontier)
 **Form.** a·x^p + b·y^q = c·z^r with gcd(x,y,z) = 1 (primitive), signature (p,q,r).
 **Status.** Governed by χ = 1/p + 1/q + 1/r:
