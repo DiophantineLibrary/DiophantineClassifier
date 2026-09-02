@@ -1,0 +1,22 @@
+# Family: Fermat equation
+# Schema: see data/families/README.md; prose documentation in docs/FAMILIES.md.
+# References are keys into data/references.bib, each with a 'why' annotation.
+slug: fermat
+name: Fermat equation
+priority: 1
+status: solved
+class: fermat
+form: x^n + y^n = z^n, n >= 3
+parents:
+- generalized-fermat
+matcher: true
+methods:
+- modularity (Wiles)
+examples:
+- x^4 + y^4 = z^4
+- x^n + y^n = z^n
+references:
+- key: Wiles1995
+  why: the proof of Fermat's Last Theorem (semistable case)
+- key: TaylorWiles1995
+  why: the companion paper completing the proof

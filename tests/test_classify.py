@@ -32,6 +32,8 @@ CORPUS = [
     ("x^3*y + y^3*z + z^3*x = 0", "", "general-curve"),     # Klein quartic
     ("x^2*y^2 = x^3 + 1", "", "genus-one-curve"),
     # Fermat-type
+    ("x^4 + y^4 = z^4", "", "fermat"),
+    ("x^n + y^n = z^n", "", "fermat"),
     ("x^2 + y^4 = z^3", "", "generalized-fermat"),
     ("2*x^3 + 3*y^3 = 5*z^3", "", "generalized-fermat"),
     ("3*x^3 + 4*y^3 + 5*z^3 = 0", "", "generalized-fermat"),  # Selmer

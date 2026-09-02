@@ -1154,6 +1154,23 @@ def _solve_egyptian(cls, match):
         "permutations give the rest", complete=True)
 
 
+def _solve_fermat(cls, match):
+    r"""
+    Fermat's equation: no nontrivial solutions (Wiles).
+
+    EXAMPLES::
+
+        sage: from diophantine_classifier import solve
+        sage: S = solve("x^4 + y^4 = z^4")
+        sage: S.kind, S.complete
+        ('empty', True)
+    """
+    return SolutionSet(
+        _normalized(match), [], "empty",
+        "no solutions with xyz ≠ 0 for exponent ≥ 3 (Wiles); only the "
+        "trivial solutions with a zero coordinate", complete=True)
+
+
 SOLVERS = {
     "univariate": _solve_univariate,
     "linear": _solve_linear,
@@ -1164,6 +1181,7 @@ SOLVERS = {
     "elliptic-weierstrass": _solve_weierstrass,
     "thue": _solve_thue,
     "egyptian-fractions": _solve_egyptian,
+    "fermat": _solve_fermat,
 }
 
 
