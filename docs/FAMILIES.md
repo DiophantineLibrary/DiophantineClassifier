@@ -312,6 +312,13 @@ the multi-degree system version.
 **References.** Lander–Parkin 1966; Elkies 1988; Borwein, *Computational Excursions
 in Analysis and Number Theory* (PTE chapters).
 
+### `prouhet-tarry-escott` — Prouhet–Tarry–Escott — P3, open
+**Form.** Σᵢ₌₁ⁿ x_i^j = Σᵢ₌₁ⁿ y_i^j for j = 1,…,k simultaneously, with {x_i} and {y_i}
+distinct multisets; a solution of size n and degree k is *ideal* when n = k + 1.
+**Status.** Ideal solutions known only in scattered sizes; existence in all sizes
+open; deep links to combinatorics and analysis.
+**References.** Borwein–Ingalls, "The Prouhet–Tarry–Escott problem revisited" (1994).
+
 
 ---
 
