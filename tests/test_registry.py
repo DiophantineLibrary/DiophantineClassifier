@@ -15,6 +15,24 @@ def test_dag_depths():
     assert "general-polynomial" in ancestors("linear")
 
 
+def test_matcher_flags_match_implementation():
+    """Every registered slug the matcher code can emit is flagged matcher: true.
+
+    A recognizer whose family has not landed in the registry yet is inert:
+    :func:`~diophantine_classifier.classify.classify` drops matches naming an
+    unregistered family.  The check tightens to *every* emitted slug once the
+    registry is complete.
+    """
+    import re
+    import diophantine_classifier.matchers as m
+    source = open(m.__file__.replace(".pyc", ".py")).read()
+    emitted = set(re.findall(r'Match\(\s*\n?\s*"([a-z0-9-]+)"', source))
+    emitted |= set(re.findall(r'Match\("([a-z0-9-]+)"', source))
+    fams = families()
+    for slug in sorted(emitted & set(fams)):
+        assert fams[slug].matcher, f"{slug}: emitted but matcher flag is false"
+
+
 # --- ancestry is paths and edges, not a flattened chain (brief 4.1) -------
 
 def test_path_traversal_on_a_diamond_invents_no_edge():

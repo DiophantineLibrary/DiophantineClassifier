@@ -33,8 +33,8 @@ are specified here but land in a later PR of the series.
 - `data/references.bib` — bibliography; `references.py` parses/formats it;
   `tools/check_references.py` validates it (and local PDFs in
   `references/pdf/<key>.pdf`).
-- `matchers.py` *(later in the series)* — shape recognizers emitting `Match(slug, data, transform)`.
-- `transforms.py` *(later in the series)* — `CoordinateTransform`: the executable, invertible map
+- `matchers.py` — shape recognizers emitting `Match(slug, data, transform)`.
+- `transforms.py` — `CoordinateTransform`: the executable, invertible map
   from the user's variables to a family's standard coordinates, plus the
   structural roles. Solvers work normalized and `pull_back()`.
 - `classify.py` *(later in the series)* — factor-split, run matchers, rank by DAG depth (most
