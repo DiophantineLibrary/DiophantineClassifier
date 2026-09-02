@@ -53,6 +53,14 @@ lattice, computed by the extended Euclidean algorithm / Hermite normal form.
 PARI: `matsolvemod`; every CAS.
 **References.** Classical (Bachet 1621, Euler). See Niven–Zuckerman–Montgomery ch. 5.
 
+### `frobenius` — Frobenius / numerical semigroup membership — P2, algorithmic
+**Form.** a₁x₁ + ⋯ + a_k x_k = b with aᵢ positive integers, gcd(aᵢ) = 1, x_i ≥ 0.
+**Status.** Membership decidable; Frobenius number g(a₁,…,a_k) closed-form only for
+k = 2 (Sylvester: a₁a₂ − a₁ − a₂); computing it is NP-hard for varying k, polynomial
+time for fixed k (Kannan 1992).
+**Software.** GAP package `NumericalSgps` (no Sage wrapper); the classifier's own
+solver enumerates over ℕ.
+**References.** Ramírez Alfonsín, *The Diophantine Frobenius Problem* (2005).
 
 ---
 
